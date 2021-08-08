@@ -1,0 +1,81 @@
+// ==================== Imports ====================
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap");
+
+// ==================== Variables ====================
+
+// ------------- Layout -------------
+$section-width: 1300px;
+
+// ------------- Typography -------------
+$h1-size: 5rem;
+$h2-size: 3rem;
+$h3-size: 2.5rem;
+$h4-size: 2rem;
+
+$p-size: 1.5rem;
+$a-size: 1.5rem;
+
+$main-font-family: "Open Sans", sans-serif;
+
+// ------------- Colors -------------
+$body-bg: #fff;
+$dark-col: #333;
+$light-col: #fff;
+
+// ==================== Mixins ====================
+@mixin section-center {
+	width: $section-width;
+	margin: 0 auto;
+}
+
+@mixin flex-center {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+// ==================== Utility Classes ====================
+.section-center {
+	width: $section-width;
+	margin: 0 auto;
+}
+
+.btn-disabled {
+	pointer-events: none;
+}
+
+// ============= Default Resets =============
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+html {
+	font-size: 62.5%;
+}
+
+body {
+	overflow-x: hidden;
+	font-family: $main-font-family;
+	background-color: $body-bg;
+}
+
+img {
+	width: 100%;
+}
+
+ul {
+	list-style-type: none;
+}
+
+a {
+	text-decoration: none;
+}
+
+// ============= Media Queries =============
+@media screen and (max-width: 1300px) {
+	.section-center {
+		width: 100%;
+	}
+}
