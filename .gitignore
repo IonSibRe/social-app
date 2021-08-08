@@ -3,3 +3,6 @@ node_modules
 
 # Custom
 project.txt
+
+# Environment Variables
+.env

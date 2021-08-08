@@ -1,36 +1,20 @@
-const { ApolloServer, gql } = require("apollo-server");
+const { ApolloServer } = require("apollo-server");
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
 
-const typeDefs = gql`
-	type Post {
-		id: ID!
-		title: String!
-		body: String!
-	}
+const typeDefs = require("./graphql/typeDefs");
+const resolvers = require("./graphql/resolvers");
 
-	type Query {
-		posts: [Post]
-	}
-`;
-
-const posts = [
-	{
-		id: 1,
-		title: "First Post",
-		body: "Lorem ipsum dolor",
-	},
-	{
-		id: 2,
-		title: "Second Post",
-		body: "Lorem ipsum dolor",
-	},
-];
-
-const resolvers = {
-	Query: {
-		posts: () => posts,
-	},
-};
+// Init
+dotenv.config();
 
 const server = new ApolloServer({ typeDefs, resolvers });
 
 server.listen().then(({ url }) => console.log(`Server is running at: ${url}`));
+
+mongoose
+	.connect(process.env.MONGO_URI, {
+		useNewUrlParser: true,
+		useUnifiedTopology: true,
+	})
+	.then(() => console.log("Connected to DB..."));
