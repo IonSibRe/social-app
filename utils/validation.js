@@ -5,7 +5,12 @@ const registerValidate = (data) => {
 	const schema = Joi.object({
 		username: Joi.string().min(4).required(),
 		password: Joi.string().min(4).required(),
-		confirmPassword: Joi.string().required().valid(Joi.ref("password")),
+		confirmPassword: Joi.any()
+			.equal(Joi.ref("password"))
+			.required()
+			.label("Confirm password")
+			.messages({ "any.only": "{{#label}} does not match" }),
+
 		email: Joi.string().email().required(),
 	});
 
@@ -23,14 +28,3 @@ const loginValidate = (data) => {
 };
 
 module.exports = { registerValidate, loginValidate };
-
-// Joi.string()
-// 			.required()
-// 			.valid(Joi.ref("password"))
-// 			.options({
-// 				language: {
-// 					any: {
-// 						allowOnly: "Passwords do not match",
-// 					},
-// 				},
-// 			}),
