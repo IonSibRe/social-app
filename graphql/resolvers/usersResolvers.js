@@ -31,15 +31,27 @@ const userResolvers = {
 				password,
 			});
 
-			if (validationError) throw new UserInputError(validationError);
+			if (validationError) {
+				const errMsg = validationError.details[0].message;
+
+				throw new UserInputError("ValidationError", {
+					errMsg,
+				});
+			}
 
 			// Check if user exists
 			const user = await User.findOne({ email });
-			if (!user) throw new UserInputError("Invalid Credentials");
+			if (!user)
+				throw new UserInputError("InvalidCredentials", {
+					errMsg: "Invalid Credentials",
+				});
 
 			// Compare Password
 			const validPassword = await bcrypt.compare(password, user.password);
-			if (!validPassword) throw new UserInputError("Invalid Credentials");
+			if (!validPassword)
+				throw new UserInputError("InvalidCredentials", {
+					errMsg: "Invalid Credentials",
+				});
 
 			// Generate Token
 			const token = genToken(user);
@@ -68,14 +80,20 @@ const userResolvers = {
 				email,
 			});
 
-			if (validationError) throw new UserInputError(validationError);
+			if (validationError) {
+				const errMsg = validationError.details[0].message;
 
-			// Check if user doesn't already exist
+				throw new UserInputError("ValidationError", {
+					errMsg,
+				});
+			}
+
+			// Check if email doesn't already exist
 			const user = await User.findOne({ email });
 			if (user)
-				throw new UserInputError(
-					"User with this email already exists "
-				);
+				throw new UserInputError("InputError", {
+					errMsg: "User with this email already exists",
+				});
 
 			// Hash Password
 			const salt = await bcrypt.genSalt(10);

@@ -6,14 +6,22 @@
 // ------------- Layout -------------
 $section-width: 1300px;
 
+$lg-break-point: 1300px;
+$md-break-point: 768px;
+$sm-break-point: 425px;
+
 // ------------- Typography -------------
-$h1-size: 5rem;
+$h1-size: 4rem;
 $h2-size: 3rem;
 $h3-size: 2.5rem;
-$h4-size: 2rem;
+$h4-size: 2.25rem;
 
 $p-size: 1.5rem;
 $a-size: 1.5rem;
+
+$font-bold: 700;
+$font-semi-bold: 600;
+$font-lite: 400;
 
 $main-font-family: "Open Sans", sans-serif;
 
@@ -21,6 +29,10 @@ $main-font-family: "Open Sans", sans-serif;
 $body-bg: #fff;
 $dark-col: #333;
 $light-col: #fff;
+
+$link-col: #00afdc;
+$success-col: #00ff96;
+$failure-col: #eb435c;
 
 // ==================== Mixins ====================
 @mixin section-center {
@@ -76,6 +88,6 @@ a {
 // ============= Media Queries =============
 @media screen and (max-width: 1300px) {
 	.section-center {
-		width: 100%;
+		width: 95%;
 	}
 }

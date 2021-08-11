@@ -2,6 +2,8 @@
 @import "./utils/config";
 
 // Components
+@import "./components/navbar";
 
 // Pages
 @import "./pages/home";
+@import "./pages/auth.scss";

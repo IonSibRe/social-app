@@ -1,0 +1,48 @@
+.nav {
+	background-color: #f4f4f4;
+
+	.nav-inner {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 0.5rem 0;
+	}
+
+	.nav-logo-title {
+		font-size: $h2-size;
+		font-weight: $font-lite;
+		color: #333;
+	}
+
+	.nav-user-logged-wrap {
+		display: flex;
+		align-items: center;
+	}
+
+	.nav-user-separation-line {
+		height: 20px;
+		width: 1px;
+		background-color: #333;
+		color: #333;
+		margin: 0 1rem;
+	}
+
+	.nav-user-logout-btn {
+		font-size: 1.5rem;
+		color: $dark-col;
+		background-color: transparent;
+		border: none;
+		outline: none;
+		cursor: pointer;
+	}
+
+	.nav-user-text {
+		font-size: $h4-size - 0.25rem;
+		font-weight: $font-lite;
+	}
+
+	.nav-user-login-link {
+		font-size: 1.75rem;
+		color: $dark-col;
+	}
+}

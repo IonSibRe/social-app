@@ -1,0 +1,84 @@
+.auth-section {
+	display: flex;
+	justify-content: center;
+}
+
+.auth-card {
+	margin-top: 3rem;
+	width: 500px;
+	box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.25);
+
+	.auth-card-inner-wrap {
+		padding: 2rem;
+	}
+
+	.auth-card-title {
+		margin-bottom: 1rem;
+		font-size: $h3-size + 0.25rem;
+		font-weight: $font-lite;
+	}
+
+	.auth-card-error-wrap {
+		margin-bottom: 1rem;
+		background-color: $failure-col;
+	}
+
+	.auth-card-error-text {
+		padding: 1rem;
+		font-size: $p-size;
+		color: $light-col;
+	}
+
+	.auth-card-form-item {
+		display: flex;
+		flex-direction: column;
+		margin-bottom: 1rem;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	.auth-card-form-label {
+		margin-bottom: 0.5rem;
+		font-size: $p-size + 0.25rem;
+	}
+
+	.auth-card-form-input {
+		padding: 0.25rem 0.5rem;
+		font-size: $p-size + 0.25rem;
+		border: 1px solid #ccc;
+		outline: none;
+	}
+
+	.auth-card-form-info-text {
+		font-size: $p-size;
+	}
+
+	.auth-card-form-redirect-link {
+		color: $link-col;
+	}
+
+	.auth-card-form-submit-item {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.auth-card-form-login-btn {
+		padding: 0.5rem 2rem;
+		font-size: $p-size;
+		background-color: #f4f4f4;
+		border: 1px solid #ccc;
+		outline: none;
+		cursor: pointer;
+
+		&:hover {
+			background-color: #eee;
+		}
+	}
+
+	.auth-card-form-loader-spinner {
+		width: 25px;
+	}
+}
