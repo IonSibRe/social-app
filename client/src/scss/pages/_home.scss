@@ -1,0 +1,109 @@
+.posts-section {
+	display: flex;
+	justify-content: center;
+}
+
+.posts-inner-wrap {
+	width: $post-width;
+}
+
+// Header
+.posts-header-wrap {
+	margin-bottom: 2rem;
+
+	.posts-header-title {
+		text-align: center;
+		font-size: $h1-size;
+		color: $dark-col;
+	}
+}
+
+// Submit
+.posts-submit-wrap {
+	margin-bottom: 2rem;
+
+	.posts-submit-title {
+		margin-bottom: 1rem;
+		font-size: $h2-size - 0.5rem;
+	}
+
+	.posts-submit-input {
+		display: block;
+		width: 100%;
+		margin-bottom: 1.5rem; // + 0.5rem for btn padding
+		padding: 0.25rem 0;
+		font-size: $p-size;
+		border: 1px solid #ccc;
+		outline: none;
+	}
+
+	.posts-submit-btn {
+		@include btn-reset;
+		padding: 0.65rem 2.25rem;
+		font-size: $p-size;
+		color: $light-col;
+		background-color: $btn-col;
+		border: none;
+		border-radius: 5px;
+	}
+}
+
+// Posts List
+.post-item {
+	margin-bottom: 2rem;
+	padding: 1rem;
+	border: 1px solid #ccc;
+}
+
+.post-item-header-wrap {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 1rem;
+
+	.post-item-header-name {
+		font-size: $h3-size - 0.5rem;
+		font-weight: $font-semi-bold;
+	}
+
+	.post-item-header-time {
+		font-size: $h4-size - 0.75rem;
+	}
+
+	.post-item-header-img-wrap {
+		width: 40px;
+	}
+}
+
+.post-item-body-wrap {
+	margin-bottom: 1rem;
+
+	.post-item-body-text {
+		font-size: $p-size;
+	}
+}
+
+.post-item-btn-inner-wrap {
+	display: flex;
+	margin-right: 2rem;
+
+	&:last-child {
+		margin-right: 0;
+	}
+}
+
+.post-item-btn {
+	@include btn-reset;
+	margin-right: 1rem;
+	font-size: 2rem;
+	color: $dark-col;
+	border: none;
+}
+
+.post-item-count {
+	font-size: $p-size;
+}
+
+.post-item-btns-wrap {
+	display: flex;
+}

@@ -5,6 +5,7 @@
 
 // ------------- Layout -------------
 $section-width: 1300px;
+$post-width: 425px;
 
 $lg-break-point: 1300px;
 $md-break-point: 768px;
@@ -31,6 +32,7 @@ $dark-col: #333;
 $light-col: #fff;
 
 $link-col: #00afdc;
+$btn-col: rgb(32, 172, 153);
 $success-col: #00ff96;
 $failure-col: #eb435c;
 
@@ -44,6 +46,13 @@ $failure-col: #eb435c;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+
+@mixin btn-reset {
+	background-color: transparent;
+	border: 1px solid #ccc;
+	outline: none;
+	cursor: pointer;
 }
 
 // ==================== Utility Classes ====================
@@ -71,6 +80,15 @@ body {
 	overflow-x: hidden;
 	font-family: $main-font-family;
 	background-color: $body-bg;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-weight: $font-lite;
 }
 
 img {
