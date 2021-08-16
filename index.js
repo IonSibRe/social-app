@@ -8,7 +8,13 @@ const resolvers = require("./graphql/resolvers");
 // Init
 dotenv.config();
 
-const server = new ApolloServer({ typeDefs, resolvers });
+const server = new ApolloServer({
+	typeDefs,
+	resolvers,
+	context: ({ req }) => ({
+		req,
+	}),
+});
 
 server.listen().then(({ url }) => console.log(`Server is running at: ${url}`));
 

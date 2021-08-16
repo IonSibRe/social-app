@@ -1,5 +1,6 @@
 import React from "react";
 import Post from "./Post";
+import PostForm from "./PostForm";
 
 const Posts = () => {
 	return (
@@ -9,13 +10,7 @@ const Posts = () => {
 					<h1 className="posts-header-title">Home</h1>
 				</div>
 
-				<form className="posts-submit-wrap">
-					<h2 className="posts-submit-title">Create a Post</h2>
-					<input type="text" className="posts-submit-input" />
-					<button type="submit" className="posts-submit-btn">
-						Submit
-					</button>
-				</form>
+				<PostForm />
 
 				<div className="posts-list">
 					<Post />
