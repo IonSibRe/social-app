@@ -1,13 +1,19 @@
 import React from "react";
+import moment from "moment";
+
 import personImg from "../assets/person-img.jpg";
 
-const Post = () => {
+const Post = ({
+	post: { username, body, commentCount, likeCount, createdAt },
+}) => {
 	return (
 		<div className="post-item">
 			<div className="post-item-header-wrap">
 				<div className="post-item-header-info-wrap">
-					<h3 className="post-item-header-name">Test User</h3>
-					<h4 className="post-item-header-time">1 hour ago</h4>
+					<h3 className="post-item-header-name">{username}</h3>
+					<h4 className="post-item-header-time">
+						{moment(new Date(parseInt(createdAt))).fromNow()}
+					</h4>
 				</div>
 				<div className="post-item-header-img-wrap">
 					<img
@@ -19,10 +25,7 @@ const Post = () => {
 			</div>
 
 			<div className="post-item-body-wrap">
-				<p className="post-item-body-text">
-					Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-					Est, tempora?
-				</p>
+				<p className="post-item-body-text">{body}</p>
 			</div>
 
 			<form className="post-item-btns-wrap">
@@ -33,7 +36,9 @@ const Post = () => {
 					>
 						<i className="far fa-heart post-item-like-icon"></i>
 					</button>
-					<p className="post-item-count post-item-like-count">10</p>
+					<p className="post-item-count post-item-like-count">
+						{likeCount}
+					</p>
 				</div>
 				<div className="post-item-btn-inner-wrap">
 					<button
@@ -42,7 +47,9 @@ const Post = () => {
 					>
 						<i className="far fa-comments post-item-comment-icon"></i>
 					</button>
-					<p className="post-item-count post-item-comment-count">2</p>
+					<p className="post-item-count post-item-comment-count">
+						{commentCount}
+					</p>
 				</div>
 			</form>
 		</div>

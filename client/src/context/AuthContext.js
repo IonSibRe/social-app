@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useReducer } from "react";
+import React, { createContext, useReducer } from "react";
 import jwt_decode from "jwt-decode";
 import AuthReducer from "../reducers/AuthReducer";
 
@@ -39,11 +39,6 @@ const AuthProvider = ({ children }) => {
 		dispatch({ type: "LOGOUT" });
 		localStorage.removeItem("jwtToken");
 	};
-
-	useEffect(() => {
-		console.log(state.user);
-		console.log(state.loggedIn);
-	}, [state.user, state.loggedIn]);
 
 	return (
 		<AuthContext.Provider value={{ ...state, login, logout }}>
