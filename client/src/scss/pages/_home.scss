@@ -30,8 +30,8 @@
 	.posts-submit-input {
 		display: block;
 		width: 100%;
-		margin-bottom: 1.5rem; // + 0.5rem for btn padding
-		padding: 0.25rem 0;
+		margin-bottom: 1.65rem; // + 0.65rem for btn padding
+		padding: 0.25rem;
 		font-size: $p-size;
 		border: 1px solid #ccc;
 		outline: none;
@@ -83,7 +83,16 @@
 	}
 }
 
-.post-item-btn-inner-wrap {
+.post-item-btns-wrap {
+	display: flex;
+	justify-content: space-between;
+}
+
+.post-item-btns-inner-wrap {
+	display: flex;
+}
+
+.post-item-btn-item-wrap {
 	display: flex;
 	margin-right: 2rem;
 
@@ -106,4 +115,8 @@
 
 .post-item-btns-wrap {
 	display: flex;
+}
+
+.post-item-delete-icon {
+	color: #f00;
 }
