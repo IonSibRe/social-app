@@ -37,6 +37,11 @@
 		outline: none;
 	}
 
+	.posts-submit-btn-wrap {
+		display: flex;
+		justify-content: space-between;
+	}
+
 	.posts-submit-btn {
 		@include btn-reset;
 		padding: 0.65rem 2.25rem;
@@ -45,6 +50,10 @@
 		background-color: $btn-col;
 		border: none;
 		border-radius: 5px;
+	}
+
+	.post-submit-loader-spinner {
+		width: 25px;
 	}
 }
 
@@ -55,6 +64,7 @@
 	border: 1px solid #ccc;
 }
 
+// Header
 .post-item-header-wrap {
 	display: flex;
 	justify-content: space-between;
@@ -68,6 +78,7 @@
 
 	.post-item-header-time {
 		font-size: $h4-size - 0.75rem;
+		color: $dark-semi-col;
 	}
 
 	.post-item-header-img-wrap {
@@ -75,17 +86,22 @@
 	}
 }
 
+// Content
 .post-item-body-wrap {
 	margin-bottom: 1rem;
 
 	.post-item-body-text {
 		font-size: $p-size;
+		word-wrap: break-word;
 	}
 }
 
+// Buttons
 .post-item-btns-wrap {
 	display: flex;
 	justify-content: space-between;
+	padding-top: 0.5rem;
+	border-top: 1px solid rgba(204, 204, 204, 0.5);
 }
 
 .post-item-btns-inner-wrap {
@@ -94,6 +110,7 @@
 
 .post-item-btn-item-wrap {
 	display: flex;
+	align-items: center;
 	margin-right: 2rem;
 
 	&:last-child {
@@ -109,6 +126,10 @@
 	border: none;
 }
 
+.post-item-delete-btn {
+	margin-left: 1rem;
+}
+
 .post-item-count {
 	font-size: $p-size;
 }
@@ -119,4 +140,8 @@
 
 .post-item-delete-icon {
 	color: #f00;
+}
+
+.post-item-btns-loader-spinner {
+	width: 25px;
 }

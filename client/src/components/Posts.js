@@ -17,17 +17,11 @@ const Posts = () => {
 					<h1 className="posts-header-title">Home</h1>
 				</div>
 
-				<PostForm const getPostQuery={GET_POSTS} />
+				<PostForm />
 
 				<div className="posts-list">
 					{data.getPosts.map((post) => {
-						return (
-							<Post
-								post={post}
-								getPostQuery={GET_POSTS}
-								key={post.id}
-							/>
-						);
+						return <Post post={post} key={post.id} />;
 					})}
 				</div>
 			</div>
