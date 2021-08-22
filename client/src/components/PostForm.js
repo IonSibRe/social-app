@@ -1,7 +1,7 @@
-import { gql, useMutation } from "@apollo/client";
 import React, { useState } from "react";
+import { gql, useMutation } from "@apollo/client";
 
-import loaderSpinner from "../assets/loader-spinner.gif";
+import LoaderSpinner from "./utils/LoaderSpinner";
 
 const PostForm = ({ getPostQuery }) => {
 	const [postBody, setPostBody] = useState("");
@@ -35,13 +35,7 @@ const PostForm = ({ getPostQuery }) => {
 				<button type="submit" className="posts-submit-btn">
 					Submit
 				</button>
-				{loading && (
-					<img
-						src={loaderSpinner}
-						alt="Loader Spinner"
-						className="post-submit-loader-spinner"
-					/>
-				)}
+				{loading && <LoaderSpinner />}
 			</div>
 		</form>
 	);

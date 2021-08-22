@@ -21,7 +21,13 @@ const Posts = () => {
 
 				<div className="posts-list">
 					{data.getPosts.map((post) => {
-						return <Post post={post} key={post.id} />;
+						return (
+							<Post
+								post={post}
+								key={post.id}
+								getPostQuery={GET_POSTS}
+							/>
+						);
 					})}
 				</div>
 			</div>

@@ -11,10 +11,10 @@ if (jwtToken) {
 	const { id, username, email, exp } = jwt_decode(jwtToken);
 
 	// If token isn't expired
-	if (Date.now() > exp) {
-		user = { id, username, email };
-	} else {
+	if (Date.now() > exp * 1000) {
 		localStorage.removeItem("jwtToken");
+	} else {
+		user = { id, username, email };
 	}
 }
 

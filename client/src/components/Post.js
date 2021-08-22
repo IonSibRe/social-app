@@ -18,15 +18,15 @@ const Post = ({
 		<div className="post-item">
 			<div className="post-item-header-wrap">
 				<div className="post-item-header-info-wrap">
-					<h3 className="post-item-header-name">{username}</h3>
-					<Link className="post-item-header-time" to={`/${id}`}>
+					<h3 className="post-item-username">{username}</h3>
+					<Link className="post-item-time" to={`/posts/${id}`}>
 						{moment(new Date(parseInt(createdAt))).fromNow()}
 					</Link>
 				</div>
 				<div className="post-item-header-img-wrap">
 					<img
 						src={personImg}
-						alt="Sample Person Img"
+						alt="User Img"
 						className="post-item-header-img"
 					/>
 				</div>

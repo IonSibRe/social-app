@@ -1,24 +1,25 @@
+// ==================== Posts Section ====================
 .posts-section {
 	display: flex;
 	justify-content: center;
+	margin-top: 1rem;
 }
 
 .posts-inner-wrap {
 	width: $post-width;
 }
 
-// Header
+// ------------- Posts Header -------------
 .posts-header-wrap {
-	margin-bottom: 2rem;
+	margin-bottom: 1rem;
+	text-align: center;
 
 	.posts-header-title {
-		text-align: center;
 		font-size: $h1-size;
-		color: $dark-col;
 	}
 }
 
-// Submit
+// ------------- Posts Input -------------
 .posts-submit-wrap {
 	margin-bottom: 2rem;
 
@@ -51,64 +52,71 @@
 		border: none;
 		border-radius: 5px;
 	}
-
-	.post-submit-loader-spinner {
-		width: 25px;
-	}
 }
 
-// Posts List
+// ------------- Posts List -------------
 .post-item {
 	margin-bottom: 2rem;
-	padding: 1rem;
+	padding: 1rem 0;
 	border: 1px solid #ccc;
 }
 
-// Header
+// Post Header
 .post-item-header-wrap {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	margin-bottom: 1rem;
+	padding-bottom: 1rem;
+	border-bottom: 1px solid #ccc;
 
-	.post-item-header-name {
-		font-size: $h3-size - 0.5rem;
-		font-weight: $font-semi-bold;
-	}
-
-	.post-item-header-time {
-		font-size: $h4-size - 0.75rem;
-		color: $dark-semi-col;
+	.post-item-header-info-wrap {
+		padding-left: 1rem;
 	}
 
 	.post-item-header-img-wrap {
+		padding-right: 1rem;
+	}
+
+	.post-item-header-img {
 		width: 40px;
 	}
 }
 
-// Content
-.post-item-body-wrap {
-	margin-bottom: 1rem;
-
-	.post-item-body-text {
-		font-size: $p-size;
-		word-wrap: break-word;
-	}
+.post-item-username {
+	font-size: $h3-size - 0.5rem;
+	font-weight: $font-semi-bold;
 }
 
-// Buttons
+.post-item-time {
+	font-size: $h4-size - 0.75rem;
+	color: $dark-semi-col;
+}
+
+// Post Content
+.post-item-body-wrap {
+	margin-bottom: 1rem;
+	padding: 0 1rem 1rem 1rem;
+	border-bottom: 1px solid #ccc;
+}
+
+.post-item-body-text {
+	font-size: $p-size + 0.25rem;
+	word-wrap: break-word;
+}
+
+// Post Buttons
 .post-item-btns-wrap {
 	display: flex;
 	justify-content: space-between;
-	padding-top: 0.5rem;
-	border-top: 1px solid rgba(204, 204, 204, 0.5);
+	padding: 0 1rem;
 }
 
 .post-item-btns-inner-wrap {
 	display: flex;
 }
 
-.post-item-btn-item-wrap {
+.post-item-btns-item-wrap {
 	display: flex;
 	align-items: center;
 	margin-right: 2rem;
@@ -126,22 +134,10 @@
 	border: none;
 }
 
-.post-item-delete-btn {
-	margin-left: 1rem;
-}
-
 .post-item-count {
 	font-size: $p-size;
 }
 
-.post-item-btns-wrap {
-	display: flex;
-}
-
 .post-item-delete-icon {
 	color: #f00;
-}
-
-.post-item-btns-loader-spinner {
-	width: 25px;
 }

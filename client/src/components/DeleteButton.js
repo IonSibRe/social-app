@@ -1,7 +1,7 @@
 import { gql, useMutation } from "@apollo/client";
 import React from "react";
 import { Link } from "react-router-dom";
-import loaderSpinner from "../assets/loader-spinner.gif";
+import LoaderSpinner from "./utils/LoaderSpinner";
 
 const DeleteButton = ({ id, query }) => {
 	const [deletePost, { loading }] = useMutation(DELETE_POST, {
@@ -15,14 +15,8 @@ const DeleteButton = ({ id, query }) => {
 	});
 
 	return (
-		<div className="post-item-btn-item-wrap">
-			{loading && (
-				<img
-					src={loaderSpinner}
-					alt="Loader Spinner"
-					className="post-item-btns-loader-spinner"
-				/>
-			)}
+		<div className="post-item-btns-item-wrap">
+			{loading && <LoaderSpinner />}
 			<Link
 				to="/"
 				className="post-item-btn post-item-delete-btn"

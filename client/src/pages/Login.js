@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { gql, useMutation } from "@apollo/client";
 import { AuthContext } from "../context/AuthContext";
-import loaderSpinner from "../assets/loader-spinner.gif";
+import LoaderSpinner from "../components/utils/LoaderSpinner";
 
 const Login = () => {
 	const { login, loggedIn } = useContext(AuthContext);
@@ -107,13 +107,7 @@ const Login = () => {
 							>
 								Login
 							</button>
-							{loading && (
-								<img
-									src={loaderSpinner}
-									alt="Loader Spinner"
-									className="auth-card-form-loader-spinner"
-								/>
-							)}
+							{loading && <LoaderSpinner />}
 						</div>
 					</form>
 				</div>
