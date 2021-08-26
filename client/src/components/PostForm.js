@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { gql, useMutation } from "@apollo/client";
 
 import LoaderSpinner from "./utils/LoaderSpinner";
+import { GET_POSTS } from "./utils/graphql";
 
-const PostForm = ({ getPostQuery }) => {
+const PostForm = () => {
 	const [postBody, setPostBody] = useState("");
 
 	const [submitPost, { loading }] = useMutation(CREATE_POST, {
@@ -13,7 +14,7 @@ const PostForm = ({ getPostQuery }) => {
 		variables: {
 			body: postBody,
 		},
-		refetchQueries: [getPostQuery, "getPosts"],
+		refetchQueries: [GET_POSTS, "getPosts"],
 	});
 
 	const submitHandler = (e) => {

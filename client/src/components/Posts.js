@@ -1,8 +1,9 @@
 import React from "react";
-import { gql, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 
 import Post from "./Post";
 import PostForm from "./PostForm";
+import { GET_POSTS } from "./utils/graphql";
 
 const Posts = () => {
 	const { loading, err, data } = useQuery(GET_POSTS);
@@ -21,41 +22,12 @@ const Posts = () => {
 
 				<div className="posts-list">
 					{data.getPosts.map((post) => {
-						return (
-							<Post
-								post={post}
-								key={post.id}
-								getPostQuery={GET_POSTS}
-							/>
-						);
+						return <Post post={post} key={post.id} />;
 					})}
 				</div>
 			</div>
 		</section>
 	);
 };
-
-const GET_POSTS = gql`
-	query getPosts {
-		getPosts {
-			id
-			username
-			body
-			commentCount
-			likeCount
-			comments {
-				id
-				body
-				createdAt
-			}
-			likes {
-				id
-				username
-				createdAt
-			}
-			createdAt
-		}
-	}
-`;
 
 export default Posts;

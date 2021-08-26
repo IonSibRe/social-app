@@ -15,10 +15,6 @@ const postSchema = new mongoose.Schema(
 		},
 		comments: [
 			{
-				id: {
-					type: String,
-					required: true,
-				},
 				username: {
 					type: String,
 					required: true,
@@ -38,10 +34,6 @@ const postSchema = new mongoose.Schema(
 		},
 		likes: [
 			{
-				id: {
-					type: String,
-					required: true,
-				},
 				username: {
 					type: String,
 					required: true,

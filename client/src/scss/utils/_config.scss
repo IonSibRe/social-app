@@ -66,6 +66,10 @@ $failure-col: #eb435c;
 	pointer-events: none;
 }
 
+.liked {
+	color: $btn-col;
+}
+
 // ==================== Default Resets ====================
 * {
 	box-sizing: border-box;

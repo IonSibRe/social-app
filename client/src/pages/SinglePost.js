@@ -1,9 +1,10 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { gql, useQuery } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import moment from "moment";
 
 import { AuthContext } from "../context/AuthContext";
+import { GET_POST } from "../components/utils/graphql";
 import LikeButton from "../components/LikeButton";
 import CommentButton from "../components/CommentButton";
 import DeleteButton from "../components/DeleteButton";
@@ -12,10 +13,21 @@ import personImg from "../assets/person-img.jpg";
 const SinglePost = () => {
 	const { id } = useParams();
 	const { user } = useContext(AuthContext);
+	const [comment, setComment] = useState("");
 
 	const { loading, err, data } = useQuery(GET_POST, {
 		variables: {
 			postId: id,
+		},
+	});
+
+	const [createComment] = useMutation(CREATE_COMMENT, {
+		onError(err) {
+			console.log(err);
+		},
+		variables: {
+			postId: id,
+			body: comment,
 		},
 	});
 
@@ -53,14 +65,19 @@ const SinglePost = () => {
 
 				<form className="post-item-btns-wrap sp-post-item-btns-wrap">
 					<div className="post-item-btns-inner-wrap">
-						<LikeButton likeCount={data.getPost.likeCount} />
+						<LikeButton
+							id={id}
+							likes={data.getPost.likes}
+							likeCount={data.getPost.likeCount}
+							queryName={"getPost"}
+						/>
 						<CommentButton
 							commentCount={data.getPost.commentCount}
 						/>
 					</div>
 					{user.username === data.getPost.username && (
 						<div className="post-item-btns-inner-wrap">
-							<DeleteButton id={id} query={""} />
+							<DeleteButton postId={id} query={""} />
 						</div>
 					)}
 				</form>
@@ -70,82 +87,72 @@ const SinglePost = () => {
 						<input
 							type="text"
 							className="post-item-comment-input"
+							onChange={(e) => setComment(e.target.value)}
 						/>
-						<button type="submit" className="post-item-comment-btn">
+						<button
+							type="submit"
+							className="post-item-comment-btn"
+							onClick={createComment}
+						>
 							Submit
 						</button>
 					</div>
 				</form>
 
 				<div className="post-item-comment-section">
-					<div className="post-item-comment">
-						<div className="post-item-comment-header-wrap">
-							<div className="post-item-comment-header-inner-wrap">
-								<h3 className="post-item-username">test123</h3>
-								<h4 className="post-item-time">
-									30 minutes ago
-								</h4>
+					{data.getPost.comments.map((comment) => {
+						const {
+							id: commentId,
+							username,
+							body,
+							createdAt,
+						} = comment;
+						return (
+							<div className="post-item-comment" key={commentId}>
+								<div className="post-item-comment-header-wrap">
+									<div className="post-item-comment-header-inner-wrap">
+										<h3 className="post-item-username">
+											{username}
+										</h3>
+										<h4 className="post-item-time">
+											{moment(createdAt).fromNow()}
+										</h4>
+									</div>
+									{user && user.username === username && (
+										<div className="post-item-comment-header-inner-wrap">
+											<DeleteButton
+												postId={data.getPost.id}
+												commentId={commentId}
+											/>
+										</div>
+									)}
+								</div>
+								<div className="post-item-comment-body-wrap">
+									<p className="post-item-comment-body-text">
+										{body}
+									</p>
+								</div>
 							</div>
-							<div className="post-item-comment-header-inner-wrap">
-								<DeleteButton />
-							</div>
-						</div>
-						<div className="post-item-comment-body-wrap">
-							<p className="post-item-comment-body-text">
-								Lorem ipsum dolor sit amet consectetur
-								adipisicing elit. Deserunt quo accusantium
-								debitis accusamus iste aperiam error beatae
-								exercitationem minima quis!
-							</p>
-						</div>
-					</div>
-					<div className="post-item-comment">
-						<div className="post-item-comment-header-wrap">
-							<div className="post-item-comment-header-inner-wrap">
-								<h3 className="post-item-username">test123</h3>
-								<h4 className="post-item-time">
-									30 minutes ago
-								</h4>
-							</div>
-							<div className="post-item-comment-header-inner-wrap">
-								<DeleteButton />
-							</div>
-						</div>
-						<div className="post-item-comment-body-wrap">
-							<p className="post-item-comment-body-text">
-								Lorem ipsum dolor sit amet consectetur
-								adipisicing elit. Deserunt quo accusantium
-								debitis accusamus iste aperiam error beatae
-								exercitationem minima quis!
-							</p>
-						</div>
-					</div>
+						);
+					})}
 				</div>
 			</div>
 		</div>
 	);
 };
 
-const GET_POST = gql`
-	query getPost($postId: ID!) {
-		getPost(postId: $postId) {
+const CREATE_COMMENT = gql`
+	mutation createComment($postId: ID!, $body: String!) {
+		createComment(postId: $postId, body: $body) {
 			id
 			username
-			body
 			commentCount
-			likeCount
 			comments {
 				id
 				username
 				body
 				createdAt
 			}
-			likes {
-				id
-				username
-				createdAt
-			}
-			createdAt
 		}
 	}
 `;

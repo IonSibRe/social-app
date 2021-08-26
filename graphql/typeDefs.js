@@ -57,6 +57,9 @@ const typeDefs = gql`
 		register(registerInput: RegisterInput): User!
 		createPost(body: String!): Post!
 		deletePost(postId: ID!): Post!
+		likePost(postId: ID!): Post!
+		createComment(postId: ID!, body: String!): Post!
+		deleteComment(postId: ID!, commentId: ID!): Post!
 	}
 `;
 

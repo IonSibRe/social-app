@@ -9,8 +9,7 @@ import DeleteButton from "./DeleteButton";
 import personImg from "../assets/person-img.jpg";
 
 const Post = ({
-	post: { id, username, body, commentCount, likeCount, createdAt },
-	getPostQuery,
+	post: { id, username, body, commentCount, likes, likeCount, createdAt },
 }) => {
 	const { user } = useContext(AuthContext);
 
@@ -38,12 +37,12 @@ const Post = ({
 
 			<form className="post-item-btns-wrap">
 				<div className="post-item-btns-inner-wrap">
-					<LikeButton likeCount={likeCount} />
-					<CommentButton commentCount={commentCount} />
+					<LikeButton id={id} likes={likes} likeCount={likeCount} />
+					<CommentButton id={id} commentCount={commentCount} />
 				</div>
-				{user.username === username && (
+				{user && user.username === username && (
 					<div className="post-item-btns-inner-wrap">
-						<DeleteButton id={id} query={getPostQuery} />
+						<DeleteButton postId={id} />
 					</div>
 				)}
 			</form>
