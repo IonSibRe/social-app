@@ -4,7 +4,6 @@ import { gql, useMutation, useQuery } from "@apollo/client";
 import moment from "moment";
 
 import { AuthContext } from "../context/AuthContext";
-import { GET_POST } from "../components/utils/graphql";
 import LikeButton from "../components/LikeButton";
 import CommentButton from "../components/CommentButton";
 import DeleteButton from "../components/DeleteButton";
@@ -30,6 +29,12 @@ const SinglePost = () => {
 			body: comment,
 		},
 	});
+
+	const submitHandler = (e) => {
+		e.preventDefault();
+		createComment();
+		setComment("");
+	};
 
 	if (loading) return <h1>Loading</h1>;
 	if (err) console.log(err);
@@ -69,15 +74,15 @@ const SinglePost = () => {
 							id={id}
 							likes={data.getPost.likes}
 							likeCount={data.getPost.likeCount}
-							queryName={"getPost"}
 						/>
 						<CommentButton
 							commentCount={data.getPost.commentCount}
+							id={id}
 						/>
 					</div>
 					{user.username === data.getPost.username && (
 						<div className="post-item-btns-inner-wrap">
-							<DeleteButton postId={id} query={""} />
+							<DeleteButton postId={id} />
 						</div>
 					)}
 				</form>
@@ -87,12 +92,13 @@ const SinglePost = () => {
 						<input
 							type="text"
 							className="post-item-comment-input"
+							value={comment}
 							onChange={(e) => setComment(e.target.value)}
 						/>
 						<button
 							type="submit"
 							className="post-item-comment-btn"
-							onClick={createComment}
+							onClick={submitHandler}
 						>
 							Submit
 						</button>
@@ -153,6 +159,30 @@ const CREATE_COMMENT = gql`
 				body
 				createdAt
 			}
+		}
+	}
+`;
+
+export const GET_POST = gql`
+	query getPost($postId: ID!) {
+		getPost(postId: $postId) {
+			id
+			username
+			body
+			commentCount
+			likeCount
+			comments {
+				id
+				username
+				body
+				createdAt
+			}
+			likes {
+				id
+				username
+				createdAt
+			}
+			createdAt
 		}
 	}
 `;

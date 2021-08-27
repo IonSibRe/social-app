@@ -2,11 +2,9 @@ import { gql, useMutation } from "@apollo/client";
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import { GET_POSTS, GET_POST } from "./utils/graphql";
 
-const LikeButton = ({ id, likes, likeCount, queryName = "getPosts" }) => {
+const LikeButton = ({ id, likes, likeCount }) => {
 	const { user } = useContext(AuthContext);
-	const query = queryName === "getPosts" ? GET_POSTS : GET_POST;
 	const [liked, setLiked] = useState(false);
 
 	useEffect(() => {
@@ -22,30 +20,27 @@ const LikeButton = ({ id, likes, likeCount, queryName = "getPosts" }) => {
 		variables: {
 			postId: id,
 		},
-		refetchQueries: [query, queryName],
 	});
-
-	const likeButton = user.username ? (
-		<button
-			type="button"
-			className="post-item-btn post-item-like-btn"
-			onClick={() => likePost()}
-		>
-			<i
-				className={`fa${
-					liked ? "s" : "r"
-				} fa-heart post-item-like-icon ${liked && "liked"}`}
-			></i>
-		</button>
-	) : (
-		<Link className="post-item-btn post-item-like-btn" to="/login">
-			<i className="far fa-heart post-item-like-icon"></i>
-		</Link>
-	);
 
 	return (
 		<div className="post-item-btns-item-wrap">
-			{likeButton}
+			{user.username ? (
+				<button
+					type="button"
+					className="post-item-btn post-item-like-btn"
+					onClick={() => likePost()}
+				>
+					<i
+						className={`fa${
+							liked ? "s" : "r"
+						} fa-heart post-item-like-icon ${liked && "liked"}`}
+					></i>
+				</button>
+			) : (
+				<Link className="post-item-btn post-item-like-btn" to="/login">
+					<i className="far fa-heart post-item-like-icon"></i>
+				</Link>
+			)}
 			<p className="post-item-count post-item-like-count">{likeCount}</p>
 		</div>
 	);

@@ -11,10 +11,17 @@ const PostForm = () => {
 		onError(err) {
 			console.log(err);
 		},
+		update(cache, { data }) {
+			const posts = cache.readQuery({ query: GET_POSTS });
+			cache.writeQuery({
+				query: GET_POSTS,
+				data: { getPosts: [...posts.getPosts, data.createPost] },
+			});
+		},
+
 		variables: {
 			body: postBody,
 		},
-		refetchQueries: [GET_POSTS, "getPosts"],
 	});
 
 	const submitHandler = (e) => {
