@@ -12,6 +12,7 @@ const postSchema = new mongoose.Schema(
 		},
 		commentCount: {
 			type: Number,
+			required: true,
 		},
 		comments: [
 			{
@@ -31,6 +32,7 @@ const postSchema = new mongoose.Schema(
 		],
 		likeCount: {
 			type: Number,
+			required: true,
 		},
 		likes: [
 			{

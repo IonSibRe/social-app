@@ -2,7 +2,7 @@ import { gql, useMutation } from "@apollo/client";
 import React from "react";
 import { useHistory } from "react-router";
 
-import LoaderSpinner from "./utils/LoaderSpinner";
+import LoaderSpinner from "../utils/LoaderSpinner";
 
 const DeleteButton = ({ postId, commentId }) => {
 	let history = useHistory();
@@ -29,7 +29,7 @@ const DeleteButton = ({ postId, commentId }) => {
 
 	const deletePostFunc = () => {
 		deletePostOrComment();
-		if (!commentId) history.push("/");
+		if (!commentId && window.location.pathname !== "/") history.push("/");
 	};
 
 	return (

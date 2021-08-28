@@ -2,9 +2,9 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 
 import { AuthContext } from "../context/AuthContext";
-import LikeButton from "./LikeButton";
-import CommentButton from "./CommentButton";
-import DeleteButton from "./DeleteButton";
+import LikeButton from "./utils/LikeButton";
+import CommentButton from "./utils/CommentButton";
+import DeleteButton from "./utils/DeleteButton";
 import personImg from "../assets/person-img.jpg";
 import { formatMsFromEpochToFromNow } from "../utils/utilities";
 

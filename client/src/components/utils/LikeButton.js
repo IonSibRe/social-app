@@ -1,7 +1,7 @@
 import { gql, useMutation } from "@apollo/client";
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 
 const LikeButton = ({ id, likes, likeCount }) => {
 	const { user } = useContext(AuthContext);

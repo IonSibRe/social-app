@@ -1,3 +1,4 @@
+const { ApolloError } = require("apollo-server");
 const Post = require("../../models/Post");
 
 const postQueryResolvers = {
@@ -14,7 +15,7 @@ const postQueryResolvers = {
 		async getPost(_, { postId }) {
 			try {
 				const post = await Post.findById(postId);
-				if (!post) throw new Error("Post Not Found");
+				if (!post) throw new ApolloError("Post Not Found");
 
 				return post;
 			} catch (err) {

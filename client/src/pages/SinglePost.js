@@ -4,9 +4,9 @@ import { gql, useMutation, useQuery } from "@apollo/client";
 import moment from "moment";
 
 import { AuthContext } from "../context/AuthContext";
-import LikeButton from "../components/LikeButton";
-import CommentButton from "../components/CommentButton";
-import DeleteButton from "../components/DeleteButton";
+import LikeButton from "../components/utils/LikeButton";
+import CommentButton from "../components/utils/CommentButton";
+import DeleteButton from "../components/utils/DeleteButton";
 import LoaderSpinner from "../components/utils/LoaderSpinner";
 import ResourceError from "../components/ResourceError";
 import personImg from "../assets/person-img.jpg";

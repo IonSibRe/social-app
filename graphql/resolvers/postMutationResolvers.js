@@ -1,4 +1,4 @@
-const { UserInputError } = require("apollo-server");
+const { UserInputError, ApolloError } = require("apollo-server");
 const Post = require("../../models/Post");
 const checkAuth = require("../../utils/checkAuth");
 
@@ -7,7 +7,10 @@ const postMutationResolvers = {
 		async createPost(_, { body }, context) {
 			const user = checkAuth(context);
 
-			if (body.trim() === "") throw new Error("Post mustn't be empty");
+			if (body.trim() === "")
+				throw new UserInputError("InputError", {
+					errMsg: "Post body mustn't be empty",
+				});
 
 			const post = new Post({
 				username: user.username,
@@ -28,7 +31,7 @@ const postMutationResolvers = {
 
 			try {
 				const post = await Post.findById(postId);
-				if (!post) throw new Error("Post Not Found");
+				if (!post) throw new ApolloError("Post Not Found");
 
 				if (user.username === post.username) {
 					await post.remove();
@@ -44,7 +47,7 @@ const postMutationResolvers = {
 
 			try {
 				const post = await Post.findById(postId);
-				if (!post) throw new Error("Post Not Found");
+				if (!post) throw new ApolloError("Post Not Found");
 
 				const liked = post.likes.find(
 					(like) => like.username === user.username
@@ -78,7 +81,7 @@ const postMutationResolvers = {
 
 			try {
 				const post = await Post.findById(postId);
-				if (!post) throw new Error("Post Not Found");
+				if (!post) throw new ApolloError("Post Not Found");
 
 				post.comments.push({
 					username: user.username,
@@ -98,7 +101,7 @@ const postMutationResolvers = {
 
 			try {
 				const post = await Post.findById(postId);
-				if (!post) throw new Error("Post Not Found");
+				if (!post) throw new ApolloError("Post Not Found");
 
 				const deleteComment = post.comments.find(
 					(comment) => comment.id === commentId
