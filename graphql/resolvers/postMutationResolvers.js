@@ -1,3 +1,4 @@
+const { UserInputError } = require("apollo-server");
 const Post = require("../../models/Post");
 const checkAuth = require("../../utils/checkAuth");
 
@@ -69,6 +70,11 @@ const postMutationResolvers = {
 
 		async createComment(_, { postId, body }, context) {
 			const user = checkAuth(context);
+
+			if (body.trim() === "")
+				throw new UserInputError("InputError", {
+					errMsg: "Comment body mustn't be empty",
+				});
 
 			try {
 				const post = await Post.findById(postId);

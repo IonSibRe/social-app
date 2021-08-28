@@ -8,15 +8,16 @@ const LikeButton = ({ id, likes, likeCount }) => {
 	const [liked, setLiked] = useState(false);
 
 	useEffect(() => {
-		setLiked(
-			likes.find((like) => like.username === user.username) ? true : false
-		);
+		if (user && user.username) {
+			setLiked(
+				likes.find((like) => like.username === user.username)
+					? true
+					: false
+			);
+		}
 	}, [likes, user]);
 
 	const [likePost] = useMutation(LIKE_POST, {
-		onError(err) {
-			console.log(err);
-		},
 		variables: {
 			postId: id,
 		},
@@ -24,7 +25,7 @@ const LikeButton = ({ id, likes, likeCount }) => {
 
 	return (
 		<div className="post-item-btns-item-wrap">
-			{user.username ? (
+			{user && user.username ? (
 				<button
 					type="button"
 					className="post-item-btn post-item-like-btn"

@@ -2,15 +2,12 @@ import React, { useState } from "react";
 import { gql, useMutation } from "@apollo/client";
 
 import LoaderSpinner from "./utils/LoaderSpinner";
-import { GET_POSTS } from "./utils/graphql";
+import { GET_POSTS } from "../utils/graphql";
 
 const PostForm = () => {
 	const [postBody, setPostBody] = useState("");
 
 	const [submitPost, { loading }] = useMutation(CREATE_POST, {
-		onError(err) {
-			console.log(err);
-		},
 		update(cache, { data }) {
 			const posts = cache.readQuery({ query: GET_POSTS });
 			cache.writeQuery({

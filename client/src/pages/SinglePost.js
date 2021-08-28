@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import moment from "moment";
@@ -7,12 +7,16 @@ import { AuthContext } from "../context/AuthContext";
 import LikeButton from "../components/LikeButton";
 import CommentButton from "../components/CommentButton";
 import DeleteButton from "../components/DeleteButton";
+import LoaderSpinner from "../components/utils/LoaderSpinner";
+import ResourceError from "../components/ResourceError";
 import personImg from "../assets/person-img.jpg";
+import { formatMsFromEpochToFromNow } from "../utils/utilities";
 
 const SinglePost = () => {
 	const { id } = useParams();
 	const { user } = useContext(AuthContext);
 	const [comment, setComment] = useState("");
+	const [error, setError] = useState(false);
 
 	const { loading, err, data } = useQuery(GET_POST, {
 		variables: {
@@ -21,8 +25,8 @@ const SinglePost = () => {
 	});
 
 	const [createComment] = useMutation(CREATE_COMMENT, {
-		onError(err) {
-			console.log(err);
+		onError() {
+			setError(true);
 		},
 		variables: {
 			postId: id,
@@ -36,8 +40,21 @@ const SinglePost = () => {
 		setComment("");
 	};
 
-	if (loading) return <h1>Loading</h1>;
-	if (err) console.log(err);
+	useEffect(() => {
+		let timeout = setTimeout(() => {
+			setError(false);
+		}, 3000);
+		return () => clearTimeout(timeout);
+	}, [error]);
+
+	if (loading)
+		return (
+			<div className="loader-wrap">
+				<LoaderSpinner width={150} />
+			</div>
+		);
+
+	if (err) return <ResourceError />;
 
 	return (
 		<div className="sp-post-item-wrap">
@@ -48,9 +65,7 @@ const SinglePost = () => {
 							{data.getPost.username}
 						</h3>
 						<Link className="sp-post-item-time" to={`/posts/${id}`}>
-							{moment(
-								new Date(parseInt(data.getPost.createdAt))
-							).fromNow()}
+							{formatMsFromEpochToFromNow(data.getPost.createdAt)}
 						</Link>
 					</div>
 					<div className="post-item-header-img-wrap">
@@ -80,32 +95,40 @@ const SinglePost = () => {
 							id={id}
 						/>
 					</div>
-					{user.username === data.getPost.username && (
+					{user && user.username === data.getPost.username && (
 						<div className="post-item-btns-inner-wrap">
 							<DeleteButton postId={id} />
 						</div>
 					)}
 				</form>
+				{user && user.username && (
+					<form className="post-item-comment-input-wrap">
+						<div className="post-item-comment-input-inner-wrap">
+							<input
+								type="text"
+								className={`post-item-comment-input ${
+									error && "input-danger"
+								}`}
+								value={comment}
+								onChange={(e) => setComment(e.target.value)}
+							/>
+							<button
+								type="submit"
+								className="post-item-comment-btn"
+								onClick={submitHandler}
+							>
+								Submit
+							</button>
+						</div>
+					</form>
+				)}
 
-				<form className="post-item-comment-input-wrap">
-					<div className="post-item-comment-input-inner-wrap">
-						<input
-							type="text"
-							className="post-item-comment-input"
-							value={comment}
-							onChange={(e) => setComment(e.target.value)}
-						/>
-						<button
-							type="submit"
-							className="post-item-comment-btn"
-							onClick={submitHandler}
-						>
-							Submit
-						</button>
-					</div>
-				</form>
-
-				<div className="post-item-comment-section">
+				<div
+					className={`post-item-comment-section ${
+						data.getPost.comments.length > 0 &&
+						"post-item-comment-section-border"
+					}`}
+				>
 					{data.getPost.comments.map((comment) => {
 						const {
 							id: commentId,

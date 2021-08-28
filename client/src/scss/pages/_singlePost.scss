@@ -64,10 +64,6 @@
 }
 
 // Comment
-.post-item-comment-section {
-	border-top: 1px solid #ccc;
-}
-
 .post-item-comment {
 	margin: 1rem;
 	padding: 1rem;
@@ -83,4 +79,20 @@
 
 .post-item-comment-body-text {
 	font-size: $p-size;
+}
+
+.post-item-comment-section-border {
+	border-top: 1px solid #ccc;
+}
+
+// Error
+.sp-post-item-error-wrap {
+	margin-bottom: 1rem;
+	background-color: $failure-col;
+
+	.sp-post-item-error-text {
+		padding: 0.75rem;
+		font-size: $p-size;
+		color: $light-col;
+	}
 }

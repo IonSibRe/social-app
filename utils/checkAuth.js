@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const { AuthenticationError } = require("apollo-server");
+const { AuthenticationError, ForbiddenError } = require("apollo-server");
 
 module.exports = (context) => {
 	const authHeader = context.req.headers.authorization;
@@ -16,8 +16,10 @@ module.exports = (context) => {
 			}
 		}
 		throw new Error(
-			"Authentication token must be in a format of 'Bearer [token]' "
+			"Authentication token must be in a format of 'Bearer [token]"
 		);
 	}
-	throw new Error("Authorization header must be provided");
+	throw new ForbiddenError("AuthorizationError", {
+		errMsg: "Authorization header must be provided",
+	});
 };

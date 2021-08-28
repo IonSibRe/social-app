@@ -70,6 +70,17 @@ $failure-col: #eb435c;
 	color: $btn-col;
 }
 
+.input-danger {
+	background-color: #f58e9e;
+	border: 1px solid #f58e9e !important;
+}
+
+.loader-wrap {
+	margin-top: 10vh;
+	display: flex;
+	justify-content: center;
+}
+
 // ==================== Default Resets ====================
 * {
 	box-sizing: border-box;

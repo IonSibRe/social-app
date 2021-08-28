@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import moment from "moment";
 
 import { AuthContext } from "../context/AuthContext";
 import LikeButton from "./LikeButton";
 import CommentButton from "./CommentButton";
 import DeleteButton from "./DeleteButton";
 import personImg from "../assets/person-img.jpg";
+import { formatMsFromEpochToFromNow } from "../utils/utilities";
 
 const Post = ({
 	post: { id, username, body, commentCount, likes, likeCount, createdAt },
@@ -19,7 +19,7 @@ const Post = ({
 				<div className="post-item-header-info-wrap">
 					<h3 className="post-item-username">{username}</h3>
 					<Link className="post-item-time" to={`/posts/${id}`}>
-						{moment(new Date(parseInt(createdAt))).fromNow()}
+						{formatMsFromEpochToFromNow(createdAt)}
 					</Link>
 				</div>
 				<div className="post-item-header-img-wrap">
