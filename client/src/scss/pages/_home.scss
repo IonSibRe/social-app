@@ -44,13 +44,7 @@
 	}
 
 	.posts-submit-btn {
-		@include btn-reset;
-		padding: 0.65rem 2.25rem;
-		font-size: $p-size;
-		color: $light-col;
-		background-color: $btn-col;
-		border: none;
-		border-radius: 5px;
+		@include btn-default;
 	}
 }
 

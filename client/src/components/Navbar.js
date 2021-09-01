@@ -16,7 +16,9 @@ const Navbar = () => {
 				<div className="nav-user-wrap">
 					{loggedIn ? (
 						<div className="nav-user-logged-wrap">
-							<h3 className="nav-user-text">{user.username}</h3>
+							<Link to="/profile/info" className="nav-user-text">
+								{user.username}
+							</Link>
 							<div className="nav-user-separation-line"></div>
 							<button
 								className="nav-user-logout-btn"
