@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext";
+import { UserContext } from "../../context/UserContext";
 
 const CommentButton = ({ id, commentCount }) => {
-	const { user } = useContext(AuthContext);
+	const { user } = useContext(UserContext);
 
 	return (
 		<div className="post-item-btns-item-wrap">

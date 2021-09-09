@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { gql, useMutation } from "@apollo/client";
-import { AuthContext } from "../context/AuthContext";
+import { UserContext } from "../context/UserContext";
 import LoaderSpinner from "../components/utils/LoaderSpinner";
 
 const Register = () => {
-	const { login, loggedIn } = useContext(AuthContext);
+	const { login, loggedIn } = useContext(UserContext);
 	const [error, setError] = useState("");
 	const [userCredentials, setUserCredentials] = useState({
 		username: "",

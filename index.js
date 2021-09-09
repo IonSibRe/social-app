@@ -1,26 +1,35 @@
-const { ApolloServer } = require("apollo-server");
-const mongoose = require("mongoose");
+const { ApolloServer } = require("apollo-server-express");
+const { graphqlUploadExpress } = require("graphql-upload");
+const express = require("express");
 const dotenv = require("dotenv");
 
+const connectToDB = require("./utils/db");
 const typeDefs = require("./graphql/typeDefs");
 const resolvers = require("./graphql/resolvers");
 
 // Init
 dotenv.config();
 
-const server = new ApolloServer({
-	typeDefs,
-	resolvers,
-	context: ({ req }) => ({
-		req,
-	}),
-});
+async function startServer() {
+	const server = new ApolloServer({
+		typeDefs,
+		resolvers,
+		context: ({ req }) => ({
+			req,
+		}),
+	});
+	await server.start();
+	const app = express();
 
-server.listen().then(({ url }) => console.log(`Server is running at: ${url}`));
+	app.use(graphqlUploadExpress());
+	server.applyMiddleware({ app });
 
-mongoose
-	.connect(process.env.MONGO_URI, {
-		useNewUrlParser: true,
-		useUnifiedTopology: true,
-	})
-	.then(() => console.log("Connected to DB..."));
+	app.listen(4000, () =>
+		console.log(
+			`Server is running at http://localhost:4000${server.graphqlPath}`
+		)
+	);
+}
+
+startServer();
+connectToDB();

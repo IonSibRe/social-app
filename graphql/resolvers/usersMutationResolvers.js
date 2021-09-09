@@ -1,23 +1,12 @@
 const { UserInputError } = require("apollo-server");
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 
 const User = require("../../models/User");
 const { registerValidate, loginValidate } = require("../../utils/validation");
+const { genToken, streamToBase64 } = require("../../utils/utils");
+const checkAuth = require("../../utils/checkAuth");
 
-const genToken = ({ _id: id, username, email }) => {
-	return jwt.sign(
-		{
-			id,
-			username,
-			email,
-		},
-		process.env.JWT_KEY,
-		{ expiresIn: "1d" }
-	);
-};
-
-const userResolvers = {
+const usersMutationResolvers = {
 	Mutation: {
 		async login(_, args) {
 			// Get Data
@@ -118,7 +107,36 @@ const userResolvers = {
 				createdAt: newUser.createdAt,
 			};
 		},
+		async updateUserInfo(_, { userId, body }) {
+			try {
+				const user = await User.findById(userId);
+
+				user.userInfo = body;
+
+				await user.save();
+				return user;
+			} catch (err) {
+				throw new Error(err);
+			}
+		},
+
+		async uploadProfileImage(_, { file }, context) {
+			const { id } = checkAuth(context);
+			const { createReadStream } = await file;
+
+			const base64file = await streamToBase64(createReadStream());
+
+			const user = await User.findById(id);
+			if (!user) throw new ApolloError("User Not Found");
+
+			user.profileImg = base64file;
+
+			console.log(user.token);
+
+			await user.save();
+			return user;
+		},
 	},
 };
 
-module.exports = userResolvers;
+module.exports = usersMutationResolvers;

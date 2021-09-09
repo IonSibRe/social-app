@@ -1,4 +1,7 @@
 const { UserInputError, ApolloError } = require("apollo-server");
+const fs = require("fs");
+const path = require("path");
+
 const Post = require("../../models/Post");
 const checkAuth = require("../../utils/checkAuth");
 
@@ -15,6 +18,7 @@ const postMutationResolvers = {
 			const post = new Post({
 				username: user.username,
 				body,
+				img: null,
 				commentCount: 0,
 				likeCount: 0,
 				comments: [],

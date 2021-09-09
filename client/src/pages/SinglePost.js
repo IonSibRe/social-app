@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import moment from "moment";
 
-import { AuthContext } from "../context/AuthContext";
+import { UserContext } from "../context/UserContext";
 import LikeButton from "../components/utils/LikeButton";
 import CommentButton from "../components/utils/CommentButton";
 import DeleteButton from "../components/utils/DeleteButton";
@@ -14,7 +14,7 @@ import { formatMsFromEpochToFromNow } from "../utils/utilities";
 
 const SinglePost = () => {
 	const { id } = useParams();
-	const { user } = useContext(AuthContext);
+	const { user } = useContext(UserContext);
 	const [comment, setComment] = useState("");
 	const [error, setError] = useState(false);
 

@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 
-import { AuthContext } from "../context/AuthContext";
+import { UserContext } from "../context/UserContext";
 import LikeButton from "./utils/LikeButton";
 import CommentButton from "./utils/CommentButton";
 import DeleteButton from "./utils/DeleteButton";
@@ -11,7 +11,7 @@ import { formatMsFromEpochToFromNow } from "../utils/utilities";
 const Post = ({
 	post: { id, username, body, commentCount, likes, likeCount, createdAt },
 }) => {
-	const { user } = useContext(AuthContext);
+	const { user } = useContext(UserContext);
 
 	return (
 		<div className="post-item">

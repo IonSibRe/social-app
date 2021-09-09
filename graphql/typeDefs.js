@@ -1,13 +1,37 @@
-const { gql } = require("apollo-server");
+const { gql } = require("apollo-server-express");
 
 const typeDefs = gql`
+	scalar Upload
+
 	# Auth
 	type User {
 		id: ID!
 		username: String!
 		email: String!
-		token: String!
+		token: String
+		profileImg: String
+		userInfo: UserInfo
 		createdAt: String!
+	}
+
+	type UserInfo {
+		firstName: String
+		lastName: String
+		phoneNumber: String
+		country: String
+		birthDate: String
+		profession: String
+		company: String
+	}
+
+	input UserInfoInput {
+		firstName: String
+		lastName: String
+		phoneNumber: String
+		country: String
+		birthDate: String
+		profession: String
+		company: String
 	}
 
 	input LoginInput {
@@ -27,6 +51,7 @@ const typeDefs = gql`
 		id: ID!
 		username: String!
 		body: String!
+		img: String
 		commentCount: Int!
 		comments: [Comment]!
 		likeCount: Int!
@@ -47,14 +72,23 @@ const typeDefs = gql`
 		createdAt: String!
 	}
 
+	type File {
+		filename: String!
+		mimetype: String!
+		encoding: String!
+	}
+
 	type Query {
 		getPosts: [Post]
 		getPost(postId: ID!): Post
+		getUserInfo(userId: ID!): User!
 	}
 
 	type Mutation {
 		login(loginInput: LoginInput!): User!
-		register(registerInput: RegisterInput): User!
+		register(registerInput: RegisterInput!): User!
+		uploadProfileImage(file: Upload!): User!
+		updateUserInfo(userId: ID!, body: UserInfoInput): User!
 		createPost(body: String!): Post!
 		deletePost(postId: ID!): Post!
 		likePost(postId: ID!): Post!

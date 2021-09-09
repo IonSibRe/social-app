@@ -2,15 +2,15 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 import App from "./App";
-import { AuthProvider } from "./context/AuthContext";
+import { UserProvider } from "./context/UserContext";
 import CustomApolloProvider from "./CustomApolloProvider";
 
 ReactDOM.render(
 	<React.StrictMode>
 		<CustomApolloProvider>
-			<AuthProvider>
+			<UserProvider>
 				<App />
-			</AuthProvider>
+			</UserProvider>
 		</CustomApolloProvider>
 	</React.StrictMode>,
 	document.getElementById("root")

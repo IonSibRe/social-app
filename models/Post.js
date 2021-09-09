@@ -10,6 +10,9 @@ const postSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
+		img: {
+			type: String,
+		},
 		commentCount: {
 			type: Number,
 			required: true,

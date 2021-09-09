@@ -1,8 +1,8 @@
 import React, { createContext, useReducer } from "react";
 import jwt_decode from "jwt-decode";
-import AuthReducer from "../reducers/AuthReducer";
+import UserReducer from "../reducers/UserReducer";
 
-const AuthContext = createContext();
+const UserContext = createContext();
 
 const jwtToken = JSON.parse(localStorage.getItem("jwtToken"));
 let user = null;
@@ -20,12 +20,17 @@ if (jwtToken) {
 
 const initialState = {
 	user: user ? user : null,
+	userData: {},
 	loggedIn: user ? true : false,
 	error: null,
 };
 
-const AuthProvider = ({ children }) => {
-	const [state, dispatch] = useReducer(AuthReducer, initialState);
+const UserProvider = ({ children }) => {
+	const [state, dispatch] = useReducer(UserReducer, initialState);
+
+	const setUserData = (user) => {
+		dispatch({ type: "SET_USER_DATA", payload: { user } });
+	};
 
 	const login = ({ id, username, email, token }) => {
 		// Add token to local storage
@@ -41,10 +46,10 @@ const AuthProvider = ({ children }) => {
 	};
 
 	return (
-		<AuthContext.Provider value={{ ...state, login, logout }}>
+		<UserContext.Provider value={{ ...state, setUserData, login, logout }}>
 			{children}
-		</AuthContext.Provider>
+		</UserContext.Provider>
 	);
 };
 
-export { AuthContext, AuthProvider };
+export { UserContext, UserProvider };
