@@ -114,6 +114,10 @@
 		display: flex;
 		margin-bottom: 1rem;
 
+		&:last-child {
+			margin-bottom: 0;
+		}
+
 		.profile-info-data-item-label {
 			flex: 1;
 			font-size: $p-size;
@@ -197,4 +201,44 @@
 	@include btn-default;
 	margin-bottom: 0.65rem;
 	background-color: $failure-col;
+}
+
+@media screen and (max-width: $lg-break-point) {
+	.profile-filter {
+		flex: 1.25;
+	}
+}
+
+@media screen and (max-width: $md-break-point) {
+	.profile-section {
+		flex-direction: column;
+	}
+
+	.profile-filter {
+		min-height: 100%;
+		margin: 0 0 2rem 0;
+	}
+}
+
+@media screen and (max-width: $sm-break-point) {
+	.profile-info {
+		margin-bottom: 2rem;
+	}
+
+	.profile-info-header {
+		text-align: center;
+	}
+
+	.profile-info-data-header {
+		text-align: center;
+	}
+
+	.profile-info-data-item {
+		flex-direction: column;
+		text-align: center;
+	}
+
+	.profile-info-data-item-submit-btn-wrap {
+		align-items: center;
+	}
 }

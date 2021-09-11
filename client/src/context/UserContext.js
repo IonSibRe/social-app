@@ -1,5 +1,7 @@
 import React, { createContext, useReducer } from "react";
+import { gql, useQuery } from "@apollo/client";
 import jwt_decode from "jwt-decode";
+
 import UserReducer from "../reducers/UserReducer";
 
 const UserContext = createContext();
@@ -28,6 +30,14 @@ const initialState = {
 const UserProvider = ({ children }) => {
 	const [state, dispatch] = useReducer(UserReducer, initialState);
 
+	const { error } = useQuery(GET_USER_INFO, {
+		onCompleted: (data) => setUserData(data.getUserInfo),
+		onError: () => console.log(error),
+		variables: {
+			userId: user.id,
+		},
+	});
+
 	const setUserData = (user) => {
 		dispatch({ type: "SET_USER_DATA", payload: { user } });
 	};
@@ -53,3 +63,25 @@ const UserProvider = ({ children }) => {
 };
 
 export { UserContext, UserProvider };
+
+const GET_USER_INFO = gql`
+	query getUserInfo($userId: ID!) {
+		getUserInfo(userId: $userId) {
+			id
+			username
+			email
+			token
+			profileImg
+			userInfo {
+				firstName
+				lastName
+				phoneNumber
+				country
+				birthDate
+				profession
+				company
+			}
+			createdAt
+		}
+	}
+`;

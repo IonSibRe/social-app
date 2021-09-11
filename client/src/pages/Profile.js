@@ -12,6 +12,10 @@ const Profile = () => {
 		console.log("deactivate");
 	};
 
+	if (window.location.pathname === "/profile") {
+		return <Redirect to="/profile/info" />;
+	}
+
 	return (
 		<section className="profile-section section-center">
 			<ProfileFilter setModalOpen={setModalOpen} />
@@ -27,7 +31,6 @@ const Profile = () => {
 				path="/profile/password-change"
 				component={ProfileChangePw}
 			/>
-			<Redirect to="/profile/info" />
 		</section>
 	);
 };

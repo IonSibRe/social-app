@@ -29,7 +29,8 @@ const DeleteButton = ({ postId, commentId }) => {
 
 	const deletePostFunc = () => {
 		deletePostOrComment();
-		if (!commentId && window.location.pathname !== "/") history.push("/");
+		if (!commentId && window.location.pathname.split("/")[1] === "/posts")
+			history.push("/");
 	};
 
 	return (

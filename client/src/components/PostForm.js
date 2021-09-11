@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { gql, useMutation } from "@apollo/client";
+import { Link } from "react-router-dom";
 
+import { UserContext } from "../context/UserContext";
 import LoaderSpinner from "./utils/LoaderSpinner";
 import { GET_POSTS } from "../utils/graphql";
+import personImg from "../assets/person-img.jpg";
 
 const PostForm = () => {
+	const { user } = useContext(UserContext);
 	const [postBody, setPostBody] = useState("");
 
 	const [submitPost, { loading }] = useMutation(CREATE_POST, {
@@ -29,7 +33,16 @@ const PostForm = () => {
 
 	return (
 		<form className="posts-submit-wrap" onSubmit={submitHandler}>
-			<h2 className="posts-submit-title">Create a Post</h2>
+			<div className="posts-submit-title-wrap">
+				<h2 className="posts-submit-title">Create a Post</h2>
+				<Link to={`/users/${user.username}`}>
+					<img
+						src={personImg}
+						alt="User Img"
+						className="posts-submit-profile-img"
+					/>
+				</Link>
+			</div>
 			<input
 				type="text"
 				className="posts-submit-input"

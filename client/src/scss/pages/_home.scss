@@ -23,9 +23,19 @@
 .posts-submit-wrap {
 	margin-bottom: 2rem;
 
-	.posts-submit-title {
+	.posts-submit-title-wrap {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
 		margin-bottom: 1rem;
+	}
+
+	.posts-submit-title {
 		font-size: $h2-size - 0.5rem;
+	}
+
+	.posts-submit-profile-img {
+		width: 40px;
 	}
 
 	.posts-submit-input {

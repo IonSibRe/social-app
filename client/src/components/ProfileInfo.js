@@ -1,11 +1,10 @@
-import { gql, useMutation, useQuery } from "@apollo/client";
-import React, { useState, useContext } from "react";
+import { gql, useMutation } from "@apollo/client";
+import React, { useState, useContext, useEffect } from "react";
 
 import { UserContext } from "../context/UserContext";
-import ProfileImageUpload from "./ProfileImageUpload";
 
 const ProfileInfo = () => {
-	const { user, setUserData } = useContext(UserContext);
+	const { user, userData, setUserData } = useContext(UserContext);
 	const [userLocalInfo, setUserLocalInfo] = useState({
 		firstName: "",
 		lastName: "",
@@ -14,14 +13,6 @@ const ProfileInfo = () => {
 		birthDate: "",
 		profession: "",
 		company: "",
-	});
-
-	// Get User Info on Component Load
-	const { loading, error } = useQuery(GET_USER_INFO, {
-		onCompleted: (data) => updateState(data),
-		variables: {
-			userId: user.id,
-		},
 	});
 
 	const [updateUserInfo] = useMutation(UPDATE_USER_INFO, {
@@ -37,22 +28,24 @@ const ProfileInfo = () => {
 		updateUserInfo();
 	}
 
-	function updateState(data) {
-		let userDataResponse = data.updateUserInfo
-			? data.updateUserInfo
-			: data.getUserInfo;
-
-		let userDataInfo = userDataResponse.userInfo;
-		userDataInfo = Object.fromEntries(
-			Object.entries(userDataInfo).filter(([key]) => key !== "__typename")
+	const removeTypename = (data) => {
+		return Object.fromEntries(
+			Object.entries(data).filter(([key]) => key !== "__typename")
 		);
+	};
+
+	function updateState(data) {
+		let userDataResponse = data.updateUserInfo;
 
 		setUserData(userDataResponse);
-		setUserLocalInfo(userDataInfo);
+		setUserLocalInfo(removeTypename(userDataResponse.userInfo));
 	}
 
-	if (loading) return <h1>Loading</h1>;
-	if (error) console.log(error);
+	useEffect(() => {
+		if (Object.keys(userData).length !== 0) {
+			setUserLocalInfo(removeTypename(userData.userInfo));
+		}
+	}, [userData]);
 
 	return (
 		<div className="profile-info">
@@ -62,7 +55,7 @@ const ProfileInfo = () => {
 				</h2>
 			</div>
 
-			<ProfileImageUpload />
+			{/* <ProfileImageUpload /> */}
 
 			<div className="profile-info-data-wrap">
 				<div className="profile-info-data-header">
@@ -259,28 +252,6 @@ const ProfileInfo = () => {
 		</div>
 	);
 };
-
-const GET_USER_INFO = gql`
-	query getUserInfo($userId: ID!) {
-		getUserInfo(userId: $userId) {
-			id
-			username
-			email
-			token
-			profileImg
-			userInfo {
-				firstName
-				lastName
-				phoneNumber
-				country
-				birthDate
-				profession
-				company
-			}
-			createdAt
-		}
-	}
-`;
 
 const UPDATE_USER_INFO = gql`
 	mutation updateUserInfo($userId: ID!, $body: UserInfoInput!) {

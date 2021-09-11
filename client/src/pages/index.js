@@ -2,7 +2,8 @@ import Home from "./Home";
 import Login from "./Login";
 import Register from "./Register";
 import SinglePost from "./SinglePost";
-import ErrorPage from "./ErrorPage";
 import Profile from "./Profile";
+import UserPage from "./UserPage";
+import ErrorPage from "./ErrorPage";
 
-export { Home, Login, Register, SinglePost, Profile, ErrorPage };
+export { Home, Login, Register, SinglePost, Profile, UserPage, ErrorPage };
