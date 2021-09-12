@@ -5,8 +5,8 @@ import { UserContext } from "../context/UserContext";
 import LikeButton from "./utils/LikeButton";
 import CommentButton from "./utils/CommentButton";
 import DeleteButton from "./utils/DeleteButton";
-import personImg from "../assets/person-img.jpg";
 import { formatMsFromEpochToFromNow } from "../utils/utilities";
+import ProfileImage from "./utils/ProfileImage";
 
 const Post = ({
 	post: { id, username, body, commentCount, likes, likeCount, createdAt },
@@ -22,13 +22,12 @@ const Post = ({
 						{formatMsFromEpochToFromNow(createdAt)}
 					</Link>
 				</div>
-				<div className="post-item-header-img-wrap">
-					<img
-						src={personImg}
-						alt="User Img"
-						className="post-item-header-img"
-					/>
-				</div>
+				<Link
+					to={`/users/${username}`}
+					className="post-item-header-img-wrap"
+				>
+					<ProfileImage />
+				</Link>
 			</div>
 
 			<div className="post-item-body-wrap">

@@ -7,10 +7,22 @@ const usersQueryResolvers = {
 			checkAuth(context);
 
 			try {
-				const user = User.findById(userId);
+				const user = await User.findById(userId);
 				if (!user) throw new ApolloError("User Not Found");
 
 				return user;
+			} catch (err) {
+				throw new Error(err);
+			}
+		},
+		async getUserCardInfo(_, { username }) {
+			try {
+				const user = await User.find({ username });
+				if (!user) throw new ApolloError("User Not Found");
+
+				console.log("here");
+
+				return user[0];
 			} catch (err) {
 				throw new Error(err);
 			}

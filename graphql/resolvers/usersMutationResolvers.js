@@ -95,6 +95,8 @@ const usersMutationResolvers = {
 				email,
 			});
 
+			console.log(newUser);
+
 			// Generate Token
 			const token = genToken(newUser);
 

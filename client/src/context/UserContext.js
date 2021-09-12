@@ -1,5 +1,5 @@
-import React, { createContext, useReducer } from "react";
-import { gql, useQuery } from "@apollo/client";
+import React, { createContext, useEffect, useReducer } from "react";
+import { gql, useLazyQuery } from "@apollo/client";
 import jwt_decode from "jwt-decode";
 
 import UserReducer from "../reducers/UserReducer";
@@ -30,12 +30,10 @@ const initialState = {
 const UserProvider = ({ children }) => {
 	const [state, dispatch] = useReducer(UserReducer, initialState);
 
-	const { error } = useQuery(GET_USER_INFO, {
+	const [getUserInfo, { called }] = useLazyQuery(GET_USER_INFO, {
 		onCompleted: (data) => setUserData(data.getUserInfo),
-		onError: () => console.log(error),
-		variables: {
-			userId: user.id,
-		},
+		onError: (err) => console.log(err),
+		fetchPolicy: "cache-and-network",
 	});
 
 	const setUserData = (user) => {
@@ -48,12 +46,20 @@ const UserProvider = ({ children }) => {
 
 		// Set State
 		dispatch({ type: "LOGIN", payload: { id, username, email } });
+
+		getUserInfo({ variables: { userId: id } });
 	};
 
 	const logout = () => {
 		dispatch({ type: "LOGOUT" });
 		localStorage.removeItem("jwtToken");
 	};
+
+	useEffect(() => {
+		if (state.user && Object.keys(state.user).length !== 0) {
+			getUserInfo({ variables: { userId: state.user.id } });
+		}
+	}, [state.user, state.loggedIn, getUserInfo, called]);
 
 	return (
 		<UserContext.Provider value={{ ...state, setUserData, login, logout }}>

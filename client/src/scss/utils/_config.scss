@@ -91,6 +91,18 @@ $failure-col: #eb435c;
 	justify-content: center;
 }
 
+.profile-img-wrap {
+	width: 45px;
+	height: 45px;
+	border-radius: 50%;
+	overflow: hidden;
+}
+
+.profile-img {
+	display: block;
+	height: 100%;
+}
+
 // ==================== Default Resets ====================
 * {
 	box-sizing: border-box;

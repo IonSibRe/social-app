@@ -1,12 +1,10 @@
-import React, { useContext } from "react";
+import React from "react";
 
-import { UserContext } from "../context/UserContext";
 import sampleBanner from "../assets/sample-banner.jpg";
 import personImg from "../assets/person-img.jpg";
 
-const UserInfoCard = () => {
-	const { userData } = useContext(UserContext);
-
+const UserInfoCard = ({ cardData }) => {
+	console.log(cardData);
 	return (
 		<div className="user-info-card">
 			<div className="user-info-banner-wrap">
@@ -20,9 +18,9 @@ const UserInfoCard = () => {
 				<div className="user-info-data-img-wrap">
 					<img
 						src={`${
-							userData && userData.profileImg
+							cardData && cardData.profileImg
 								? "data:image/png;base64, " +
-								  userData.profileImg
+								  cardData.profileImg
 								: personImg
 						}`}
 						alt=""
@@ -30,7 +28,9 @@ const UserInfoCard = () => {
 					/>
 				</div>
 				<div className="user-info-data-text-wrap">
-					<h2 className="user-info-data-username">Username</h2>
+					<h2 className="user-info-data-username">
+						{cardData.username}
+					</h2>
 					<h3 className="user-info-data-joined">
 						Joined August 2021
 					</h3>

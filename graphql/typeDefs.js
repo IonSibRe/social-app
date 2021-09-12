@@ -82,6 +82,7 @@ const typeDefs = gql`
 		getPosts: [Post]
 		getPost(postId: ID!): Post
 		getUserInfo(userId: ID!): User!
+		getUserCardInfo(username: String!): User!
 	}
 
 	type Mutation {

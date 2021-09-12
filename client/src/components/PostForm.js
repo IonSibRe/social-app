@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import LoaderSpinner from "./utils/LoaderSpinner";
 import { GET_POSTS } from "../utils/graphql";
-import personImg from "../assets/person-img.jpg";
+import ProfileImage from "./utils/ProfileImage";
 
 const PostForm = () => {
 	const { user } = useContext(UserContext);
@@ -35,13 +35,11 @@ const PostForm = () => {
 		<form className="posts-submit-wrap" onSubmit={submitHandler}>
 			<div className="posts-submit-title-wrap">
 				<h2 className="posts-submit-title">Create a Post</h2>
-				<Link to={`/users/${user.username}`}>
-					<img
-						src={personImg}
-						alt="User Img"
-						className="posts-submit-profile-img"
-					/>
-				</Link>
+				<div className="posts-submit-profile-img-wrap">
+					<Link to={`/users/${user.username}`}>
+						<ProfileImage />
+					</Link>
+				</div>
 			</div>
 			<input
 				type="text"

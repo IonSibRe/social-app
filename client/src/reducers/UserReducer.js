@@ -17,6 +17,7 @@ const UserReducer = (state, action) => {
 			return {
 				...state,
 				user: {},
+				userData: {},
 				loggedIn: false,
 			};
 
