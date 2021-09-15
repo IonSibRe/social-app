@@ -20,8 +20,6 @@ const usersQueryResolvers = {
 				const user = await User.find({ username });
 				if (!user) throw new ApolloError("User Not Found");
 
-				console.log("here");
-
 				return user[0];
 			} catch (err) {
 				throw new Error(err);

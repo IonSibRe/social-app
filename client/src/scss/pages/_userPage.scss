@@ -28,8 +28,22 @@
 }
 
 .user-info-data-text-wrap {
+	display: flex;
+	align-items: flex-end;
 	margin-top: 7rem;
 	padding: 1rem;
+
+	.user-info-data-inner-text-wrap {
+		flex: 1;
+	}
+
+	.user-info-data-follow-btn-wrap {
+		text-align: end;
+	}
+
+	.user-info-data-follow-btn {
+		@include btn-default;
+	}
 
 	.user-info-data-username {
 		font-size: $h2-size - 0.5rem;

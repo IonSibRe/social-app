@@ -4,7 +4,6 @@ import sampleBanner from "../assets/sample-banner.jpg";
 import personImg from "../assets/person-img.jpg";
 
 const UserInfoCard = ({ cardData }) => {
-	console.log(cardData);
 	return (
 		<div className="user-info-card">
 			<div className="user-info-banner-wrap">
@@ -28,25 +27,35 @@ const UserInfoCard = ({ cardData }) => {
 					/>
 				</div>
 				<div className="user-info-data-text-wrap">
-					<h2 className="user-info-data-username">
-						{cardData.username}
-					</h2>
-					<h3 className="user-info-data-joined">
-						Joined August 2021
-					</h3>
-					<div className="user-info-data-follow-wrap">
-						<h3 className="user-info-data-follow-text">
-							<strong className="user-info-data-follow-count">
-								10
-							</strong>
-							Following
+					<div className="user-info-data-inner-text-wrap">
+						<h2 className="user-info-data-username">
+							{cardData.username}
+						</h2>
+						<h3 className="user-info-data-joined">
+							Joined August 2021
 						</h3>
-						<h3 className="user-info-data-follow-text">
-							<strong className="user-info-data-follow-count">
-								15
-							</strong>
-							Followers
-						</h3>
+						<div className="user-info-data-follow-wrap">
+							<h3 className="user-info-data-follow-text">
+								<strong className="user-info-data-follow-count">
+									10
+								</strong>
+								Following
+							</h3>
+							<h3 className="user-info-data-follow-text">
+								<strong className="user-info-data-follow-count">
+									15
+								</strong>
+								Followers
+							</h3>
+						</div>
+					</div>
+					<div className="user-info-data-inner-text-wrap user-info-data-follow-btn-wrap">
+						<button
+							type="button"
+							className="user-info-data-follow-btn"
+						>
+							Follow
+						</button>
 					</div>
 				</div>
 			</div>
