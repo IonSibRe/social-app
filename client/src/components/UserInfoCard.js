@@ -1,7 +1,7 @@
 import React from "react";
 
 import sampleBanner from "../assets/sample-banner.jpg";
-import personImg from "../assets/person-img.jpg";
+import ProfileImageUpload from "./ProfileImageUpload";
 
 const UserInfoCard = ({ cardData }) => {
 	return (
@@ -14,18 +14,8 @@ const UserInfoCard = ({ cardData }) => {
 				/>
 			</div>
 			<div className="user-info-data-wrap">
-				<div className="user-info-data-img-wrap">
-					<img
-						src={`${
-							cardData && cardData.profileImg
-								? "data:image/png;base64, " +
-								  cardData.profileImg
-								: personImg
-						}`}
-						alt=""
-						className="user-info-data-profile-img"
-					/>
-				</div>
+				<ProfileImageUpload />
+
 				<div className="user-info-data-text-wrap">
 					<div className="user-info-data-inner-text-wrap">
 						<h2 className="user-info-data-username">

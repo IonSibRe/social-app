@@ -5,6 +5,7 @@ const User = require("../../models/User");
 const { registerValidate, loginValidate } = require("../../utils/validation");
 const { genToken, streamToBase64 } = require("../../utils/utils");
 const checkAuth = require("../../utils/checkAuth");
+const { cloudinary } = require("../../utils/cloudinary");
 
 const usersMutationResolvers = {
 	Mutation: {
@@ -122,18 +123,17 @@ const usersMutationResolvers = {
 			}
 		},
 
-		async uploadProfileImage(_, { file }, context) {
+		async uploadProfileImage(_, { base64File }, context) {
 			const { id } = checkAuth(context);
-			const { createReadStream } = await file;
-
-			const base64file = await streamToBase64(createReadStream());
 
 			const user = await User.findById(id);
 			if (!user) throw new ApolloError("User Not Found");
 
-			user.profileImg = base64file;
+			const uploadedRes = await cloudinary.uploader.upload(base64File, {
+				upload_preset: "social-app",
+			});
 
-			console.log(user.token);
+			user.profileImg = uploadedRes.secure_url;
 
 			await user.save();
 			return user;

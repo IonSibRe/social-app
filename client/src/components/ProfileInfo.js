@@ -55,8 +55,6 @@ const ProfileInfo = () => {
 				</h2>
 			</div>
 
-			{/* <ProfileImageUpload /> */}
-
 			<div className="profile-info-data-wrap">
 				<div className="profile-info-data-header">
 					<h4 className="profile-info-data-header-text">User</h4>

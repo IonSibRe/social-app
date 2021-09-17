@@ -3,7 +3,7 @@ const User = require("../../models/User");
 
 const usersQueryResolvers = {
 	Query: {
-		async getUserInfo(_, { userId }, context) {
+		async getUserInfoById(_, { userId }, context) {
 			checkAuth(context);
 
 			try {
@@ -15,12 +15,12 @@ const usersQueryResolvers = {
 				throw new Error(err);
 			}
 		},
-		async getUserCardInfo(_, { username }) {
+		async getUserInfoByUsername(_, { username }) {
 			try {
-				const user = await User.find({ username });
+				const user = await User.findOne({ username });
 				if (!user) throw new ApolloError("User Not Found");
 
-				return user[0];
+				return user;
 			} catch (err) {
 				throw new Error(err);
 			}

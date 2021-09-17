@@ -11,20 +11,37 @@
 	margin-bottom: 2rem;
 }
 
+// Image
 .user-info-data-img-wrap {
-	width: 150px;
-	height: 140px;
-	border-radius: 50%;
 	position: absolute;
 	top: 100px;
 	left: 10px;
-	overflow: hidden;
-	border: 2px solid #ccc;
-}
+	display: flex;
+	align-items: flex-end;
 
-.user-info-data-profile-img {
-	display: block;
-	height: 100%;
+	.user-info-data-img-inner-wrap {
+		width: 150px;
+		height: 140px;
+		border-radius: 50%;
+		overflow: hidden;
+		border: 2px solid #ccc;
+
+		.user-info-data-img {
+			display: block;
+			height: 100%;
+		}
+	}
+
+	.user-info-data-upload-input {
+		display: none;
+	}
+
+	.user-info-data-upload-label {
+		display: inline-block;
+		font-size: 1.5rem;
+		color: $dark-col;
+		cursor: pointer;
+	}
 }
 
 .user-info-data-text-wrap {

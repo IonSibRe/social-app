@@ -73,35 +73,6 @@
 		}
 	}
 
-	.profile-info-img-input-wrap {
-		margin-bottom: 1rem;
-		display: flex;
-		align-items: flex-end;
-
-		.profile-info-img-wrap {
-			width: 150px;
-			height: 140px;
-			border-radius: 50%;
-			overflow: hidden;
-		}
-
-		.profile-info-img {
-			display: block;
-			height: 100%;
-		}
-
-		.profile-file-upload-input {
-			display: none;
-		}
-
-		.profile-file-upload-label {
-			display: inline-block;
-			font-size: 1.5rem;
-			color: $dark-col;
-			cursor: pointer;
-		}
-	}
-
 	.profile-info-data-wrap {
 		margin-bottom: 2rem;
 

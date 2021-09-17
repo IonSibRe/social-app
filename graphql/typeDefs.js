@@ -81,14 +81,14 @@ const typeDefs = gql`
 	type Query {
 		getPosts: [Post]
 		getPost(postId: ID!): Post
-		getUserInfo(userId: ID!): User!
-		getUserCardInfo(username: String!): User!
+		getUserInfoById(userId: ID!): User!
+		getUserInfoByUsername(username: String!): User!
 	}
 
 	type Mutation {
 		login(loginInput: LoginInput!): User!
 		register(registerInput: RegisterInput!): User!
-		uploadProfileImage(file: Upload!): User!
+		uploadProfileImage(base64File: String!): User!
 		updateUserInfo(userId: ID!, body: UserInfoInput): User!
 		createPost(body: String!): Post!
 		deletePost(postId: ID!): Post!

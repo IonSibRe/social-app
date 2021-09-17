@@ -6,13 +6,13 @@ import personImg from "../../assets/person-img.jpg";
 const ProfileImage = () => {
 	const { userData } = useContext(UserContext);
 
+	// "data:image/png;base64, " + userData.profileImg
+
 	return (
 		<div className="profile-img-wrap">
 			<img
 				src={`${
-					userData && userData.profileImg
-						? "data:image/png;base64, " + userData.profileImg
-						: personImg
+					userData && userData.profileImg ? personImg : personImg
 				}`}
 				alt="Profile Img"
 				className="profile-img"

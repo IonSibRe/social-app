@@ -30,8 +30,8 @@ const initialState = {
 const UserProvider = ({ children }) => {
 	const [state, dispatch] = useReducer(UserReducer, initialState);
 
-	const [getUserInfo, { called }] = useLazyQuery(GET_USER_INFO, {
-		onCompleted: (data) => setUserData(data.getUserInfo),
+	const [getUserInfoById, { called }] = useLazyQuery(GET_USER_INFO_BY_ID, {
+		onCompleted: (data) => setUserData(data.getUserInfoById),
 		onError: (err) => console.log(err),
 		fetchPolicy: "cache-and-network",
 	});
@@ -47,7 +47,7 @@ const UserProvider = ({ children }) => {
 		// Set State
 		dispatch({ type: "LOGIN", payload: { id, username, email } });
 
-		getUserInfo({ variables: { userId: id } });
+		getUserInfoById({ variables: { userId: id } });
 	};
 
 	const logout = () => {
@@ -57,9 +57,9 @@ const UserProvider = ({ children }) => {
 
 	useEffect(() => {
 		if (state.user && Object.keys(state.user).length !== 0) {
-			getUserInfo({ variables: { userId: state.user.id } });
+			getUserInfoById({ variables: { userId: state.user.id } });
 		}
-	}, [state.user, state.loggedIn, getUserInfo, called]);
+	}, [state.user, state.loggedIn, getUserInfoById, called]);
 
 	return (
 		<UserContext.Provider value={{ ...state, setUserData, login, logout }}>
@@ -70,9 +70,9 @@ const UserProvider = ({ children }) => {
 
 export { UserContext, UserProvider };
 
-const GET_USER_INFO = gql`
-	query getUserInfo($userId: ID!) {
-		getUserInfo(userId: $userId) {
+const GET_USER_INFO_BY_ID = gql`
+	query getUserInfoById($userId: ID!) {
+		getUserInfoById(userId: $userId) {
 			id
 			username
 			email

@@ -14,9 +14,9 @@ const UserPage = () => {
 
 	const { loading, err, data } = useQuery(GET_POSTS);
 	const { loading: cardLoading, err: cardErr } = useQuery(
-		GET_USER_CARD_INFO,
+		GET_USER_INFO_BY_USERNAME,
 		{
-			onCompleted: (data) => setCardData(data.getUserCardInfo),
+			onCompleted: (data) => setCardData(data.getUserInfoByUsername),
 			onError: (err) => console.log(err),
 			variables: { username },
 		}
@@ -49,9 +49,9 @@ const UserPage = () => {
 
 export default UserPage;
 
-const GET_USER_CARD_INFO = gql`
-	query getUserCardInfo($username: String!) {
-		getUserCardInfo(username: $username) {
+const GET_USER_INFO_BY_USERNAME = gql`
+	query getUserInfoByUsername($username: String!) {
+		getUserInfoByUsername(username: $username) {
 			username
 			profileImg
 		}
