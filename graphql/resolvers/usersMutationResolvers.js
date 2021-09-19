@@ -2,7 +2,11 @@ const { UserInputError } = require("apollo-server");
 const bcrypt = require("bcryptjs");
 
 const User = require("../../models/User");
-const { registerValidate, loginValidate } = require("../../utils/validation");
+const {
+	registerValidate,
+	loginValidate,
+	changePasswordValidate,
+} = require("../../utils/validation");
 const { genToken, streamToBase64 } = require("../../utils/utils");
 const checkAuth = require("../../utils/checkAuth");
 const { cloudinary } = require("../../utils/cloudinary");
@@ -112,13 +116,42 @@ const usersMutationResolvers = {
 				createdAt: newUser.createdAt,
 			};
 		},
+		async changePassword(_, args, context) {
+			const { id } = checkAuth(context);
+
+			const {
+				resetPasswordInput: { password, confirmPassword },
+			} = args;
+
+			const { error: validationError } = changePasswordValidate({
+				password,
+				confirmPassword,
+			});
+
+			if (validationError) {
+				const errMsg = validationError.details[0].message;
+
+				throw new UserInputError("ValidationError", {
+					errMsg,
+				});
+			}
+
+			const user = await User.findById(id);
+			if (!user) throw new ApolloError("User Not Found");
+
+			const salt = await bcrypt.genSalt(10);
+			const hashedPassword = await bcrypt.hash(password, salt);
+
+			user.password = hashedPassword;
+
+			await user.save();
+			return user;
+		},
 		async updateUserAdditionalInfo(_, { userId, body }) {
 			try {
 				const user = await User.findById(userId);
 
 				user.userAdditionalInfo = body;
-
-				console.log(user);
 
 				await user.save();
 				return user;
@@ -127,11 +160,17 @@ const usersMutationResolvers = {
 			}
 		},
 
-		async uploadProfileImage(_, { base64File }, context) {
+		async uploadProfileImage(_, { base64File, deletePublicId }, context) {
 			const { id } = checkAuth(context);
 
 			const user = await User.findById(id);
 			if (!user) throw new ApolloError("User Not Found");
+
+			if (deletePublicId) {
+				await cloudinary.uploader.destroy(
+					`social-app/${deletePublicId}`
+				);
+			}
 
 			const uploadedRes = await cloudinary.uploader.upload(base64File, {
 				upload_preset: "social-app",

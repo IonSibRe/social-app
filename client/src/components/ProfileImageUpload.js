@@ -17,9 +17,21 @@ const ProfileImageUpload = ({ profileImg }) => {
 		const file = e.target.files[0];
 		const reader = new FileReader();
 
+		let publicId;
+		if (profileImg) {
+			publicId = profileImg
+				.split("/")
+				[profileImg.split("/").length - 1].split(".")[0];
+		}
+
 		reader.readAsDataURL(file);
 		reader.onloadend = () => {
-			uploadProfileImage({ variables: { base64File: reader.result } });
+			uploadProfileImage({
+				variables: {
+					base64File: reader.result,
+					deletePublicId: publicId,
+				},
+			});
 		};
 	};
 
@@ -53,8 +65,11 @@ const ProfileImageUpload = ({ profileImg }) => {
 };
 
 const UPLOAD_PROFILE_IMAGE = gql`
-	mutation uploadProfileImage($base64File: String!) {
-		uploadProfileImage(base64File: $base64File) {
+	mutation uploadProfileImage($base64File: String!, $deletePublicId: ID) {
+		uploadProfileImage(
+			base64File: $base64File
+			deletePublicId: $deletePublicId
+		) {
 			username
 			description
 			profileImg

@@ -27,4 +27,17 @@ const loginValidate = (data) => {
 	return schema.validate(data);
 };
 
-module.exports = { registerValidate, loginValidate };
+const changePasswordValidate = (data) => {
+	const schema = Joi.object({
+		password: Joi.string().min(4).required(),
+		confirmPassword: Joi.any()
+			.equal(Joi.ref("password"))
+			.required()
+			.label("Confirm password")
+			.messages({ "any.only": "{{#label}} does not match" }),
+	});
+
+	return schema.validate(data);
+};
+
+module.exports = { registerValidate, loginValidate, changePasswordValidate };

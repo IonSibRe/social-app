@@ -7,12 +7,11 @@ import { UserContext } from "../context/UserContext";
 import LikeButton from "../components/utils/LikeButton";
 import CommentButton from "../components/utils/CommentButton";
 import DeleteButton from "../components/utils/DeleteButton";
+import ProfileImage from "../components/utils/ProfileImage";
 import LoaderSpinner from "../components/utils/LoaderSpinner";
 import ResourceError from "../components/ResourceError";
-import personImg from "../assets/person-img.jpg";
 import { formatMsFromEpochToFromNow } from "../utils/utilities";
 import { GET_USER_INFO_BY_USERNAME } from "../utils/graphql";
-import ProfileImage from "../components/utils/ProfileImage";
 
 const SinglePost = () => {
 	const { id } = useParams();
@@ -55,7 +54,7 @@ const SinglePost = () => {
 	useEffect(() => {
 		let timeout = setTimeout(() => {
 			setError(false);
-		}, 3000);
+		}, 1000);
 		return () => clearTimeout(timeout);
 	}, [error]);
 

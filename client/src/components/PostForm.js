@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { Link } from "react-router-dom";
 
@@ -12,8 +12,10 @@ const PostForm = () => {
 
 	const [postBody, setPostBody] = useState("");
 	const [profileImg, setProfileImg] = useState("");
+	const [error, setError] = useState(false);
 
 	const [submitPost, { loading }] = useMutation(CREATE_POST, {
+		onError: () => setError(true),
 		update(cache, { data }) {
 			const posts = cache.readQuery({ query: GET_POSTS });
 			cache.writeQuery({
@@ -42,6 +44,11 @@ const PostForm = () => {
 		setPostBody("");
 	};
 
+	useEffect(() => {
+		const errorTimeout = setTimeout(() => setError(false), 1000);
+		return () => clearTimeout(errorTimeout);
+	}, [error]);
+
 	return (
 		<form className="posts-submit-wrap" onSubmit={submitHandler}>
 			<div className="posts-submit-title-wrap">
@@ -54,7 +61,7 @@ const PostForm = () => {
 			</div>
 			<input
 				type="text"
-				className="posts-submit-input"
+				className={`posts-submit-input ${error && "input-danger"}`}
 				value={postBody}
 				onChange={(e) => setPostBody(e.target.value)}
 			/>

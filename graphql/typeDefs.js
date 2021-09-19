@@ -49,6 +49,11 @@ const typeDefs = gql`
 		email: String!
 	}
 
+	input ResetPasswordInput {
+		password: String!
+		confirmPassword: String!
+	}
+
 	# Posts
 	type Post {
 		id: ID!
@@ -87,7 +92,8 @@ const typeDefs = gql`
 	type Mutation {
 		login(loginInput: LoginInput!): User!
 		register(registerInput: RegisterInput!): User!
-		uploadProfileImage(base64File: String!): User!
+		changePassword(resetPasswordInput: ResetPasswordInput!): User!
+		uploadProfileImage(base64File: String!, deletePublicId: ID): User!
 		updateUserAdditionalInfo(
 			userId: ID!
 			body: UserAdditionalInfoInput
