@@ -94,9 +94,9 @@ const usersMutationResolvers = {
 				username,
 				password: hashedPassword,
 				email,
+				followers: 0,
+				following: 0,
 			});
-
-			console.log(newUser);
 
 			// Generate Token
 			const token = genToken(newUser);
@@ -107,14 +107,18 @@ const usersMutationResolvers = {
 				username: newUser.username,
 				email: newUser.email,
 				token,
+				followers: 0,
+				following: 0,
 				createdAt: newUser.createdAt,
 			};
 		},
-		async updateUserInfo(_, { userId, body }) {
+		async updateUserAdditionalInfo(_, { userId, body }) {
 			try {
 				const user = await User.findById(userId);
 
-				user.userInfo = body;
+				user.userAdditionalInfo = body;
+
+				console.log(user);
 
 				await user.save();
 				return user;

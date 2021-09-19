@@ -1,19 +1,16 @@
-import React, { useContext } from "react";
+import React from "react";
 
-import { UserContext } from "../../context/UserContext";
 import personImg from "../../assets/person-img.jpg";
 
-const ProfileImage = () => {
-	const { userData } = useContext(UserContext);
-
-	// "data:image/png;base64, " + userData.profileImg
-
+const ProfileImage = ({ profileImg, profileImgLg = false }) => {
 	return (
-		<div className="profile-img-wrap">
+		<div
+			className={`${
+				profileImgLg ? "profile-img-wrap-lg" : "profile-img-wrap"
+			}`}
+		>
 			<img
-				src={`${
-					userData && userData.profileImg ? personImg : personImg
-				}`}
+				src={`${profileImg ? profileImg : personImg}`}
 				alt="Profile Img"
 				className="profile-img"
 			/>

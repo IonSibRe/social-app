@@ -13,8 +13,18 @@ const userSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
+	description: String,
 	profileImg: String,
-	userInfo: {
+	followers: {
+		type: Number,
+		required: true,
+	},
+	following: {
+		type: Number,
+		required: true,
+	},
+
+	userAdditionalInfo: {
 		firstName: String,
 		lastName: String,
 		phoneNumber: String,

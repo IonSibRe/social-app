@@ -1,10 +1,10 @@
-import { gql, useMutation } from "@apollo/client";
+import { gql, useLazyQuery, useMutation } from "@apollo/client";
 import React, { useState, useContext, useEffect } from "react";
 
 import { UserContext } from "../context/UserContext";
 
 const ProfileInfo = () => {
-	const { user, userData, setUserData } = useContext(UserContext);
+	const { user, setUserPublicData } = useContext(UserContext);
 	const [userLocalInfo, setUserLocalInfo] = useState({
 		firstName: "",
 		lastName: "",
@@ -15,17 +15,34 @@ const ProfileInfo = () => {
 		company: "",
 	});
 
-	const [updateUserInfo] = useMutation(UPDATE_USER_INFO, {
-		onCompleted: (data) => updateState(data),
-		variables: {
-			userId: user.id,
-			body: userLocalInfo,
+	const [updateUserAdditionalInfo] = useMutation(
+		UPDATE_USER_ADDITIONAL_INFO,
+		{
+			onCompleted: (data) => setStateAfterUpdate(data),
+			variables: {
+				userId: user.id,
+				body: userLocalInfo,
+			},
+		}
+	);
+
+	const [getUserInfoByUsername] = useLazyQuery(GET_USER_INFO_BY_USERNAME, {
+		onCompleted: (data) => {
+			setUserPublicData(data.getUserInfoByUsername);
+			setUserLocalInfo(
+				removeTypename(data.getUserInfoByUsername.userAdditionalInfo)
+			);
 		},
+		onError: (err) => console.log(err),
+		variables: {
+			username: user.username,
+		},
+		fetchPolicy: "cache-and-network",
 	});
 
 	function handleSubmit(e) {
 		e.preventDefault();
-		updateUserInfo();
+		updateUserAdditionalInfo();
 	}
 
 	const removeTypename = (data) => {
@@ -34,18 +51,16 @@ const ProfileInfo = () => {
 		);
 	};
 
-	function updateState(data) {
-		let userDataResponse = data.updateUserInfo;
+	function setStateAfterUpdate(data) {
+		let publicData = data.updateUserAdditionalInfo;
 
-		setUserData(userDataResponse);
-		setUserLocalInfo(removeTypename(userDataResponse.userInfo));
+		setUserPublicData(publicData);
+		setUserLocalInfo(removeTypename(publicData.userAdditionalInfo));
 	}
 
 	useEffect(() => {
-		if (Object.keys(userData).length !== 0) {
-			setUserLocalInfo(removeTypename(userData.userInfo));
-		}
-	}, [userData]);
+		getUserInfoByUsername();
+	}, [getUserInfoByUsername]);
 
 	return (
 		<div className="profile-info">
@@ -251,15 +266,21 @@ const ProfileInfo = () => {
 	);
 };
 
-const UPDATE_USER_INFO = gql`
-	mutation updateUserInfo($userId: ID!, $body: UserInfoInput!) {
-		updateUserInfo(userId: $userId, body: $body) {
+const UPDATE_USER_ADDITIONAL_INFO = gql`
+	mutation updateUserAdditionalInfo(
+		$userId: ID!
+		$body: UserAdditionalInfoInput!
+	) {
+		updateUserAdditionalInfo(userId: $userId, body: $body) {
 			id
 			username
 			email
-			token
+			description
 			profileImg
-			userInfo {
+			followers
+			following
+			createdAt
+			userAdditionalInfo {
 				firstName
 				lastName
 				phoneNumber
@@ -268,7 +289,28 @@ const UPDATE_USER_INFO = gql`
 				profession
 				company
 			}
+		}
+	}
+`;
+
+const GET_USER_INFO_BY_USERNAME = gql`
+	query getUserInfoByUsername($username: String!) {
+		getUserInfoByUsername(username: $username) {
+			username
+			description
+			profileImg
+			followers
+			following
 			createdAt
+			userAdditionalInfo {
+				firstName
+				lastName
+				phoneNumber
+				country
+				birthDate
+				profession
+				company
+			}
 		}
 	}
 `;

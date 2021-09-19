@@ -1,4 +1,5 @@
 import React from "react";
+import moment from "moment";
 
 import sampleBanner from "../assets/sample-banner.jpg";
 import ProfileImageUpload from "./ProfileImageUpload";
@@ -14,7 +15,7 @@ const UserInfoCard = ({ cardData }) => {
 				/>
 			</div>
 			<div className="user-info-data-wrap">
-				<ProfileImageUpload />
+				<ProfileImageUpload profileImg={cardData.profileImg} />
 
 				<div className="user-info-data-text-wrap">
 					<div className="user-info-data-inner-text-wrap">
@@ -22,18 +23,20 @@ const UserInfoCard = ({ cardData }) => {
 							{cardData.username}
 						</h2>
 						<h3 className="user-info-data-joined">
-							Joined August 2021
+							{`Joined ${moment(
+								new Date(parseInt(cardData.createdAt))
+							).format("MMMM Do, YYYY")}`}
 						</h3>
 						<div className="user-info-data-follow-wrap">
 							<h3 className="user-info-data-follow-text">
 								<strong className="user-info-data-follow-count">
-									10
+									0
 								</strong>
 								Following
 							</h3>
 							<h3 className="user-info-data-follow-text">
 								<strong className="user-info-data-follow-count">
-									15
+									0
 								</strong>
 								Followers
 							</h3>

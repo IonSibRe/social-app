@@ -1,9 +1,15 @@
 const UserReducer = (state, action) => {
 	switch (action.type) {
-		case "SET_USER_DATA":
+		case "SET_USER_PUBLIC_DATA":
 			return {
 				...state,
-				userData: { ...action.payload.user },
+				userPublicData: action.payload,
+			};
+
+		case "SET_USER_PRIVATE_DATA":
+			return {
+				...state,
+				userPrivateData: action.payload,
 			};
 
 		case "LOGIN":

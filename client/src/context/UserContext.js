@@ -22,22 +22,26 @@ if (jwtToken) {
 
 const initialState = {
 	user: user ? user : null,
-	userData: {},
+	userPrivateData: {},
+	userPublicData: {},
 	loggedIn: user ? true : false,
-	error: null,
 };
 
 const UserProvider = ({ children }) => {
 	const [state, dispatch] = useReducer(UserReducer, initialState);
 
-	const [getUserInfoById, { called }] = useLazyQuery(GET_USER_INFO_BY_ID, {
-		onCompleted: (data) => setUserData(data.getUserInfoById),
+	const [getUserInfoById] = useLazyQuery(GET_USER_INFO_BY_ID, {
+		onCompleted: (data) => console.log(data.getUserInfoById),
 		onError: (err) => console.log(err),
 		fetchPolicy: "cache-and-network",
 	});
 
-	const setUserData = (user) => {
-		dispatch({ type: "SET_USER_DATA", payload: { user } });
+	const setUserPrivateData = (privateData) => {
+		dispatch({ type: "SET_USER_PUBLIC_DATA", payload: { privateData } });
+	};
+
+	const setUserPublicData = (publicData) => {
+		dispatch({ type: "SET_USER_PUBLIC_DATA", payload: publicData });
 	};
 
 	const login = ({ id, username, email, token }) => {
@@ -55,14 +59,18 @@ const UserProvider = ({ children }) => {
 		localStorage.removeItem("jwtToken");
 	};
 
-	useEffect(() => {
-		if (state.user && Object.keys(state.user).length !== 0) {
-			getUserInfoById({ variables: { userId: state.user.id } });
-		}
-	}, [state.user, state.loggedIn, getUserInfoById, called]);
+	useEffect(() => {}, []);
 
 	return (
-		<UserContext.Provider value={{ ...state, setUserData, login, logout }}>
+		<UserContext.Provider
+			value={{
+				...state,
+				setUserPublicData,
+				setUserPrivateData,
+				login,
+				logout,
+			}}
+		>
 			{children}
 		</UserContext.Provider>
 	);
@@ -74,20 +82,7 @@ const GET_USER_INFO_BY_ID = gql`
 	query getUserInfoById($userId: ID!) {
 		getUserInfoById(userId: $userId) {
 			id
-			username
 			email
-			token
-			profileImg
-			userInfo {
-				firstName
-				lastName
-				phoneNumber
-				country
-				birthDate
-				profession
-				company
-			}
-			createdAt
 		}
 	}
 `;

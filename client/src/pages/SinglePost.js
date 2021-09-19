@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { gql, useMutation, useQuery } from "@apollo/client";
+import { gql, useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import moment from "moment";
 
 import { UserContext } from "../context/UserContext";
@@ -11,17 +11,29 @@ import LoaderSpinner from "../components/utils/LoaderSpinner";
 import ResourceError from "../components/ResourceError";
 import personImg from "../assets/person-img.jpg";
 import { formatMsFromEpochToFromNow } from "../utils/utilities";
+import { GET_USER_INFO_BY_USERNAME } from "../utils/graphql";
+import ProfileImage from "../components/utils/ProfileImage";
 
 const SinglePost = () => {
 	const { id } = useParams();
 	const { user } = useContext(UserContext);
+	const [profileImg, setProfileImg] = useState("");
 	const [comment, setComment] = useState("");
 	const [error, setError] = useState(false);
 
 	const { loading, err, data } = useQuery(GET_POST, {
+		onCompleted: (data) =>
+			getUserInfoByUsername({
+				variables: { username: data.getPost.username },
+			}),
 		variables: {
 			postId: id,
 		},
+	});
+
+	const [getUserInfoByUsername] = useLazyQuery(GET_USER_INFO_BY_USERNAME, {
+		onCompleted: (data) =>
+			setProfileImg(data.getUserInfoByUsername.profileImg),
 	});
 
 	const [createComment] = useMutation(CREATE_COMMENT, {
@@ -69,10 +81,9 @@ const SinglePost = () => {
 						</Link>
 					</div>
 					<div className="post-item-header-img-wrap">
-						<img
-							src={personImg}
-							alt="User Img"
-							className="post-item-header-img sp-post-item-header-img"
+						<ProfileImage
+							profileImg={profileImg}
+							profileImgLg={true}
 						/>
 					</div>
 				</div>

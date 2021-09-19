@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { UserContext } from "../context/UserContext";
@@ -7,11 +7,21 @@ import CommentButton from "./utils/CommentButton";
 import DeleteButton from "./utils/DeleteButton";
 import { formatMsFromEpochToFromNow } from "../utils/utilities";
 import ProfileImage from "./utils/ProfileImage";
+import { useQuery } from "@apollo/client";
+import { GET_USER_INFO_BY_USERNAME } from "../utils/graphql";
+import LoaderSpinner from "./utils/LoaderSpinner";
 
 const Post = ({
 	post: { id, username, body, commentCount, likes, likeCount, createdAt },
 }) => {
 	const { user } = useContext(UserContext);
+	const [profileImg, setProfileImg] = useState("");
+
+	const { loading } = useQuery(GET_USER_INFO_BY_USERNAME, {
+		onCompleted: (data) =>
+			setProfileImg(data.getUserInfoByUsername.profileImg),
+		variables: { username },
+	});
 
 	return (
 		<div className="post-item">
@@ -26,7 +36,11 @@ const Post = ({
 					to={`/users/${username}`}
 					className="post-item-header-img-wrap"
 				>
-					<ProfileImage />
+					{loading ? (
+						<LoaderSpinner />
+					) : (
+						<ProfileImage profileImg={profileImg} />
+					)}
 				</Link>
 			</div>
 

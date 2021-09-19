@@ -9,12 +9,15 @@ const typeDefs = gql`
 		username: String!
 		email: String!
 		token: String
+		description: String
 		profileImg: String
-		userInfo: UserInfo
+		followers: Int!
+		following: Int!
 		createdAt: String!
+		userAdditionalInfo: UserAdditionalInfo
 	}
 
-	type UserInfo {
+	type UserAdditionalInfo {
 		firstName: String
 		lastName: String
 		phoneNumber: String
@@ -24,7 +27,7 @@ const typeDefs = gql`
 		company: String
 	}
 
-	input UserInfoInput {
+	input UserAdditionalInfoInput {
 		firstName: String
 		lastName: String
 		phoneNumber: String
@@ -72,12 +75,7 @@ const typeDefs = gql`
 		createdAt: String!
 	}
 
-	type File {
-		filename: String!
-		mimetype: String!
-		encoding: String!
-	}
-
+	# Queries
 	type Query {
 		getPosts: [Post]
 		getPost(postId: ID!): Post
@@ -85,11 +83,15 @@ const typeDefs = gql`
 		getUserInfoByUsername(username: String!): User!
 	}
 
+	# Mutations
 	type Mutation {
 		login(loginInput: LoginInput!): User!
 		register(registerInput: RegisterInput!): User!
 		uploadProfileImage(base64File: String!): User!
-		updateUserInfo(userId: ID!, body: UserInfoInput): User!
+		updateUserAdditionalInfo(
+			userId: ID!
+			body: UserAdditionalInfoInput
+		): User!
 		createPost(body: String!): Post!
 		deletePost(postId: ID!): Post!
 		likePost(postId: ID!): Post!

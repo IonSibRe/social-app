@@ -1,15 +1,17 @@
 import React, { useContext, useState } from "react";
-import { gql, useMutation } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import { Link } from "react-router-dom";
 
 import { UserContext } from "../context/UserContext";
 import LoaderSpinner from "./utils/LoaderSpinner";
-import { GET_POSTS } from "../utils/graphql";
+import { GET_POSTS, GET_USER_INFO_BY_USERNAME } from "../utils/graphql";
 import ProfileImage from "./utils/ProfileImage";
 
 const PostForm = () => {
 	const { user } = useContext(UserContext);
+
 	const [postBody, setPostBody] = useState("");
+	const [profileImg, setProfileImg] = useState("");
 
 	const [submitPost, { loading }] = useMutation(CREATE_POST, {
 		update(cache, { data }) {
@@ -25,6 +27,15 @@ const PostForm = () => {
 		},
 	});
 
+	const { loading: userInfoLoading } = useQuery(GET_USER_INFO_BY_USERNAME, {
+		onCompleted: (data) => {
+			if (data.getUserInfoByUsername.profileImg) {
+				setProfileImg(data.getUserInfoByUsername.profileImg);
+			}
+		},
+		variables: { username: user.username },
+	});
+
 	const submitHandler = (e) => {
 		e.preventDefault();
 		submitPost();
@@ -37,7 +48,7 @@ const PostForm = () => {
 				<h2 className="posts-submit-title">Create a Post</h2>
 				<div className="posts-submit-profile-img-wrap">
 					<Link to={`/users/${user.username}`}>
-						<ProfileImage />
+						<ProfileImage profileImg={profileImg} />
 					</Link>
 				</div>
 			</div>
@@ -51,7 +62,7 @@ const PostForm = () => {
 				<button type="submit" className="posts-submit-btn">
 					Submit
 				</button>
-				{loading && <LoaderSpinner />}
+				{(loading || userInfoLoading) && <LoaderSpinner />}
 			</div>
 		</form>
 	);
