@@ -65,6 +65,14 @@
 		}
 	}
 
+	.profile-info-data-wrap {
+		margin-bottom: 2rem;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
 	.profile-info-data-header {
 		margin-bottom: 1rem;
 
@@ -73,11 +81,27 @@
 		}
 	}
 
-	.profile-info-data-wrap {
-		margin-bottom: 2rem;
+	.profile-info-error-wrap {
+		width: fit-content;
+		margin-bottom: 1rem;
+		background-color: $failure-col;
 
-		&:last-child {
-			margin-bottom: 0;
+		.profile-info-error-text {
+			padding: 1rem;
+			font-size: $p-size;
+			color: $light-col;
+		}
+	}
+
+	.profile-info-success-wrap {
+		width: fit-content;
+		margin-bottom: 1rem;
+		background-color: $success-col;
+
+		.profile-info-success-text {
+			padding: 1rem;
+			font-size: $p-size;
+			color: $light-col;
 		}
 	}
 

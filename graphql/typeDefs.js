@@ -17,6 +17,11 @@ const typeDefs = gql`
 		userAdditionalInfo: UserAdditionalInfo
 	}
 
+	input UserAuthDataInput {
+		username: String
+		email: String
+	}
+
 	type UserAdditionalInfo {
 		firstName: String
 		lastName: String
@@ -94,6 +99,7 @@ const typeDefs = gql`
 		register(registerInput: RegisterInput!): User!
 		changePassword(resetPasswordInput: ResetPasswordInput!): User!
 		uploadProfileImage(base64File: String!, deletePublicId: ID): User!
+		updateUserAuthData(userId: ID!, body: UserAuthDataInput!): User!
 		updateUserAdditionalInfo(
 			userId: ID!
 			body: UserAdditionalInfoInput

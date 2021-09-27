@@ -70,6 +70,7 @@ const UPLOAD_PROFILE_IMAGE = gql`
 			base64File: $base64File
 			deletePublicId: $deletePublicId
 		) {
+			id
 			username
 			description
 			profileImg

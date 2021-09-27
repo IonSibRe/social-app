@@ -1,15 +1,15 @@
 import React, { useContext, useState } from "react";
+import { useQuery } from "@apollo/client";
 import { Link } from "react-router-dom";
 
 import { UserContext } from "../context/UserContext";
+import { GET_USER_INFO_BY_USERNAME } from "../utils/graphql";
 import LikeButton from "./utils/LikeButton";
 import CommentButton from "./utils/CommentButton";
 import DeleteButton from "./utils/DeleteButton";
-import { formatMsFromEpochToFromNow } from "../utils/utilities";
 import ProfileImage from "./utils/ProfileImage";
-import { useQuery } from "@apollo/client";
-import { GET_USER_INFO_BY_USERNAME } from "../utils/graphql";
 import LoaderSpinner from "./utils/LoaderSpinner";
+import { formatMsFromEpochToFromNow } from "../utils/utilities";
 
 const Post = ({
 	post: { id, username, body, commentCount, likes, likeCount, createdAt },
@@ -20,6 +20,7 @@ const Post = ({
 	const { loading } = useQuery(GET_USER_INFO_BY_USERNAME, {
 		onCompleted: (data) =>
 			setProfileImg(data.getUserInfoByUsername.profileImg),
+		onError: (err) => console.log(err),
 		variables: { username },
 	});
 

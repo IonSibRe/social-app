@@ -1,13 +1,14 @@
-const { UserInputError } = require("apollo-server");
+const { UserInputError, ApolloError } = require("apollo-server");
 const bcrypt = require("bcryptjs");
 
 const User = require("../../models/User");
+const Post = require("../../models/Post");
 const {
 	registerValidate,
 	loginValidate,
 	changePasswordValidate,
 } = require("../../utils/validation");
-const { genToken, streamToBase64 } = require("../../utils/utils");
+const { genToken, updatePosts } = require("../../utils/utils");
 const checkAuth = require("../../utils/checkAuth");
 const { cloudinary } = require("../../utils/cloudinary");
 
@@ -147,7 +148,66 @@ const usersMutationResolvers = {
 			await user.save();
 			return user;
 		},
-		async updateUserAdditionalInfo(_, { userId, body }) {
+		async updateUserAuthData(_, { userId, body }, context) {
+			checkAuth(context);
+
+			try {
+				// Find user and user's posts;
+				const user = await User.findById(userId);
+				let usersPosts = await Post.find({ username: user.username });
+
+				const { username: newUsername, email: newEmail } = body;
+
+				// Empty fields error check
+				if (!newUsername && !newEmail) {
+					throw new UserInputError(
+						"You must enter at least one field."
+					);
+				}
+
+				// Username already exists error check
+				const existingUsername = await User.findOne({
+					username: newUsername,
+				});
+				if (existingUsername) {
+					throw new UserInputError(
+						"User with this username already exists"
+					);
+				}
+
+				// Email already exists error check
+				const existingEmail = await User.findOne({
+					email: newEmail,
+				});
+				if (existingEmail) {
+					throw new UserInputError(
+						"User with this email already exists"
+					);
+				}
+
+				// Update username and/or email
+				if (newUsername) user.username = newUsername;
+				if (newEmail) user.email = newEmail;
+
+				// Update posts if user has any
+				if (usersPosts.length > 0)
+					usersPosts.forEach((post) => (post.username = newUsername));
+
+				// Save user and posts to db
+				const updatedUser = await user.save();
+				usersPosts.forEach(async (post) => await post.save());
+
+				// Add Token
+				updatedUser.token = genToken(updatedUser);
+
+				return updatedUser;
+			} catch (err) {
+				throw new ApolloError(err);
+			}
+		},
+		async updateUserAdditionalInfo(_, { userId, body }, context) {
+			checkAuth(context);
+
 			try {
 				const user = await User.findById(userId);
 
@@ -156,7 +216,7 @@ const usersMutationResolvers = {
 				await user.save();
 				return user;
 			} catch (err) {
-				throw new Error(err);
+				throw new ApolloError(err);
 			}
 		},
 

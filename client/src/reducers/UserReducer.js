@@ -1,15 +1,15 @@
 const UserReducer = (state, action) => {
 	switch (action.type) {
+		case "SET_USER":
+			return {
+				...state,
+				user: action.payload,
+			};
+
 		case "SET_USER_PUBLIC_DATA":
 			return {
 				...state,
 				userPublicData: action.payload,
-			};
-
-		case "SET_USER_PRIVATE_DATA":
-			return {
-				...state,
-				userPrivateData: action.payload,
 			};
 
 		case "LOGIN":
@@ -23,7 +23,7 @@ const UserReducer = (state, action) => {
 			return {
 				...state,
 				user: {},
-				userData: {},
+				userPublicData: {},
 				loggedIn: false,
 			};
 

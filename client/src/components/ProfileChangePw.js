@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { gql, useMutation } from "@apollo/client";
 
 const ProfileChangePw = () => {
@@ -17,10 +17,6 @@ const ProfileChangePw = () => {
 		e.preventDefault();
 		changePassword();
 	};
-
-	useEffect(() => {
-		console.log(resetPasswordInput);
-	}, [resetPasswordInput]);
 
 	return (
 		<div className="profile-info">

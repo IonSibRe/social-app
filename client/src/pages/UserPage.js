@@ -1,4 +1,4 @@
-import { useQuery, gql } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import React, { useState } from "react";
 import { useParams } from "react-router";
 
@@ -6,7 +6,7 @@ import UserInfoCard from "../components/UserInfoCard";
 import Post from "../components/Post";
 import LoaderSpinner from "../components/utils/LoaderSpinner";
 import ResourceError from "../components/ResourceError";
-import { GET_POSTS } from "../utils/graphql";
+import { GET_POSTS, GET_USER_INFO_BY_USERNAME } from "../utils/graphql";
 
 const UserPage = () => {
 	const { username } = useParams();
@@ -48,25 +48,3 @@ const UserPage = () => {
 };
 
 export default UserPage;
-
-const GET_USER_INFO_BY_USERNAME = gql`
-	query getUserInfoByUsername($username: String!) {
-		getUserInfoByUsername(username: $username) {
-			username
-			description
-			profileImg
-			followers
-			following
-			createdAt
-			userAdditionalInfo {
-				firstName
-				lastName
-				phoneNumber
-				country
-				birthDate
-				profession
-				company
-			}
-		}
-	}
-`;
