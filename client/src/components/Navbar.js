@@ -1,9 +1,23 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import { useQuery } from "@apollo/client";
+
 import { UserContext } from "../context/UserContext";
+import ProfileImage from "../components/utils/ProfileImage";
+import { GET_USER_INFO_BY_USERNAME } from "../utils/graphql";
+import LoaderSpinner from "./utils/LoaderSpinner";
 
 const Navbar = () => {
 	const { user, loggedIn, logout } = useContext(UserContext);
+	const [profileImg, setProfileImg] = useState("");
+
+	const { loading } = useQuery(GET_USER_INFO_BY_USERNAME, {
+		onCompleted: (data) => {
+			if (data.getUserInfoByUsername.profileImg)
+				setProfileImg(data.getUserInfoByUsername.profileImg);
+		},
+		variables: { username: user.username },
+	});
 
 	return (
 		<nav className="nav">
@@ -16,10 +30,14 @@ const Navbar = () => {
 				<div className="nav-user-wrap">
 					{loggedIn ? (
 						<div className="nav-user-logged-wrap">
-							<Link to="/profile/info" className="nav-user-text">
-								{user.username}
-							</Link>
-							<div className="nav-user-separation-line"></div>
+							<input type="text" className="nav-search-bar" />
+							{loading ? (
+								<LoaderSpinner />
+							) : (
+								<Link to="/profile/info">
+									<ProfileImage profileImg={profileImg} />
+								</Link>
+							)}
 							<button
 								className="nav-user-logout-btn"
 								onClick={logout}

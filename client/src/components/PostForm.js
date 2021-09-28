@@ -31,9 +31,8 @@ const PostForm = () => {
 
 	const { loading: userInfoLoading } = useQuery(GET_USER_INFO_BY_USERNAME, {
 		onCompleted: (data) => {
-			if (data.getUserInfoByUsername.profileImg) {
+			if (data.getUserInfoByUsername.profileImg)
 				setProfileImg(data.getUserInfoByUsername.profileImg);
-			}
 		},
 		variables: { username: user.username },
 	});
