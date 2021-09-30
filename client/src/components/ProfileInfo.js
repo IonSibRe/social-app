@@ -24,7 +24,6 @@ const ProfileInfo = () => {
 		GET_USER_INFO_BY_USERNAME,
 		{
 			onCompleted: (data) => {
-				console.log(data);
 				updateUserDataAfterFetch(
 					data,
 					setUserPublicData,

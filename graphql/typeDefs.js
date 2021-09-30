@@ -91,6 +91,7 @@ const typeDefs = gql`
 		getPost(postId: ID!): Post
 		getUserInfoById(userId: ID!): User!
 		getUserInfoByUsername(username: String!): User!
+		getUsersByUsername(username: String!): [User]!
 	}
 
 	# Mutations
