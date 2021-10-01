@@ -46,7 +46,25 @@ const Navbar = () => {
 	}, [userSearchText]);
 
 	useEffect(() => {
-		searchedUsers.length > 0
+		const manageSearchBox = (e) => {
+			if (!e.target.classList.contains("nav-search-bar") && searchBoxOpen)
+				setSearchBoxOpen(false);
+
+			if (
+				e.target.classList.contains("nav-search-bar") &&
+				!searchBoxOpen &&
+				searchedUsers.length !== 0
+			)
+				setSearchBoxOpen(true);
+
+			window.removeEventListener("click", manageSearchBox);
+		};
+
+		window.addEventListener("click", manageSearchBox);
+	}, [searchBoxOpen, searchedUsers]);
+
+	useEffect(() => {
+		searchedUsers.length !== 0
 			? setSearchBoxOpen(true)
 			: setSearchBoxOpen(false);
 	}, [searchedUsers]);
