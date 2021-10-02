@@ -119,11 +119,11 @@ const usersMutationResolvers = {
 		},
 		async changePassword(_, args, context) {
 			const { id } = checkAuth(context);
-
 			const {
 				resetPasswordInput: { password, confirmPassword },
 			} = args;
 
+			// Validate Data
 			const { error: validationError } = changePasswordValidate({
 				password,
 				confirmPassword,
@@ -137,9 +137,11 @@ const usersMutationResolvers = {
 				});
 			}
 
+			// Get User
 			const user = await User.findById(id);
 			if (!user) throw new ApolloError("User Not Found");
 
+			// Hash Password
 			const salt = await bcrypt.genSalt(10);
 			const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -152,7 +154,7 @@ const usersMutationResolvers = {
 			checkAuth(context);
 
 			try {
-				// Find user and user's posts;
+				// Get user and user's posts;
 				const user = await User.findById(userId);
 				let usersPosts = await Post.find({ username: user.username });
 
@@ -219,24 +221,37 @@ const usersMutationResolvers = {
 				throw new ApolloError(err);
 			}
 		},
-
-		async uploadProfileImage(_, { base64File, deletePublicId }, context) {
+		async uploadImage(_, { base64File, imgType, deletePublicId }, context) {
 			const { id } = checkAuth(context);
 
-			const user = await User.findById(id);
-			if (!user) throw new ApolloError("User Not Found");
-
-			if (deletePublicId) {
-				await cloudinary.uploader.destroy(
-					`social-app/${deletePublicId}`
+			// Check for imgType
+			if (imgType !== "profile-image" && imgType !== "banner") {
+				throw new ApolloError(
+					"imgType must be: 'profile-image' or 'banner'"
 				);
 			}
 
+			// Get User
+			const user = await User.findById(id);
+			if (!user) throw new ApolloError("User Not Found");
+
+			// Delete previous img if there is one
+			if (deletePublicId) {
+				await cloudinary.uploader.destroy(
+					`social-app/${imgType}s/${deletePublicId}`
+				);
+			}
+
+			// Upload Image
 			const uploadedRes = await cloudinary.uploader.upload(base64File, {
+				folder: `social-app/${imgType}s`,
 				upload_preset: "social-app",
 			});
 
-			user.profileImg = uploadedRes.secure_url;
+			// Add img link to user
+			imgType === "profile-image"
+				? (user.profileImg = uploadedRes.secure_url)
+				: (user.banner = uploadedRes.secure_url);
 
 			await user.save();
 			return user;

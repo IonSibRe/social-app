@@ -1,30 +1,66 @@
-import React from "react";
+import React, { useContext } from "react";
+import { useMutation } from "@apollo/client";
 import moment from "moment";
 
-import sampleBanner from "../assets/sample-banner.jpg";
+import { UserContext } from "../context/UserContext";
 import ProfileImageUpload from "./ProfileImageUpload";
+import ProfileBannerUpload from "./ProfileBannerUpload";
+import { UPLOAD_IMAGE } from "../utils/graphql";
+import { getPublicId } from "../utils/utilities";
 
-const UserInfoCard = ({ cardData }) => {
+const UserInfoCard = ({
+	cardData: { profileImg, banner, username, createdAt },
+}) => {
+	const { setUserPublicData } = useContext(UserContext);
+
+	const [uploadImage] = useMutation(UPLOAD_IMAGE, {
+		onCompleted: (data) => {
+			setUserPublicData(data[0]);
+			window.location.reload();
+		},
+		onError: (err) => console.log(err),
+	});
+
+	const handleFileChange = (e, imgType) => {
+		const file = e.target.files[0];
+		const reader = new FileReader();
+		let publicId;
+
+		if (imgType === "profile-image") {
+			if (profileImg) publicId = getPublicId(profileImg);
+		} else {
+			if (banner) publicId = getPublicId(banner);
+		}
+
+		reader.readAsDataURL(file);
+		reader.onloadend = () => {
+			uploadImage({
+				variables: {
+					base64File: reader.result,
+					imgType,
+					deletePublicId: publicId,
+				},
+			});
+		};
+	};
+
 	return (
 		<div className="user-info-card">
-			<div className="user-info-banner-wrap">
-				<img
-					src={sampleBanner}
-					alt="Sample Banner"
-					className="user-info-banner"
-				/>
-			</div>
+			<ProfileBannerUpload
+				banner={banner}
+				handleFileChange={handleFileChange}
+			/>
+			<ProfileImageUpload
+				profileImg={profileImg}
+				handleFileChange={handleFileChange}
+			/>
 			<div className="user-info-data-wrap">
-				<ProfileImageUpload profileImg={cardData.profileImg} />
-
 				<div className="user-info-data-text-wrap">
 					<div className="user-info-data-inner-text-wrap">
-						<h2 className="user-info-data-username">
-							{cardData.username}
-						</h2>
+						<h2 className="user-info-data-username">{username}</h2>
 						<h3 className="user-info-data-joined">
 							{`Joined ${moment(
-								new Date(parseInt(cardData.createdAt))
+								new Date(parseInt(createdAt))
 							).format("MMMM Do, YYYY")}`}
 						</h3>
 						<div className="user-info-data-follow-wrap">

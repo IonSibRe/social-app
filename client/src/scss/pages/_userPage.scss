@@ -5,17 +5,47 @@
 }
 
 .user-info-card {
-	width: $post-width;
+	width: $user-page-card-width;
 	border: 1px solid #ccc;
 	position: relative;
 	margin-bottom: 2rem;
 }
 
-// Image
+// Banner
+.user-info-banner-wrap {
+	position: relative;
+
+	.user-info-banner {
+		max-height: 200px;
+	}
+
+	.user-info-banner-submit-wrap {
+		position: absolute;
+		top: 95%;
+		left: 98.5%;
+		transform: translate(-95%, -98.5%);
+	}
+
+	.user-info-banner-upload-input {
+		display: none;
+	}
+
+	.user-info-banner-upload-label {
+		display: inline-block;
+		padding: 0.5rem 0.8rem;
+		font-size: 1.5rem;
+		color: $light-col;
+		background-color: $link-col;
+		border-radius: 50%;
+		cursor: pointer;
+	}
+}
+
+// Profile Image
 .user-info-data-img-wrap {
 	position: absolute;
-	top: 100px;
-	left: 10px;
+	top: 125px;
+	left: 20px;
 	display: flex;
 	align-items: flex-end;
 

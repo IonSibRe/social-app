@@ -22,4 +22,13 @@ const updateUserDataAfterFetch = (
 	setUserLocalAdditionalData(removeTypename(publicData.userAdditionalInfo));
 };
 
-export { formatMsFromEpochToFromNow, removeTypename, updateUserDataAfterFetch };
+const getPublicId = (img) => {
+	return img.split("/")[img.split("/").length - 1].split(".")[0];
+};
+
+export {
+	formatMsFromEpochToFromNow,
+	removeTypename,
+	updateUserDataAfterFetch,
+	getPublicId,
+};

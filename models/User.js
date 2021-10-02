@@ -15,6 +15,7 @@ const userSchema = new mongoose.Schema({
 	},
 	description: String,
 	profileImg: String,
+	banner: String,
 	followers: {
 		type: Number,
 		required: true,

@@ -11,6 +11,7 @@ const typeDefs = gql`
 		token: String
 		description: String
 		profileImg: String
+		banner: String
 		followers: Int!
 		following: Int!
 		createdAt: String!
@@ -99,7 +100,13 @@ const typeDefs = gql`
 		login(loginInput: LoginInput!): User!
 		register(registerInput: RegisterInput!): User!
 		changePassword(resetPasswordInput: ResetPasswordInput!): User!
-		uploadProfileImage(base64File: String!, deletePublicId: ID): User!
+		uploadImage(
+			base64File: String!
+			imgType: String!
+			deletePublicId: ID
+		): User!
+		# uploadProfileImage(base64File: String!, deletePublicId: ID): User!
+		# uploadProfileBanner(base64File: String!, deletePublicId: ID): User!
 		updateUserAuthData(userId: ID!, body: UserAuthDataInput!): User!
 		updateUserAdditionalInfo(
 			userId: ID!
