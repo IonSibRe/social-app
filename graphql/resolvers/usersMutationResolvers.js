@@ -99,8 +99,10 @@ const usersMutationResolvers = {
 				username,
 				password: hashedPassword,
 				email,
-				followers: 0,
-				following: 0,
+				followers: [],
+				followersCount: 0,
+				following: [],
+				followingCount: 0,
 			});
 
 			// Generate Token
@@ -112,8 +114,10 @@ const usersMutationResolvers = {
 				username: newUser.username,
 				email: newUser.email,
 				token,
-				followers: 0,
-				following: 0,
+				followers: [],
+				followersCount: 0,
+				following: [],
+				followingCount: 0,
 				createdAt: newUser.createdAt,
 			};
 		},
@@ -254,6 +258,53 @@ const usersMutationResolvers = {
 				: (user.banner = uploadedRes.secure_url);
 
 			await user.save();
+			return user;
+		},
+		async followUser(_, { currentUser, userToFollow }, context) {
+			const { id } = checkAuth(context);
+
+			const user = await User.findById(id);
+			const fetchedUserToFollow = await User.findOne({
+				username: userToFollow,
+			});
+
+			if (!user) throw new ApolloError("User Not Found");
+			if (!fetchedUserToFollow)
+				throw new ApolloError("User to Follow Not Found");
+
+			const following = fetchedUserToFollow.followers.find(
+				(follower) => currentUser === follower
+			);
+
+			if (!following) {
+				// Add username of current user to userToFollow's followers list
+				fetchedUserToFollow.followers.push(currentUser);
+
+				// Add userToFollow username to currentUser's following list
+				user.following.push(fetchedUserToFollow.username);
+			} else {
+				// Remove username of current user to userToFollow's followers list
+				fetchedUserToFollow.followers =
+					fetchedUserToFollow.followers.filter(
+						(follower) => follower !== currentUser
+					);
+
+				// Remove userToFollow username to currentUser's following list
+				user.following = user.following.filter(
+					(following) => following !== fetchedUserToFollow.username
+				);
+			}
+
+			user.followersCount = user.followers.length;
+			user.followingCount = user.following.length;
+			fetchedUserToFollow.followersCount =
+				fetchedUserToFollow.followers.length;
+			fetchedUserToFollow.followingCount =
+				fetchedUserToFollow.following.length;
+
+			user.save();
+			fetchedUserToFollow.save();
+
 			return user;
 		},
 	},

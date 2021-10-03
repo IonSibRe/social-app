@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 import { UserContext } from "../context/UserContext";
 import LoaderSpinner from "./utils/LoaderSpinner";
-import { GET_POSTS, GET_USER_INFO_BY_USERNAME } from "../utils/graphql";
+import { GET_USERS_POSTS, GET_USER_INFO_BY_USERNAME } from "../utils/graphql";
 import ProfileImage from "./utils/ProfileImage";
 
 const PostForm = () => {
@@ -17,10 +17,12 @@ const PostForm = () => {
 	const [submitPost, { loading }] = useMutation(CREATE_POST, {
 		onError: () => setError(true),
 		update(cache, { data }) {
-			const posts = cache.readQuery({ query: GET_POSTS });
+			const posts = cache.readQuery({ query: GET_USERS_POSTS });
 			cache.writeQuery({
-				query: GET_POSTS,
-				data: { getPosts: [...posts.getPosts, data.createPost] },
+				query: GET_USERS_POSTS,
+				data: {
+					getUsersPosts: [...posts.getUsersPosts, data.createPost],
+				},
 			});
 		},
 

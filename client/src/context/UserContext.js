@@ -50,6 +50,7 @@ const UserProvider = ({ children }) => {
 	const logout = () => {
 		dispatch({ type: "LOGOUT" });
 		localStorage.removeItem("jwtToken");
+		window.location.reload();
 	};
 
 	return (

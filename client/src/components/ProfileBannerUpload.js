@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import sampleBanner from "../assets/sample-banner.jpg";
+import defaultBanner from "../assets/default-banner.png";
 import { UserContext } from "../context/UserContext";
 
 const ProfileBannerUpload = ({ banner, handleFileChange }) => {
@@ -8,9 +8,11 @@ const ProfileBannerUpload = ({ banner, handleFileChange }) => {
 	return (
 		<div className="user-info-banner-wrap">
 			<img
-				src={banner || sampleBanner}
+				src={banner || defaultBanner}
 				alt="Sample Banner"
-				className="user-info-banner"
+				className={`user-info-banner ${
+					!banner && "user-info-banner-border"
+				}`}
 			/>
 			{user && user.username && (
 				<div className="user-info-banner-submit-wrap">

@@ -12,8 +12,10 @@ const typeDefs = gql`
 		description: String
 		profileImg: String
 		banner: String
-		followers: Int!
-		following: Int!
+		followers: [String]!
+		followersCount: Int!
+		following: [String]!
+		followingCount: Int!
 		createdAt: String!
 		userAdditionalInfo: UserAdditionalInfo
 	}
@@ -88,8 +90,9 @@ const typeDefs = gql`
 
 	# Queries
 	type Query {
-		getPosts: [Post]
-		getPost(postId: ID!): Post
+		getAllPosts: [Post]!
+		getUsersPosts: [Post]!
+		getPost(postId: ID!): Post!
 		getUserInfoById(userId: ID!): User!
 		getUserInfoByUsername(username: String!): User!
 		getUsersByUsername(username: String!): [User]!
@@ -100,13 +103,12 @@ const typeDefs = gql`
 		login(loginInput: LoginInput!): User!
 		register(registerInput: RegisterInput!): User!
 		changePassword(resetPasswordInput: ResetPasswordInput!): User!
+		followUser(currentUser: String!, userToFollow: String!): User
 		uploadImage(
 			base64File: String!
 			imgType: String!
 			deletePublicId: ID
 		): User!
-		# uploadProfileImage(base64File: String!, deletePublicId: ID): User!
-		# uploadProfileBanner(base64File: String!, deletePublicId: ID): User!
 		updateUserAuthData(userId: ID!, body: UserAuthDataInput!): User!
 		updateUserAdditionalInfo(
 			userId: ID!

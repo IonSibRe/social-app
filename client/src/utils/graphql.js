@@ -1,8 +1,31 @@
 import { gql } from "@apollo/client";
 
-export const GET_POSTS = gql`
-	query getPosts {
-		getPosts {
+export const GET_ALL_POSTS = gql`
+	query getAllPosts {
+		getAllPosts {
+			id
+			username
+			body
+			commentCount
+			likeCount
+			comments {
+				id
+				body
+				createdAt
+			}
+			likes {
+				id
+				username
+				createdAt
+			}
+			createdAt
+		}
+	}
+`;
+
+export const GET_USERS_POSTS = gql`
+	query getUsersPosts {
+		getUsersPosts {
 			id
 			username
 			body
@@ -31,7 +54,9 @@ export const GET_USER_INFO_BY_USERNAME = gql`
 			profileImg
 			banner
 			followers
+			followersCount
 			following
+			followingCount
 			createdAt
 			userAdditionalInfo {
 				firstName
@@ -57,13 +82,14 @@ export const UPLOAD_IMAGE = gql`
 			imgType: $imgType
 			deletePublicId: $deletePublicId
 		) {
-			id
 			username
 			description
 			profileImg
 			banner
 			followers
+			followersCount
 			following
+			followingCount
 			createdAt
 			userAdditionalInfo {
 				firstName

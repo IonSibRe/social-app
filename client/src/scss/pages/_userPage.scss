@@ -5,7 +5,7 @@
 }
 
 .user-info-card {
-	width: $user-page-card-width;
+	width: $post-width;
 	border: 1px solid #ccc;
 	position: relative;
 	margin-bottom: 2rem;
@@ -16,7 +16,11 @@
 	position: relative;
 
 	.user-info-banner {
-		max-height: 200px;
+		height: 200px;
+	}
+
+	.user-info-banner-border {
+		border-bottom: 1px solid #ccc;
 	}
 
 	.user-info-banner-submit-wrap {
@@ -45,13 +49,13 @@
 .user-info-data-img-wrap {
 	position: absolute;
 	top: 125px;
-	left: 20px;
+	left: 10px;
 	display: flex;
 	align-items: flex-end;
 
 	.user-info-data-img-inner-wrap {
 		width: 150px;
-		height: 140px;
+		height: 150px;
 		border-radius: 50%;
 		overflow: hidden;
 		border: 2px solid #ccc;
@@ -90,6 +94,11 @@
 
 	.user-info-data-follow-btn {
 		@include btn-default;
+	}
+
+	.user-info-data-following-btn {
+		@include btn-default;
+		background-color: $failure-col;
 	}
 
 	.user-info-data-username {

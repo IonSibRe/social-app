@@ -13,7 +13,7 @@ const DeleteButton = ({ postId, commentId }) => {
 			if (!commentId) {
 				cache.modify({
 					fields: {
-						getPosts: (list, { readField }) =>
+						getUsersPosts: (list, { readField }) =>
 							list.filter(
 								(item) => readField("id", item) !== postId
 							),
@@ -29,8 +29,9 @@ const DeleteButton = ({ postId, commentId }) => {
 
 	const deletePostFunc = () => {
 		deletePostOrComment();
-		if (!commentId && window.location.pathname.split("/")[1] === "/posts")
+		if (!commentId && window.location.pathname.split("/")[1] === "posts") {
 			history.push("/");
+		}
 	};
 
 	return (

@@ -8,7 +8,11 @@ const ProfileImageUpload = ({ profileImg, handleFileChange }) => {
 
 	return (
 		<div className="user-info-data-img-wrap">
-			<div className="user-info-data-img-inner-wrap">
+			<div
+				className={`user-info-data-img-inner-wrap ${
+					!profileImg && "rm-border"
+				}`}
+			>
 				<img
 					src={profileImg ? profileImg : personImg}
 					alt="Profile Img"

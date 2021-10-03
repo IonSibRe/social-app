@@ -6,13 +6,13 @@ import UserInfoCard from "../components/UserInfoCard";
 import Post from "../components/Post";
 import LoaderSpinner from "../components/utils/LoaderSpinner";
 import ResourceError from "../components/ResourceError";
-import { GET_POSTS, GET_USER_INFO_BY_USERNAME } from "../utils/graphql";
+import { GET_USERS_POSTS, GET_USER_INFO_BY_USERNAME } from "../utils/graphql";
 
 const UserPage = () => {
 	const { username } = useParams();
 	const [cardData, setCardData] = useState({});
 
-	const { loading, err, data } = useQuery(GET_POSTS);
+	const { loading, err, data } = useQuery(GET_USERS_POSTS);
 	const { loading: cardLoading, err: cardErr } = useQuery(
 		GET_USER_INFO_BY_USERNAME,
 		{
@@ -36,7 +36,7 @@ const UserPage = () => {
 			<div className="user-inner-wrap">
 				<UserInfoCard cardData={cardData} />
 				<div className="user-posts">
-					{data.getPosts
+					{data.getUsersPosts
 						.filter((post) => post.username === username)
 						.map((post) => {
 							return <Post post={post} key={post.id} />;

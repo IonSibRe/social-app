@@ -6,7 +6,6 @@
 // ------------- Layout -------------
 $section-width: 1300px;
 $post-width: 500px;
-$user-page-card-width: 600px;
 
 $lg-break-point: 1300px;
 $md-break-point: 768px;
@@ -84,6 +83,10 @@ $failure-col: #eb435c;
 .input-danger {
 	background-color: #f58e9e;
 	border: 1px solid #f58e9e !important;
+}
+
+.rm-border {
+	border: none !important;
 }
 
 .loader-wrap {

@@ -16,15 +16,16 @@ const userSchema = new mongoose.Schema({
 	description: String,
 	profileImg: String,
 	banner: String,
-	followers: {
+	followers: [{ type: String }],
+	followersCount: {
 		type: Number,
 		required: true,
 	},
-	following: {
+	following: [{ type: String }],
+	followingCount: {
 		type: Number,
 		required: true,
 	},
-
 	userAdditionalInfo: {
 		firstName: String,
 		lastName: String,

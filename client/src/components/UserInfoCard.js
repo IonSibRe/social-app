@@ -7,11 +7,12 @@ import ProfileImageUpload from "./ProfileImageUpload";
 import ProfileBannerUpload from "./ProfileBannerUpload";
 import { UPLOAD_IMAGE } from "../utils/graphql";
 import { getPublicId } from "../utils/utilities";
+import FollowButton from "./FollowButton";
 
 const UserInfoCard = ({
-	cardData: { profileImg, banner, username, createdAt },
+	cardData: { username, profileImg, banner, following, createdAt },
 }) => {
-	const { setUserPublicData } = useContext(UserContext);
+	const { user, setUserPublicData } = useContext(UserContext);
 
 	const [uploadImage] = useMutation(UPLOAD_IMAGE, {
 		onCompleted: (data) => {
@@ -78,14 +79,14 @@ const UserInfoCard = ({
 							</h3>
 						</div>
 					</div>
-					<div className="user-info-data-inner-text-wrap user-info-data-follow-btn-wrap">
-						<button
-							type="button"
-							className="user-info-data-follow-btn"
-						>
-							Follow
-						</button>
-					</div>
+					{user && username !== user.username && (
+						<div className="user-info-data-inner-text-wrap user-info-data-follow-btn-wrap">
+							<FollowButton
+								userToFollow={username}
+								followingArray={following}
+							/>
+						</div>
+					)}
 				</div>
 			</div>
 		</div>
