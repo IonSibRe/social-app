@@ -8,7 +8,7 @@ const {
 	loginValidate,
 	changePasswordValidate,
 } = require("../../utils/validation");
-const { genToken, updatePosts } = require("../../utils/utils");
+const { genToken } = require("../../utils/utils");
 const checkAuth = require("../../utils/checkAuth");
 const { cloudinary } = require("../../utils/cloudinary");
 
@@ -304,6 +304,20 @@ const usersMutationResolvers = {
 
 			user.save();
 			fetchedUserToFollow.save();
+
+			return user;
+		},
+		async deactivateAccount(_, { userId }, context) {
+			checkAuth(context);
+
+			const user = await User.findById(userId);
+			if (!user) throw new ApolloError("User Not Found");
+
+			// Delete all users posts
+			await Post.deleteMany({ username: user.username });
+
+			// Delete user
+			await user.remove();
 
 			return user;
 		},

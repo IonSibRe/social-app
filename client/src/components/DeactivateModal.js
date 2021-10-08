@@ -1,6 +1,6 @@
 import React from "react";
 
-const DeactivateModal = ({ modalOpen, setModalOpen, deactivateAcc }) => {
+const DeactivateModal = ({ modalOpen, setModalOpen, deactivateAccount }) => {
 	return (
 		<div
 			className={`deactivate-modal ${
@@ -22,7 +22,7 @@ const DeactivateModal = ({ modalOpen, setModalOpen, deactivateAcc }) => {
 					</p>
 					<button
 						className="deactivate-modal-btn deactivate-modal-accept-btn"
-						onClick={deactivateAcc}
+						onClick={deactivateAccount}
 					>
 						Deactivate
 					</button>

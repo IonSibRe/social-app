@@ -1,16 +1,24 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Redirect, Route } from "react-router-dom";
+import { gql, useMutation } from "@apollo/client";
+
+import { UserContext } from "../context/UserContext";
 import DeactivateModal from "../components/DeactivateModal";
 import ProfileChangePw from "../components/ProfileChangePw";
 import ProfileFilter from "../components/ProfileFilter";
 import ProfileInfo from "../components/ProfileInfo";
 
 const Profile = () => {
+	const { user, logout } = useContext(UserContext);
 	const [modalOpen, setModalOpen] = useState(false);
 
-	const deactivateAcc = () => {
-		console.log("deactivate");
-	};
+	const [deactivateAccount] = useMutation(DEACTIVATE_ACCOUNT, {
+		onCompleted: (data) => {
+			console.log(data);
+			logout();
+		},
+		variables: { userId: user.id },
+	});
 
 	if (window.location.pathname === "/profile") {
 		return <Redirect to="/profile/info" />;
@@ -23,7 +31,7 @@ const Profile = () => {
 				<DeactivateModal
 					modalOpen={modalOpen}
 					setModalOpen={setModalOpen}
-					deactivateAcc={deactivateAcc}
+					deactivateAccount={deactivateAccount}
 				/>
 			)}
 			<Route path="/profile/info" component={ProfileInfo} />
@@ -34,5 +42,14 @@ const Profile = () => {
 		</section>
 	);
 };
+
+const DEACTIVATE_ACCOUNT = gql`
+	mutation deactivateAccount($userId: ID!) {
+		deactivateAccount(userId: $userId) {
+			id
+			username
+		}
+	}
+`;
 
 export default Profile;

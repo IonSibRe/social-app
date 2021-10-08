@@ -114,6 +114,7 @@ const typeDefs = gql`
 			userId: ID!
 			body: UserAdditionalInfoInput
 		): User!
+		deactivateAccount(userId: ID!): User!
 		createPost(body: String!): Post!
 		deletePost(postId: ID!): Post!
 		likePost(postId: ID!): Post!
