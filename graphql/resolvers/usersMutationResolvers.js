@@ -283,20 +283,23 @@ const usersMutationResolvers = {
 				// Add userToFollow username to currentUser's following list
 				user.following.push(fetchedUserToFollow.username);
 			} else {
-				// Remove username of current user to userToFollow's followers list
+				// Remove username of current user from userToFollow's followers list
 				fetchedUserToFollow.followers =
 					fetchedUserToFollow.followers.filter(
 						(follower) => follower !== currentUser
 					);
 
-				// Remove userToFollow username to currentUser's following list
+				// Remove userToFollow username from currentUser's following list
 				user.following = user.following.filter(
 					(following) => following !== fetchedUserToFollow.username
 				);
 			}
 
+			// Update followers and following count on current user
 			user.followersCount = user.followers.length;
 			user.followingCount = user.following.length;
+
+			// Update followers and following count on userToFollow
 			fetchedUserToFollow.followersCount =
 				fetchedUserToFollow.followers.length;
 			fetchedUserToFollow.followingCount =
@@ -312,6 +315,41 @@ const usersMutationResolvers = {
 
 			const user = await User.findById(userId);
 			if (!user) throw new ApolloError("User Not Found");
+
+			// Remove user from followers and following lists
+			const removeFromFollowingUsers = await User.find({
+				following: { $in: user.username },
+			});
+
+			const removeFromFollowersUsers = await User.find({
+				followers: { $in: user.username },
+			});
+
+			let removeFollowersAndFollowingUsers = [
+				...removeFromFollowingUsers,
+				...removeFromFollowersUsers,
+			];
+
+			removeFollowersAndFollowingUsers =
+				removeFollowersAndFollowingUsers.filter(
+					(user, i, self) =>
+						self.findIndex(
+							(item) => item.username === user.username
+						) === i
+				);
+
+			removeFollowersAndFollowingUsers.forEach((user) => {
+				user.following = user.following.filter(
+					(following) => following === user.username
+				);
+				user.followers = user.followers.filter(
+					(follower) => follower === user.username
+				);
+			});
+
+			removeFollowersAndFollowingUsers.forEach(
+				async (user) => await user.save()
+			);
 
 			// Delete all users posts
 			await Post.deleteMany({ username: user.username });

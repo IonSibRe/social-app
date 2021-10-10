@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 import { UserContext } from "../context/UserContext";
 import personImg from "../assets/person-img.jpg";
 
-const ProfileImageUpload = ({ profileImg, handleFileChange }) => {
+const ProfileImageUpload = ({ username, profileImg, handleFileChange }) => {
 	const { user } = useContext(UserContext);
 
 	return (
@@ -19,7 +19,7 @@ const ProfileImageUpload = ({ profileImg, handleFileChange }) => {
 					className="user-info-data-img"
 				/>
 			</div>
-			{user && user.username && (
+			{user && user.username === username && (
 				<div className="user-info-data-img-submit-wrap">
 					<label
 						htmlFor="user-info-data-file-upload"

@@ -10,7 +10,15 @@ import { getPublicId } from "../utils/utilities";
 import FollowButton from "./FollowButton";
 
 const UserInfoCard = ({
-	cardData: { username, profileImg, banner, following, createdAt },
+	cardData: {
+		username,
+		profileImg,
+		banner,
+		following,
+		followingCount,
+		followersCount,
+		createdAt,
+	},
 }) => {
 	const { user, setUserPublicData } = useContext(UserContext);
 
@@ -48,10 +56,12 @@ const UserInfoCard = ({
 	return (
 		<div className="user-info-card">
 			<ProfileBannerUpload
+				username={username}
 				banner={banner}
 				handleFileChange={handleFileChange}
 			/>
 			<ProfileImageUpload
+				username={username}
 				profileImg={profileImg}
 				handleFileChange={handleFileChange}
 			/>
@@ -67,13 +77,13 @@ const UserInfoCard = ({
 						<div className="user-info-data-follow-wrap">
 							<h3 className="user-info-data-follow-text">
 								<strong className="user-info-data-follow-count">
-									0
+									{followingCount}
 								</strong>
 								Following
 							</h3>
 							<h3 className="user-info-data-follow-text">
 								<strong className="user-info-data-follow-count">
-									0
+									{followersCount}
 								</strong>
 								Followers
 							</h3>
