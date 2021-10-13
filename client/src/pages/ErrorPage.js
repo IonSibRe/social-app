@@ -1,21 +1,47 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Container from "@mui/material/Container";
+import { Button, Typography } from "@mui/material";
+import { Box } from "@mui/system";
 
 const ErrorPage = () => {
 	return (
-		<div className="error-section">
-			<div className="error-section-inner-wrap">
-				<h1 className="error-title">404</h1>
-				<h2 className="error-subtitle">Page Not Found</h2>
-				<p className="error-text">
+		<Container
+			maxWidth="sm"
+			sx={{
+				display: "flex",
+				justifyContent: "center",
+				marginTop: "10vh",
+			}}
+		>
+			<Box
+				sx={{
+					textAlign: "center",
+				}}
+			>
+				<Typography variant="h1">404</Typography>
+				<Typography variant="h2" sx={{ marginBottom: "0.5rem" }}>
+					Page Not Found
+				</Typography>
+				<Typography
+					variant="body1"
+					fontSize="2rem"
+					sx={{ marginBottom: "1rem" }}
+				>
 					The page you are looking for might have been removed, had
 					it's name changed or is temporarily unavailable.
-				</p>
-				<Link className="error-link" to="/">
-					Homepage
+				</Typography>
+				<Link to="/">
+					<Button
+						variant="contained"
+						size="medium"
+						sx={{ fontSize: "1.5rem" }}
+					>
+						Homepage
+					</Button>
 				</Link>
-			</div>
-		</div>
+			</Box>
+		</Container>
 	);
 };
 

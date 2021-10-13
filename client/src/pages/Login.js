@@ -3,6 +3,8 @@ import { Link, Redirect } from "react-router-dom";
 import { gql, useMutation } from "@apollo/client";
 import { UserContext } from "../context/UserContext";
 import LoaderSpinner from "../components/utils/LoaderSpinner";
+import { Container } from "@mui/material";
+import { Box } from "@mui/system";
 
 const Login = () => {
 	const { login, loggedIn } = useContext(UserContext);
@@ -38,8 +40,8 @@ const Login = () => {
 	if (loggedIn) return <Redirect to="/" />;
 
 	return (
-		<section className="auth-section section-center">
-			<div className="auth-card">
+		<Container sx={{ display: "flex", justifyContent: "center" }}>
+			<Box sx={{}}>
 				<div className="auth-card-inner-wrap">
 					<div className="auth-card-title-wrap">
 						<h3 className="auth-card-title">Login</h3>
@@ -111,8 +113,8 @@ const Login = () => {
 						</div>
 					</form>
 				</div>
-			</div>
-		</section>
+			</Box>
+		</Container>
 	);
 };
 
