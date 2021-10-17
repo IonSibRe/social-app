@@ -1,9 +1,24 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { gql, useLazyQuery, useQuery } from "@apollo/client";
+import React, { useContext, useEffect, useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
+
+import {
+	AppBar,
+	Toolbar,
+	Typography,
+	Link,
+	Avatar,
+	TextField,
+	IconButton,
+	useMediaQuery,
+	useTheme,
+	Container,
+	Box,
+} from "@mui/material";
+import LogoutIcon from "@mui/icons-material/Logout";
+import LoginIcon from "@mui/icons-material/Login";
 
 import { UserContext } from "../context/UserContext";
-import ProfileImage from "../components/utils/ProfileImage";
 import { GET_USER_INFO_BY_USERNAME } from "../utils/graphql";
 import LoaderSpinner from "./utils/LoaderSpinner";
 
@@ -14,6 +29,12 @@ const Navbar = () => {
 	const [searchBoxOpen, setSearchBoxOpen] = useState(false);
 	const [profileImg, setProfileImg] = useState("");
 
+	// MUI
+	const theme = useTheme();
+	const mediaQueryMdMatch = useMediaQuery(theme.breakpoints.down("md"));
+	const mediaQuerySmMatch = useMediaQuery(theme.breakpoints.down("sm"));
+
+	// Get user profile img
 	const { loading } = useQuery(GET_USER_INFO_BY_USERNAME, {
 		onCompleted: (data) => {
 			if (data.getUserInfoByUsername.profileImg)
@@ -23,6 +44,7 @@ const Navbar = () => {
 		variables: { username: user?.username },
 	});
 
+	// FIX: Search for Users
 	const [getUsersByUsername] = useLazyQuery(GET_USERS_BY_USERNAME, {
 		onCompleted: (data) => setSearchedUsers(data.getUsersByUsername),
 		onError: (err) => console.log(err),
@@ -69,71 +91,118 @@ const Navbar = () => {
 			: setSearchBoxOpen(false);
 	}, [searchedUsers]);
 
+	// MUI Styles
+	const styles = {
+		toolbar: {
+			justifyContent: "space-between",
+		},
+		avatar: {
+			height: 45,
+			width: 45,
+			margin: "0 1rem 0 2rem",
+		},
+	};
+
+	const stylesMd = {
+		toolbar: {
+			flexDirection: "column",
+			justifyItems: "center",
+		},
+		title: {
+			marginTop: "0.5rem",
+		},
+	};
+
+	const stylesSm = {
+		innerToolbar: {
+			flexDirection: "column",
+		},
+		textFieldWrap: {
+			order: 2,
+			marginBottom: "0.5rem",
+		},
+		avatarAndLogoutWrap: {
+			order: 1,
+			margin: "0.5rem 0",
+		},
+	};
+
 	return (
-		<nav className="nav">
-			<div className="nav-inner section-center">
-				<div className="nav-logo-wrap">
-					<Link to="/" className="nav-logo-title">
-						Social App
-					</Link>
-				</div>
-				<div className="nav-user-wrap">
+		<AppBar color="inherit" elevation={2} position="static">
+			<Container maxWidth="xl">
+				<Toolbar
+					sx={mediaQueryMdMatch ? stylesMd.toolbar : styles.toolbar}
+				>
+					<Typography
+						variant="h4"
+						component="h2"
+						sx={mediaQueryMdMatch ? stylesMd.title : null}
+					>
+						<Link component={RouterLink} to="/" underline="none">
+							Social App
+						</Link>
+					</Typography>
 					{loggedIn ? (
-						<div className="nav-user-logged-wrap">
-							<div className="nav-search-bar-wrap">
-								<input
-									type="text"
-									className="nav-search-bar"
+						<Toolbar
+							sx={
+								mediaQuerySmMatch ? stylesSm.innerToolbar : null
+							}
+						>
+							<Box
+								sx={
+									mediaQuerySmMatch
+										? stylesSm.textFieldWrap
+										: null
+								}
+							>
+								<TextField
+									type="search"
 									value={userSearchText || ""}
+									label="Search"
+									size="small"
 									onChange={(e) => searchForUsers(e)}
 								/>
-								{searchBoxOpen && (
-									<div className="searched-users-wrap">
-										{searchedUsers.map((item) => (
-											<Link
-												to={`/users/${item.username}`}
-												className="searched-users-item"
-												key={item.id}
-											>
-												<div className="searched-users-item-img-wrap">
-													<ProfileImage
-														profileImg={
-															item.profileImg
-														}
-													/>
-												</div>
-												<div className="searched-users-item-data-wrap">
-													<h4 className="searched-users-item-data-username">
-														{item.username}
-													</h4>
-												</div>
-											</Link>
-										))}
-									</div>
-								)}
-							</div>
-							{loading ? (
-								<LoaderSpinner />
-							) : (
-								<Link to="/profile/info">
-									<ProfileImage profileImg={profileImg} />
-								</Link>
-							)}
-							<button
-								className="nav-user-logout-btn"
-								onClick={logout}
+							</Box>
+							<Box
+								sx={{
+									display: "flex",
+									...(mediaQuerySmMatch
+										? stylesSm.avatarAndLogoutWrap
+										: null),
+								}}
 							>
-								<i className="fas fa-sign-out-alt nav-user-logout-icon"></i>
-							</button>
-						</div>
+								{loading ? (
+									<LoaderSpinner />
+								) : (
+									<RouterLink to="/profile/info">
+										<Avatar
+											src={profileImg}
+											sx={styles.avatar}
+										/>
+									</RouterLink>
+								)}
+								<IconButton
+									color="primary"
+									size="medium"
+									onClick={logout}
+								>
+									<LogoutIcon fontSize="inherit" />
+								</IconButton>
+							</Box>
+						</Toolbar>
 					) : (
-						<Link to="/login" className="nav-user-login-link">
-							<i className="fas fa-user nav-user-login-icon"></i>
+						<Link
+							component={RouterLink}
+							to="/login"
+							color="#fff"
+							underline="none"
+						>
+							<LoginIcon />
 						</Link>
 					)}
-				</div>
-			</div>
-		</nav>
+				</Toolbar>
+			</Container>
+		</AppBar>
 	);
 };
 
