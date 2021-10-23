@@ -1,11 +1,18 @@
 import React, { useContext, useEffect, useState } from "react";
 import { gql, useMutation, useQuery } from "@apollo/client";
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 
 import { UserContext } from "../context/UserContext";
-import LoaderSpinner from "./utils/LoaderSpinner";
 import { GET_USERS_POSTS, GET_USER_INFO_BY_USERNAME } from "../utils/graphql";
-import ProfileImage from "./utils/ProfileImage";
+import {
+	Box,
+	Avatar,
+	Button,
+	CircularProgress,
+	TextField,
+	Toolbar,
+	Typography,
+} from "@mui/material";
 
 const PostForm = () => {
 	const { user } = useContext(UserContext);
@@ -51,27 +58,47 @@ const PostForm = () => {
 	}, [error]);
 
 	return (
-		<form className="posts-submit-wrap" onSubmit={submitHandler}>
-			<div className="posts-submit-title-wrap">
-				<h2 className="posts-submit-title">Create a Post</h2>
-				<div className="posts-submit-profile-img-wrap">
-					<Link to={`/users/${user.username}`}>
-						<ProfileImage profileImg={profileImg} />
-					</Link>
-				</div>
-			</div>
-			<input
+		<form onSubmit={submitHandler} style={{ marginBottom: "1rem" }}>
+			<Toolbar disableGutters sx={{ justifyContent: "space-between" }}>
+				<Typography variant="h4" component="h3">
+					Create a Post
+				</Typography>
+				<RouterLink to={`/users/${user.username}`}>
+					<Avatar
+						src={profileImg}
+						sx={{
+							height: 45,
+							width: 45,
+						}}
+					/>
+				</RouterLink>
+			</Toolbar>
+			<TextField
+				sx={{ margin: "0.5rem 0 1rem 0" }}
 				type="text"
-				className={`posts-submit-input ${error && "input-danger"}`}
+				label="Add Post"
+				size="small"
+				fullWidth
 				value={postBody}
 				onChange={(e) => setPostBody(e.target.value)}
 			/>
-			<div className="posts-submit-btn-wrap">
-				<button type="submit" className="posts-submit-btn">
+			<Box
+				sx={{
+					display: "flex",
+					justifyContent: "space-between",
+					alignItems: "center",
+				}}
+			>
+				<Button
+					sx={{ display: "block" }}
+					disabled={postBody.length === 0}
+					variant="outlined"
+					type="submit"
+				>
 					Submit
-				</button>
-				{(loading || userInfoLoading) && <LoaderSpinner />}
-			</div>
+				</Button>
+				{(loading || userInfoLoading) && <CircularProgress size={30} />}
+			</Box>
 		</form>
 	);
 };

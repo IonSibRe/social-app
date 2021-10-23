@@ -2,7 +2,9 @@ import { gql, useMutation } from "@apollo/client";
 import React from "react";
 import { useHistory } from "react-router";
 
-import LoaderSpinner from "../utils/LoaderSpinner";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { CircularProgress, IconButton } from "@mui/material";
+import { Box } from "@mui/system";
 
 const DeleteButton = ({ postId, commentId }) => {
 	let history = useHistory();
@@ -35,17 +37,12 @@ const DeleteButton = ({ postId, commentId }) => {
 	};
 
 	return (
-		<div className="post-item-btns-item-wrap">
-			{loading && <LoaderSpinner />}
-			<button
-				to="/"
-				type="button"
-				className="post-item-btn post-item-delete-btn"
-				onClick={deletePostFunc}
-			>
-				<i className="fas fa-trash-alt post-item-delete-icon"></i>
-			</button>
-		</div>
+		<Box sx={{ display: "flex", alignItems: "center" }}>
+			{loading && <CircularProgress size={20} />}
+			<IconButton color="primary" size="medium" onClick={deletePostFunc}>
+				<DeleteIcon />
+			</IconButton>
+		</Box>
 	);
 };
 

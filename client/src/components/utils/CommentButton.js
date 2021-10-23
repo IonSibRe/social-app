@@ -1,40 +1,44 @@
+import { Box, IconButton, Link, Typography } from "@mui/material";
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
+import AddCommentIcon from "@mui/icons-material/AddComment";
+import LoginIcon from "@mui/icons-material/Login";
 
 const CommentButton = ({ id, commentCount }) => {
 	const { user } = useContext(UserContext);
 
 	return (
-		<div className="post-item-btns-item-wrap">
+		<Box
+			sx={{
+				display: "flex",
+				justifyContent: "center",
+				alignItems: "center",
+			}}
+		>
 			{user && user.username ? (
-				<>
+				<IconButton>
 					<Link
+						sx={{
+							display: "flex",
+							alignItems: "flex-end",
+						}}
+						component={RouterLink}
 						to={`/posts/${id}`}
-						type="button"
-						className="post-item-btn post-item-like-btn"
+						underline="none"
 					>
-						<i className="far fa-comments post-item-comment-icon"></i>
+						<AddCommentIcon />
 					</Link>
-					<p className="post-item-count post-item-comment-count">
-						{commentCount}
-					</p>
-				</>
+				</IconButton>
 			) : (
-				<>
-					<Link
-						to="/login"
-						type="button"
-						className="post-item-btn post-item-like-btn"
-					>
-						<i className="far fa-comments post-item-comment-icon"></i>
+				<IconButton>
+					<Link component={RouterLink} to={`/login`} underline="none">
+						<LoginIcon />
 					</Link>
-					<p className="post-item-count post-item-comment-count">
-						{commentCount}
-					</p>
-				</>
+				</IconButton>
 			)}
-		</div>
+			<Typography variant="body1">{commentCount}</Typography>
+		</Box>
 	);
 };
 

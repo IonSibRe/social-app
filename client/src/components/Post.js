@@ -1,15 +1,21 @@
 import React, { useContext, useState } from "react";
 import { useQuery } from "@apollo/client";
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 
 import { UserContext } from "../context/UserContext";
 import { GET_USER_INFO_BY_USERNAME } from "../utils/graphql";
 import LikeButton from "./utils/LikeButton";
 import CommentButton from "./utils/CommentButton";
 import DeleteButton from "./utils/DeleteButton";
-import ProfileImage from "./utils/ProfileImage";
-import LoaderSpinner from "./utils/LoaderSpinner";
 import { formatMsFromEpochToFromNow } from "../utils/utilities";
+import {
+	Box,
+	Toolbar,
+	Typography,
+	Avatar,
+	CircularProgress,
+	Link,
+} from "@mui/material";
 
 const Post = ({
 	post: { id, username, body, commentCount, likes, likeCount, createdAt },
@@ -25,42 +31,75 @@ const Post = ({
 	});
 
 	return (
-		<div className="post-item">
-			<div className="post-item-header-wrap">
-				<div className="post-item-header-info-wrap">
-					<h3 className="post-item-username">{username}</h3>
-					<Link className="post-item-time" to={`/posts/${id}`}>
+		<Box
+			sx={{
+				marginBottom: "1rem",
+				border: "1px solid #767676",
+			}}
+		>
+			<Toolbar
+				disableGutters
+				sx={{
+					justifyContent: "space-between",
+					alignItems: "center",
+					padding: "1rem 0.5rem",
+					borderBottom: "1px solid #767676",
+				}}
+			>
+				<Box>
+					<Typography variant="h5">{username}</Typography>
+					<Link
+						component={RouterLink}
+						to={`/posts/${id}`}
+						underline="none"
+					>
 						{formatMsFromEpochToFromNow(createdAt)}
 					</Link>
-				</div>
-				<Link
-					to={`/users/${username}`}
-					className="post-item-header-img-wrap"
-				>
+				</Box>
+				<RouterLink to={`/users/${username}`}>
 					{loading ? (
-						<LoaderSpinner />
+						<CircularProgress />
 					) : (
-						<ProfileImage profileImg={profileImg} />
+						<Avatar
+							src={profileImg}
+							sx={{
+								height: 45,
+								width: 45,
+							}}
+						/>
 					)}
-				</Link>
-			</div>
+				</RouterLink>
+			</Toolbar>
 
-			<div className="post-item-body-wrap">
-				<p className="post-item-body-text">{body}</p>
-			</div>
+			<Box
+				sx={{
+					padding: "1rem 0.5rem",
+					borderBottom: "1px solid #767676",
+				}}
+			>
+				<Typography variant="body1">{body}</Typography>
+			</Box>
 
-			<form className="post-item-btns-wrap">
-				<div className="post-item-btns-inner-wrap">
+			<Box
+				sx={{
+					display: "flex",
+					justifyContent: "space-between",
+					padding: "0.25rem 0.5rem",
+				}}
+			>
+				<Box
+					sx={{ display: "flex", position: "relative", left: "-8px" }}
+				>
 					<LikeButton id={id} likes={likes} likeCount={likeCount} />
 					<CommentButton id={id} commentCount={commentCount} />
-				</div>
+				</Box>
 				{user && user.username === username && (
-					<div className="post-item-btns-inner-wrap">
+					<Box>
 						<DeleteButton postId={id} />
-					</div>
+					</Box>
 				)}
-			</form>
-		</div>
+			</Box>
+		</Box>
 	);
 };
 

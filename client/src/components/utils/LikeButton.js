@@ -1,6 +1,10 @@
 import { gql, useMutation } from "@apollo/client";
+import { Box, IconButton, Link, Typography } from "@mui/material";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import LoginIcon from "@mui/icons-material/Login";
 import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
 
 const LikeButton = ({ id, likes, likeCount }) => {
@@ -24,26 +28,35 @@ const LikeButton = ({ id, likes, likeCount }) => {
 	});
 
 	return (
-		<div className="post-item-btns-item-wrap">
+		<Box
+			sx={{
+				display: "flex",
+				justifyContent: "center",
+				alignItems: "center",
+				marginRight: "1rem",
+			}}
+		>
 			{user && user.username ? (
-				<button
-					type="button"
-					className="post-item-btn post-item-like-btn"
+				<IconButton
+					color="primary"
+					size="medium"
 					onClick={() => likePost()}
 				>
-					<i
-						className={`fa${
-							liked ? "s" : "r"
-						} fa-heart post-item-like-icon ${liked && "liked"}`}
-					></i>
-				</button>
+					{liked ? (
+						<FavoriteIcon fontSize="inherit" />
+					) : (
+						<FavoriteBorderIcon fontSize="inherit" />
+					)}
+				</IconButton>
 			) : (
-				<Link className="post-item-btn post-item-like-btn" to="/login">
-					<i className="far fa-heart post-item-like-icon"></i>
-				</Link>
+				<IconButton>
+					<Link component={RouterLink} to="/login" underline="none">
+						<LoginIcon />
+					</Link>
+				</IconButton>
 			)}
-			<p className="post-item-count post-item-like-count">{likeCount}</p>
-		</div>
+			<Typography variant="body1">{likeCount}</Typography>
+		</Box>
 	);
 };
 
