@@ -1,5 +1,5 @@
 import { gql, useLazyQuery, useQuery } from "@apollo/client";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 
 import {
@@ -44,7 +44,7 @@ const Navbar = () => {
 		variables: { username: user?.username },
 	});
 
-	// FIX: Search for Users
+	// Search for Users
 	const [getUsersByUsername] = useLazyQuery(GET_USERS_BY_USERNAME, {
 		onCompleted: (data) => setSearchedUsers(data.getUsersByUsername),
 		onError: (err) => console.log(err),
@@ -63,30 +63,39 @@ const Navbar = () => {
 			});
 	};
 
-	useEffect(() => {
-		if (userSearchText === "") setSearchedUsers([]);
-	}, [userSearchText]);
-
-	useEffect(() => {
-		const manageSearchBox = (e) => {
-			if (!e.target.classList.contains("nav-search-bar") && searchBoxOpen)
+	// Manage Search Box
+	const manageSearchBox = useCallback(
+		(e) => {
+			if (e.target.id !== "nav-search-bar" && searchBoxOpen)
 				setSearchBoxOpen(false);
 
 			if (
-				e.target.classList.contains("nav-search-bar") &&
+				e.target.id === "nav-search-bar" &&
 				!searchBoxOpen &&
 				searchedUsers.length !== 0
 			)
 				setSearchBoxOpen(true);
+		},
+		[searchBoxOpen, searchedUsers.length]
+	);
 
+	// Clear searched users when input is empty
+	useEffect(() => {
+		if (userSearchText === "") setSearchedUsers([]);
+	}, [userSearchText]);
+
+	// Open or Close Search Box on Click
+	useEffect(() => {
+		window.addEventListener("click", manageSearchBox);
+
+		return () => {
 			window.removeEventListener("click", manageSearchBox);
 		};
+	}, [searchBoxOpen, searchedUsers, manageSearchBox]);
 
-		window.addEventListener("click", manageSearchBox);
-	}, [searchBoxOpen, searchedUsers]);
-
+	// Open or Close Search Box according to how many users are searched
 	useEffect(() => {
-		searchedUsers.length !== 0
+		searchedUsers.length > 0
 			? setSearchBoxOpen(true)
 			: setSearchBoxOpen(false);
 	}, [searchedUsers]);
@@ -100,6 +109,25 @@ const Navbar = () => {
 			height: 45,
 			width: 45,
 			margin: "0 1rem 0 2rem",
+		},
+		searchBox: {
+			position: "absolute",
+			width: "100%",
+			backgroundColor: "#192734",
+			Zindex: "999",
+		},
+		searchBoxItem: {
+			display: "flex",
+			justifyContent: "space-between",
+			alignItems: "center",
+			padding: "0.5rem",
+			borderBottom: "1px solid #0A1929",
+			"&:hover": {
+				opacity: "0.9",
+			},
+			"&:last-child": {
+				borderBottom: "0",
+			},
 		},
 	};
 
@@ -149,19 +177,48 @@ const Navbar = () => {
 							}
 						>
 							<Box
-								sx={
-									mediaQuerySmMatch
+								sx={{
+									position: "relative",
+									...(mediaQuerySmMatch
 										? stylesSm.textFieldWrap
-										: null
-								}
+										: null),
+								}}
 							>
 								<TextField
+									id="nav-search-bar"
 									type="search"
 									value={userSearchText || ""}
 									label="Search"
 									size="small"
 									onChange={(e) => searchForUsers(e)}
 								/>
+								{searchBoxOpen && (
+									<Box sx={styles.searchBox}>
+										{searchedUsers.map((item) => (
+											<Link
+												sx={styles.searchBoxItem}
+												component={RouterLink}
+												to={`/users/${item.username}`}
+												underline="none"
+												key={item.id}
+											>
+												<Avatar
+													src={item.profileImg}
+													sx={{
+														height: 45,
+														width: 45,
+													}}
+												/>
+												<Typography
+													variant="h5"
+													component="h4"
+												>
+													{item.username}
+												</Typography>
+											</Link>
+										))}
+									</Box>
+								)}
 							</Box>
 							<Box
 								sx={{
