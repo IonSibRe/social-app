@@ -1,13 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import Container from "@mui/material/Container";
-import { Button, Typography } from "@mui/material";
+import { Button, Link, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 
 const ErrorPage = () => {
 	return (
 		<Container
-			maxWidth="sm"
+			maxWidth="lg"
 			sx={{
 				display: "flex",
 				justifyContent: "center",
@@ -20,23 +20,23 @@ const ErrorPage = () => {
 				}}
 			>
 				<Typography variant="h1">404</Typography>
-				<Typography variant="h2" sx={{ marginBottom: "0.5rem" }}>
+				<Typography
+					variant="h3"
+					component="h2"
+					sx={{ marginBottom: "0.5rem" }}
+				>
 					Page Not Found
 				</Typography>
 				<Typography
-					variant="body1"
-					fontSize="2rem"
+					variant="h5"
+					component="p"
 					sx={{ marginBottom: "1rem" }}
 				>
 					The page you are looking for might have been removed, had
 					it's name changed or is temporarily unavailable.
 				</Typography>
-				<Link to="/">
-					<Button
-						variant="contained"
-						size="medium"
-						sx={{ fontSize: "1.5rem" }}
-					>
+				<Link to="/" component={RouterLink}>
+					<Button variant="contained" size="large">
 						Homepage
 					</Button>
 				</Link>

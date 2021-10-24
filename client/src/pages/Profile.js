@@ -8,9 +8,15 @@ import ProfileChangePw from "../components/ProfileChangePw";
 import ProfileFilter from "../components/ProfileFilter";
 import ProfileInfo from "../components/ProfileInfo";
 
+import { Container, useMediaQuery } from "@mui/material";
+import { useTheme } from "@emotion/react";
+
 const Profile = () => {
 	const { user, logout } = useContext(UserContext);
 	const [modalOpen, setModalOpen] = useState(false);
+
+	const theme = useTheme();
+	const mediaQueryMdMatch = useMediaQuery(theme.breakpoints.down("md"));
 
 	const [deactivateAccount] = useMutation(DEACTIVATE_ACCOUNT, {
 		onCompleted: (data) => {
@@ -25,7 +31,15 @@ const Profile = () => {
 	}
 
 	return (
-		<section className="profile-section section-center">
+		<Container
+			maxWidth="lg"
+			sx={{
+				display: "flex",
+				flexDirection: mediaQueryMdMatch ? "column" : "row",
+				justifyContent: "space-between",
+				marginTop: "3rem",
+			}}
+		>
 			<ProfileFilter setModalOpen={setModalOpen} />
 			{modalOpen && (
 				<DeactivateModal
@@ -39,7 +53,7 @@ const Profile = () => {
 				path="/profile/password-change"
 				component={ProfileChangePw}
 			/>
-		</section>
+		</Container>
 	);
 };
 

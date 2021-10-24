@@ -7,6 +7,7 @@ import ProfileUserInfo from "./ProfileUserInfo";
 import { GET_USER_INFO_BY_USERNAME } from "../utils/graphql";
 import { updateUserDataAfterFetch } from "../utils/utilities";
 import LoaderSpinner from "./utils/LoaderSpinner";
+import { Box, Typography } from "@mui/material";
 
 const ProfileInfo = () => {
 	const { user, setUserPublicData } = useContext(UserContext);
@@ -51,19 +52,17 @@ const ProfileInfo = () => {
 	}
 
 	return (
-		<div className="profile-info">
-			<div className="profile-info-header">
-				<h2 className="profile-info-header-text">
-					Account Information
-				</h2>
-			</div>
+		<Box sx={{ flex: "3" }}>
+			<Typography variant="h4" component="h2">
+				Account Information
+			</Typography>
 
 			<ProfileUserInfo />
 			<ProfileAdditionalInfo
 				userLocalAdditionalData={userLocalAdditionalData}
 				setUserLocalAdditionalData={setUserLocalAdditionalData}
 			/>
-		</div>
+		</Box>
 	);
 };
 

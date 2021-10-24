@@ -3,6 +3,8 @@ import { gql, useMutation } from "@apollo/client";
 
 import { UserContext } from "../context/UserContext";
 import { updateUserDataAfterFetch } from "../utils/utilities";
+import { Box } from "@mui/system";
+import { Button, TextField, Typography } from "@mui/material";
 
 const ProfileAdditionalInfo = ({
 	userLocalAdditionalData,
@@ -33,151 +35,112 @@ const ProfileAdditionalInfo = ({
 	};
 
 	return (
-		<div className="profile-info-data-wrap">
-			<div className="profile-info-data-header">
-				<h4 className="profile-info-data-header-text">Additional</h4>
-			</div>
-			<form className="profile-info-data-form" onSubmit={handleSubmit}>
-				<div className="profile-info-data-item">
-					<label
-						htmlFor="first-name"
-						className="profile-info-data-item-label"
-					>
-						First Name:
-					</label>
-					<input
-						type="text"
-						className="profile-info-data-item-input"
-						value={userLocalAdditionalData.firstName ?? ""}
-						onChange={(e) => {
-							setUserLocalAdditionalData({
-								...userLocalAdditionalData,
-								firstName: e.target.value,
-							});
-						}}
-					/>
-				</div>
-				<div className="profile-info-data-item">
-					<label
-						htmlFor="last-name"
-						className="profile-info-data-item-label"
-					>
-						Last Name:
-					</label>
-					<input
-						type="text"
-						className="profile-info-data-item-input"
-						value={userLocalAdditionalData.lastName ?? ""}
-						onChange={(e) => {
-							setUserLocalAdditionalData({
-								...userLocalAdditionalData,
-								lastName: e.target.value,
-							});
-						}}
-					/>
-				</div>
-				<div className="profile-info-data-item">
-					<label
-						htmlFor="phone"
-						className="profile-info-data-item-label"
-					>
-						Phone:
-					</label>
-					<input
-						type="text"
-						className="profile-info-data-item-input"
-						value={userLocalAdditionalData.phoneNumber ?? ""}
-						onChange={(e) => {
-							setUserLocalAdditionalData({
-								...userLocalAdditionalData,
-								phoneNumber: e.target.value,
-							});
-						}}
-					/>
-				</div>
-				<div className="profile-info-data-item">
-					<label
-						htmlFor="country"
-						className="profile-info-data-item-label"
-					>
-						Country:
-					</label>
-					<input
-						type="text"
-						className="profile-info-data-item-input"
-						value={userLocalAdditionalData.country ?? ""}
-						onChange={(e) => {
-							setUserLocalAdditionalData({
-								...userLocalAdditionalData,
-								country: e.target.value,
-							});
-						}}
-					/>
-				</div>
-				<div className="profile-info-data-item">
-					<label
-						htmlFor="birth-date"
-						className="profile-info-data-item-label"
-					>
-						Birth Date:
-					</label>
-					<input
-						type="text"
-						className="profile-info-data-item-input"
-						value={userLocalAdditionalData.birthDate ?? ""}
-						onChange={(e) => {
-							setUserLocalAdditionalData({
-								...userLocalAdditionalData,
-								birthDate: e.target.value,
-							});
-						}}
-					/>
-				</div>
-				<div className="profile-info-data-item">
-					<label
-						htmlFor="profession"
-						className="profile-info-data-item-label"
-					>
-						Profession:
-					</label>
-					<input
-						type="text"
-						className="profile-info-data-item-input"
-						value={userLocalAdditionalData.profession ?? ""}
-						onChange={(e) => {
-							setUserLocalAdditionalData({
-								...userLocalAdditionalData,
-								profession: e.target.value,
-							});
-						}}
-					/>
-				</div>
-				<div className="profile-info-data-item">
-					<label
-						htmlFor="Company"
-						className="profile-info-data-item-label"
-					>
-						Company:
-					</label>
-					<input
-						type="text"
-						className="profile-info-data-item-input"
-						value={userLocalAdditionalData.company ?? ""}
-						onChange={(e) => {
-							setUserLocalAdditionalData({
-								...userLocalAdditionalData,
-								company: e.target.value,
-							});
-						}}
-					/>
-				</div>
-				<div className="profile-info-data-item profile-info-data-item-submit-btn-wrap">
-					<button className="profile-info-data-item-submit-btn">
-						Submit
-					</button>
-				</div>
+		<Box>
+			<Typography variant="h5" component="h4" my="1rem">
+				Additional
+			</Typography>
+			<form onSubmit={handleSubmit}>
+				<TextField
+					sx={{ marginBottom: "0.5rem" }}
+					label="First Name"
+					type="text"
+					size="small"
+					fullWidth
+					value={userLocalAdditionalData.firstName ?? ""}
+					onChange={(e) => {
+						setUserLocalAdditionalData({
+							...userLocalAdditionalData,
+							firstName: e.target.value,
+						});
+					}}
+				/>
+				<TextField
+					sx={{ marginBottom: "0.5rem" }}
+					label="Last Name"
+					type="text"
+					size="small"
+					fullWidth
+					value={userLocalAdditionalData.lastName ?? ""}
+					onChange={(e) => {
+						setUserLocalAdditionalData({
+							...userLocalAdditionalData,
+							lastName: e.target.value,
+						});
+					}}
+				/>
+				<TextField
+					sx={{ marginBottom: "0.5rem" }}
+					label="Phone"
+					type="text"
+					size="small"
+					fullWidth
+					value={userLocalAdditionalData.phoneNumber ?? ""}
+					onChange={(e) => {
+						setUserLocalAdditionalData({
+							...userLocalAdditionalData,
+							phoneNumber: e.target.value,
+						});
+					}}
+				/>
+				<TextField
+					sx={{ marginBottom: "0.5rem" }}
+					label="Country"
+					type="text"
+					size="small"
+					fullWidth
+					value={userLocalAdditionalData.country ?? ""}
+					onChange={(e) => {
+						setUserLocalAdditionalData({
+							...userLocalAdditionalData,
+							country: e.target.value,
+						});
+					}}
+				/>
+				<TextField
+					sx={{ marginBottom: "0.5rem" }}
+					label="Birth Date"
+					type="text"
+					size="small"
+					fullWidth
+					value={userLocalAdditionalData.birthDate ?? ""}
+					onChange={(e) => {
+						setUserLocalAdditionalData({
+							...userLocalAdditionalData,
+							birthDate: e.target.value,
+						});
+					}}
+				/>
+				<TextField
+					sx={{ marginBottom: "0.5rem" }}
+					label="Profession"
+					type="text"
+					size="small"
+					fullWidth
+					value={userLocalAdditionalData.profession ?? ""}
+					onChange={(e) => {
+						setUserLocalAdditionalData({
+							...userLocalAdditionalData,
+							profession: e.target.value,
+						});
+					}}
+				/>
+				<TextField
+					sx={{ marginBottom: "1rem" }}
+					label="Company"
+					type="text"
+					size="small"
+					fullWidth
+					value={userLocalAdditionalData.company ?? ""}
+					onChange={(e) => {
+						setUserLocalAdditionalData({
+							...userLocalAdditionalData,
+							company: e.target.value,
+						});
+					}}
+				/>
+				<Button variant="outlined">Submit</Button>
 			</form>
-		</div>
+		</Box>
 	);
 };
 

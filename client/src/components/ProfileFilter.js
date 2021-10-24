@@ -1,33 +1,70 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Box, Link, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
+
+const styles = {
+	link: {
+		padding: "0.5rem 0",
+		textAlign: "center",
+		borderBottom: "1px solid #767676",
+		"&:hover": {
+			opacity: "0.9",
+		},
+	},
+};
 
 const ProfileFilter = ({ setModalOpen }) => {
+	const theme = useTheme();
+	const mediaQueryMdMatch = useMediaQuery(theme.breakpoints.down("md"));
+
 	return (
-		<div className="profile-filter">
-			<div className="profile-filter-header">
-				<h3 className="profile-filter-header-text">
-					Account Management
-				</h3>
-			</div>
-			<div className="profile-filter-list">
-				<Link to="/profile/info" className="profile-filter-list-link">
+		<Box
+			sx={{
+				flex: "1.25",
+				minHeight: mediaQueryMdMatch ? "100%" : "500px",
+				margin: mediaQueryMdMatch ? "0 0 2rem 0" : "0 2rem 0 0",
+				border: "1px solid #767676",
+			}}
+		>
+			<Typography
+				sx={{ padding: "1rem 0", borderBottom: "1px solid #767676" }}
+				component="h3"
+				variant="h4"
+				textAlign="center"
+			>
+				Account Management
+			</Typography>
+			<Box sx={{ display: "flex", flexDirection: "column" }}>
+				<Link
+					sx={{
+						...styles.link,
+					}}
+					component={RouterLink}
+					to="/profile/info"
+					underline="none"
+				>
 					Account Information
 				</Link>
 				<Link
+					sx={{
+						...styles.link,
+					}}
+					component={RouterLink}
 					to="/profile/password-change"
-					className="profile-filter-list-link"
+					underline="none"
 				>
 					Change Password
 				</Link>
-				<button
-					type="button"
+				<Link
+					sx={{ ...styles.link, cursor: "pointer" }}
+					color="secondary"
+					underline="none"
 					onClick={() => setModalOpen(true)}
-					className="profile-filter-list-link profile-deactivate-btn"
 				>
 					Deactivate Account
-				</button>
-			</div>
-		</div>
+				</Link>
+			</Box>
+		</Box>
 	);
 };
 

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { gql, useMutation } from "@apollo/client";
+import { Box, Button, TextField, Typography } from "@mui/material";
 
 const ProfileChangePw = () => {
 	const [resetPasswordInput, setResetPasswordInput] = useState({
@@ -19,62 +20,44 @@ const ProfileChangePw = () => {
 	};
 
 	return (
-		<div className="profile-info">
-			<div className="profile-info-header">
-				<h2 className="profile-info-header-text">Change Password</h2>
-			</div>
-			<div className="profile-info-data-wrap">
-				<form
-					className="profile-info-data-form"
-					onSubmit={handleSubmit}
-				>
-					<div className="profile-info-data-item">
-						<label
-							htmlFor="new-password"
-							className="profile-info-data-item-label"
-						>
-							New Password
-						</label>
-						<input
-							type="password"
-							className="profile-info-data-item-input"
-							onChange={(e) =>
-								setResetPasswordInput({
-									...resetPasswordInput,
-									password: e.target.value,
-								})
-							}
-						/>
-					</div>
-					<div className="profile-info-data-item">
-						<label
-							htmlFor="confirm-password"
-							className="profile-info-data-item-label"
-						>
-							Confirm Password
-						</label>
-						<input
-							type="password"
-							className="profile-info-data-item-input"
-							onChange={(e) =>
-								setResetPasswordInput({
-									...resetPasswordInput,
-									confirmPassword: e.target.value,
-								})
-							}
-						/>
-					</div>
-					<div className="profile-info-data-item profile-info-data-item-submit-btn-wrap">
-						<button
-							type="submit"
-							className="profile-info-data-item-submit-btn"
-						>
-							Submit
-						</button>
-					</div>
-				</form>
-			</div>
-		</div>
+		<Box sx={{ flex: "3" }}>
+			<Typography variant="h4" component="h2" mb="1rem">
+				Account Information
+			</Typography>
+			<form onSubmit={handleSubmit}>
+				<TextField
+					sx={{ marginBottom: "0.5rem" }}
+					label="New Password"
+					type="password"
+					size="small"
+					fullWidth
+					value={resetPasswordInput.password}
+					onChange={(e) => {
+						setResetPasswordInput({
+							...resetPasswordInput,
+							password: e.target.value,
+						});
+					}}
+				/>
+				<TextField
+					sx={{ marginBottom: "1rem" }}
+					label="Confirm Password"
+					type="password"
+					size="small"
+					fullWidth
+					value={resetPasswordInput.confirmPassword}
+					onChange={(e) => {
+						setResetPasswordInput({
+							...resetPasswordInput,
+							confirmPassword: e.target.value,
+						});
+					}}
+				/>
+				<Button type="submit" variant="outlined">
+					Submit
+				</Button>
+			</form>
+		</Box>
 	);
 };
 
