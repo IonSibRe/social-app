@@ -39,7 +39,7 @@ const DeleteButton = ({ postId, commentId }) => {
 	return (
 		<Box sx={{ display: "flex", alignItems: "center" }}>
 			{loading && <CircularProgress size={20} />}
-			<IconButton color="primary" size="medium" onClick={deletePostFunc}>
+			<IconButton color="danger" size="medium" onClick={deletePostFunc}>
 				<DeleteIcon />
 			</IconButton>
 		</Box>

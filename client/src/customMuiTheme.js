@@ -1,3 +1,4 @@
+import { blue, grey, indigo, pink, red } from "@mui/material/colors";
 import { createTheme } from "@mui/material/styles";
 
 const mode = "dark";
@@ -7,23 +8,29 @@ const getPalette = (mode) => {
 		? {
 				mode: "light",
 				primary: {
-					main: "#1e88e5",
+					main: blue["600"],
 				},
 				secondary: {
-					main: "#f50057",
+					main: pink["A400"],
+				},
+				danger: {
+					main: red["A700"],
 				},
 		  }
 		: {
 				mode: "dark",
 				primary: {
-					main: "#1e88e5",
+					main: blue["600"],
 				},
 				secondary: {
-					main: "#f50057",
+					main: pink["A400"],
+				},
+				danger: {
+					main: red["A700"],
 				},
 				background: {
-					default: "#0A1929",
-					paper: "#192734",
+					default: grey["900"],
+					paper: indigo["900"],
 				},
 		  };
 };

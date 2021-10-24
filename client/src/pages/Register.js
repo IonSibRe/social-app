@@ -1,8 +1,19 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link as RouterLink, Redirect } from "react-router-dom";
 import { gql, useMutation } from "@apollo/client";
 import { UserContext } from "../context/UserContext";
-import LoaderSpinner from "../components/utils/LoaderSpinner";
+import {
+	Box,
+	Button,
+	CircularProgress,
+	Container,
+	Link,
+	TextField,
+	Typography,
+	useMediaQuery,
+} from "@mui/material";
+import { useTheme } from "@emotion/react";
+import { grey } from "@mui/material/colors";
 
 const Register = () => {
 	const { login, loggedIn } = useContext(UserContext);
@@ -13,6 +24,18 @@ const Register = () => {
 		password: "",
 		confirmPassword: "",
 	});
+
+	// MUI
+	const theme = useTheme();
+	const mediaQuerySmMatch = useMediaQuery("(max-width: 500px)");
+
+	const inputPartOfClassName =
+		theme.palette.mode === "dark" ? "myb2s4" : "1n4twyu";
+	const inputClassName = `.css-${inputPartOfClassName}-MuiInputBase-input-MuiOutlinedInput-input:-webkit-autofill`;
+	const inputBoxShadow =
+		theme.palette.mode === "dark"
+			? `0 0 0 100px ${grey[900]} inset !important`
+			: "0 0 0 100px white inset !important";
 
 	const [registerUser, { loading }] = useMutation(REGISTER_USER, {
 		update(_, { data: { register: user } }) {
@@ -40,117 +63,129 @@ const Register = () => {
 	if (loggedIn) return <Redirect to="/" />;
 
 	return (
-		<section className="auth-section section-center">
-			<div className="auth-card">
-				<div className="auth-card-inner-wrap">
-					<div className="auth-card-title-wrap">
-						<h3 className="auth-card-title">Register</h3>
-					</div>
-					{error && (
-						<div className="auth-card-error-wrap">
-							<p className="auth-card-error-text">{error}</p>
-						</div>
-					)}
-					<form
-						className="auth-card-form-wrap"
-						onSubmit={submitHandler}
+		<Container sx={{ display: "flex", justifyContent: "center" }}>
+			<Box
+				sx={{
+					width: mediaQuerySmMatch ? "100%" : "500px",
+					marginTop: "3rem",
+				}}
+			>
+				<Box sx={{ padding: "1rem", border: "1px solid #767676" }}>
+					<Typography
+						sx={{ marginBottom: "1rem" }}
+						component="h3"
+						variant="h4"
+						textAlign="center"
 					>
-						<div className="auth-card-form-item">
-							<label
-								htmlFor="email"
-								className="auth-card-form-label "
+						Register
+					</Typography>
+					<form onSubmit={submitHandler} autoComplete="off">
+						<TextField
+							sx={{
+								marginBottom: "1rem",
+								[inputClassName]: {
+									WebkitBoxShadow: inputBoxShadow,
+								},
+							}}
+							fullWidth
+							variant="outlined"
+							type="text"
+							label="Username"
+							size="small"
+							error={error !== ""}
+							onChange={(e) =>
+								setUserCredentials({
+									...userCredentials,
+									username: e.target.value,
+								})
+							}
+						/>
+						<TextField
+							sx={{
+								marginBottom: "1rem",
+								[inputClassName]: {
+									WebkitBoxShadow: inputBoxShadow,
+								},
+							}}
+							fullWidth
+							variant="outlined"
+							type="email"
+							label="Email"
+							size="small"
+							error={error !== ""}
+							onChange={(e) =>
+								setUserCredentials({
+									...userCredentials,
+									email: e.target.value,
+								})
+							}
+						/>
+						<TextField
+							sx={{
+								marginBottom: "1rem",
+								[inputClassName]: {
+									WebkitBoxShadow: inputBoxShadow,
+								},
+							}}
+							fullWidth
+							variant="outlined"
+							type="password"
+							label="Password"
+							size="small"
+							error={error !== ""}
+							onChange={(e) =>
+								setUserCredentials({
+									...userCredentials,
+									password: e.target.value,
+								})
+							}
+						/>
+						<TextField
+							sx={{
+								marginBottom: "1rem",
+								[inputClassName]: {
+									WebkitBoxShadow: inputBoxShadow,
+								},
+							}}
+							fullWidth
+							variant="outlined"
+							type="password"
+							label="Confirm Password"
+							size="small"
+							error={error !== ""}
+							onChange={(e) =>
+								setUserCredentials({
+									...userCredentials,
+									confirmPassword: e.target.value,
+								})
+							}
+						/>
+						<Typography variant="body1" my="1rem">
+							Already have an account?{" "}
+							<Link
+								component={RouterLink}
+								to="/login"
+								underline="none"
 							>
-								Username
-							</label>
-							<input
-								type="text"
-								className="auth-card-form-input"
-								onChange={(e) =>
-									setUserCredentials({
-										...userCredentials,
-										username: e.target.value,
-									})
-								}
-							/>
-						</div>
-						<div className="auth-card-form-item">
-							<label
-								htmlFor="email"
-								className="auth-card-form-label "
-							>
-								Email
-							</label>
-							<input
-								type="email"
-								className="auth-card-form-input"
-								onChange={(e) =>
-									setUserCredentials({
-										...userCredentials,
-										email: e.target.value,
-									})
-								}
-							/>
-						</div>
-						<div className="auth-card-form-item">
-							<label
-								htmlFor="password"
-								className="auth-card-form-label "
-							>
-								Password
-							</label>
-							<input
-								type="password"
-								className="auth-card-form-input"
-								onChange={(e) =>
-									setUserCredentials({
-										...userCredentials,
-										password: e.target.value,
-									})
-								}
-							/>
-						</div>
-						<div className="auth-card-form-item">
-							<label
-								htmlFor="confirmPassword"
-								className="auth-card-form-label "
-							>
-								Confirm Password
-							</label>
-							<input
-								type="password"
-								className="auth-card-form-input"
-								onChange={(e) =>
-									setUserCredentials({
-										...userCredentials,
-										confirmPassword: e.target.value,
-									})
-								}
-							/>
-						</div>
-						<div className="auth-card-form-item">
-							<p className="auth-card-form-info-text">
-								Already have an account?{" "}
-								<Link
-									to="/login"
-									className="auth-card-form-redirect-link"
-								>
-									sign in here.
-								</Link>
-							</p>
-						</div>
-						<div className="auth-card-form-submit-item">
-							<button
-								type="submit"
-								className="auth-card-form-login-btn"
-							>
+								sign in here.
+							</Link>
+						</Typography>
+						<Box
+							sx={{
+								display: "flex",
+								justifyContent: "space-between",
+								alignItems: "center",
+							}}
+						>
+							<Button type="submit" variant="outlined">
 								Register
-							</button>
-							{loading && <LoaderSpinner />}
-						</div>
+							</Button>
+							{loading && <CircularProgress size={30} />}
+						</Box>
 					</form>
-				</div>
-			</div>
-		</section>
+				</Box>
+			</Box>
+		</Container>
 	);
 };
 

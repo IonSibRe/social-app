@@ -43,9 +43,12 @@ const LikeButton = ({ id, likes, likeCount }) => {
 					onClick={() => likePost()}
 				>
 					{liked ? (
-						<FavoriteIcon fontSize="inherit" />
+						<FavoriteIcon fontSize="inherit" color="secondary" />
 					) : (
-						<FavoriteBorderIcon fontSize="inherit" />
+						<FavoriteBorderIcon
+							fontSize="inherit"
+							color="secondary"
+						/>
 					)}
 				</IconButton>
 			) : (

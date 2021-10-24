@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link as RouterLink, useParams } from "react-router-dom";
 import { gql, useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import moment from "moment";
 
@@ -7,11 +7,21 @@ import { UserContext } from "../context/UserContext";
 import LikeButton from "../components/utils/LikeButton";
 import CommentButton from "../components/utils/CommentButton";
 import DeleteButton from "../components/utils/DeleteButton";
-import ProfileImage from "../components/utils/ProfileImage";
 import LoaderSpinner from "../components/utils/LoaderSpinner";
 import ResourceError from "../components/ResourceError";
 import { formatMsFromEpochToFromNow } from "../utils/utilities";
 import { GET_USER_INFO_BY_USERNAME } from "../utils/graphql";
+import {
+	Avatar,
+	Button,
+	CircularProgress,
+	Container,
+	Link,
+	TextField,
+	Toolbar,
+	Typography,
+} from "@mui/material";
+import { Box } from "@mui/system";
 
 const SinglePost = () => {
 	const { id } = useParams();
@@ -68,76 +78,140 @@ const SinglePost = () => {
 	if (err) return <ResourceError />;
 
 	return (
-		<div className="sp-post-item-wrap">
-			<div className="sp-post-item">
-				<div className="post-item-header-wrap">
-					<div className="post-item-header-info-wrap">
-						<h3 className="sp-post-item-username">
+		<Container maxWidth="lg">
+			<Box
+				sx={{
+					width: "600px",
+					margin: "2rem auto",
+					border: "1px solid #767676",
+				}}
+			>
+				<Toolbar
+					disableGutters
+					sx={{
+						justifyContent: "space-between",
+						alignItems: "center",
+						padding: "0.5rem 1rem",
+						borderBottom: "1px solid #767676",
+					}}
+				>
+					<Box>
+						<Typography variant="h4" component="h3">
 							{data.getPost.username}
-						</h3>
-						<Link className="sp-post-item-time" to={`/posts/${id}`}>
+						</Typography>
+						<Link
+							component={RouterLink}
+							to={`/posts/${id}`}
+							underline="none"
+						>
 							{formatMsFromEpochToFromNow(data.getPost.createdAt)}
 						</Link>
-					</div>
-					<div className="post-item-header-img-wrap">
-						<ProfileImage
-							profileImg={profileImg}
-							profileImgLg={true}
-						/>
-					</div>
-				</div>
+					</Box>
+					<RouterLink to={`/users/${data.getPost.username}`}>
+						{loading ? (
+							<CircularProgress />
+						) : (
+							<Avatar
+								src={profileImg}
+								sx={{
+									height: 60,
+									width: 60,
+								}}
+							/>
+						)}
+					</RouterLink>
+				</Toolbar>
 
-				<div className="post-item-body-wrap">
-					<p className="sp-post-item-body-text">
-						{data.getPost.body}
-					</p>
-				</div>
+				<Box
+					sx={{
+						padding: "1rem",
+						borderBottom: "1px solid #767676",
+					}}
+				>
+					<Typography variant="body1">{data.getPost.body}</Typography>
+				</Box>
 
-				<form className="post-item-btns-wrap sp-post-item-btns-wrap">
-					<div className="post-item-btns-inner-wrap">
+				<Box
+					sx={{
+						display: "flex",
+						justifyContent: "space-between",
+						padding: "0.25rem 1rem",
+						borderBottom: "1px solid #767676",
+					}}
+				>
+					<Box
+						sx={{
+							display: "flex",
+							position: "relative",
+							left: "-8px",
+						}}
+					>
 						<LikeButton
 							id={id}
 							likes={data.getPost.likes}
 							likeCount={data.getPost.likeCount}
 						/>
 						<CommentButton
-							commentCount={data.getPost.commentCount}
 							id={id}
+							commentCount={data.getPost.commentCount}
 						/>
-					</div>
+					</Box>
 					{user && user.username === data.getPost.username && (
-						<div className="post-item-btns-inner-wrap">
+						<Box>
 							<DeleteButton postId={id} />
-						</div>
+						</Box>
 					)}
-				</form>
+				</Box>
+
 				{user && user.username && (
-					<form className="post-item-comment-input-wrap">
-						<div className="post-item-comment-input-inner-wrap">
-							<input
-								type="text"
-								className={`post-item-comment-input ${
-									error && "input-danger"
-								}`}
-								value={comment}
-								onChange={(e) => setComment(e.target.value)}
-							/>
-							<button
-								type="submit"
-								className="post-item-comment-btn"
-								onClick={submitHandler}
+					<Box sx={{ margin: "1rem 0", padding: "0 1rem" }}>
+						<Typography variant="h5" component="h4" mb="0.5rem">
+							Post a comment
+						</Typography>
+						<form onSubmit={submitHandler}>
+							<Box
+								sx={{
+									display: "flex",
+								}}
 							>
-								Submit
-							</button>
-						</div>
-					</form>
+								<TextField
+									sx={{
+										".css-11d37uv-MuiInputBase-root-MuiOutlinedInput-root":
+											{
+												borderTopRightRadius: 0,
+												borderBottomRightRadius: 0,
+											},
+									}}
+									type="text"
+									error={error}
+									size="small"
+									fullWidth
+									value={comment}
+									onChange={(e) => setComment(e.target.value)}
+								/>
+								<Button
+									sx={{
+										borderTopLeftRadius: 0,
+										borderBottomLeftRadius: 0,
+									}}
+									variant="outlined"
+									type="button"
+								>
+									Submit
+								</Button>
+							</Box>
+						</form>
+					</Box>
 				)}
 
-				<div
-					className={`post-item-comment-section ${
-						data.getPost.comments.length > 0 &&
-						"post-item-comment-section-border"
-					}`}
+				<Box
+					sx={{
+						padding: "1rem",
+						borderTop:
+							data.getPost.comments.length > 0
+								? "1px solid #767676"
+								: "0",
+					}}
 				>
 					{data.getPost.comments.map((comment) => {
 						const {
@@ -147,36 +221,53 @@ const SinglePost = () => {
 							createdAt,
 						} = comment;
 						return (
-							<div className="post-item-comment" key={commentId}>
-								<div className="post-item-comment-header-wrap">
-									<div className="post-item-comment-header-inner-wrap">
-										<h3 className="post-item-username">
+							<Box
+								key={commentId}
+								sx={{
+									marginBottom: "1rem",
+									padding: "0.5rem",
+									border: "1px solid #767676",
+									"&:last-child": {
+										marginBottom: "0",
+									},
+								}}
+							>
+								<Toolbar
+									disableGutters
+									sx={{ justifyContent: "space-between" }}
+								>
+									<Box>
+										<Typography component="h4" variant="h5">
 											{username}
-										</h3>
-										<h4 className="post-item-time">
+										</Typography>
+										<Typography
+											component="h4"
+											variant="h6"
+											color="primary"
+										>
 											{moment(createdAt).fromNow()}
-										</h4>
-									</div>
+										</Typography>
+									</Box>
 									{user && user.username === username && (
-										<div className="post-item-comment-header-inner-wrap">
-											<DeleteButton
-												postId={data.getPost.id}
-												commentId={commentId}
-											/>
-										</div>
+										<DeleteButton
+											postId={data.getPost.id}
+											commentId={commentId}
+										/>
 									)}
-								</div>
-								<div className="post-item-comment-body-wrap">
-									<p className="post-item-comment-body-text">
-										{body}
-									</p>
-								</div>
-							</div>
+								</Toolbar>
+								<Typography
+									variant="body1"
+									my="0.5rem"
+									sx={{ wordWrap: "break-word" }}
+								>
+									{body}
+								</Typography>
+							</Box>
 						);
 					})}
-				</div>
-			</div>
-		</div>
+				</Box>
+			</Box>
+		</Container>
 	);
 };
 

@@ -159,12 +159,20 @@ const Navbar = () => {
 		<AppBar color="inherit" elevation={2} position="static">
 			<Container maxWidth="xl">
 				<Toolbar
-					sx={mediaQueryMdMatch ? stylesMd.toolbar : styles.toolbar}
+					sx={
+						mediaQueryMdMatch && loggedIn
+							? stylesMd.toolbar
+							: styles.toolbar
+					}
 				>
 					<Typography
 						variant="h4"
 						component="h2"
-						sx={mediaQueryMdMatch ? stylesMd.title : null}
+						sx={
+							mediaQueryMdMatch && loggedIn
+								? stylesMd.title
+								: null
+						}
 					>
 						<Link component={RouterLink} to="/" underline="none">
 							Social App
@@ -249,9 +257,9 @@ const Navbar = () => {
 						</Toolbar>
 					) : (
 						<Link
+							sx={{ display: "flex", alignItems: "flex-end" }}
 							component={RouterLink}
 							to="/login"
-							color="#fff"
 							underline="none"
 						>
 							<LoginIcon />
