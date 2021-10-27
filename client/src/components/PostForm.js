@@ -12,18 +12,23 @@ import {
 	TextField,
 	Toolbar,
 	Typography,
+	IconButton,
 } from "@mui/material";
+import { blue } from "@mui/material/colors";
+import { UploadFile, Close } from "@mui/icons-material";
 
 const PostForm = () => {
 	const { user } = useContext(UserContext);
 
 	const [postBody, setPostBody] = useState("");
 	const [profileImg, setProfileImg] = useState("");
+	const [postImg, setPostImg] = useState("");
 	const [error, setError] = useState(false);
 
 	const [submitPost, { loading }] = useMutation(CREATE_POST, {
 		onError: () => setError(true),
 		update(cache, { data }) {
+			setPostImg("");
 			const posts = cache.readQuery({ query: GET_USERS_POSTS });
 			cache.writeQuery({
 				query: GET_USERS_POSTS,
@@ -35,6 +40,7 @@ const PostForm = () => {
 
 		variables: {
 			body: postBody,
+			base64File: postImg,
 		},
 	});
 
@@ -45,6 +51,16 @@ const PostForm = () => {
 		},
 		variables: { username: user.username },
 	});
+
+	const uploadPostImage = (e) => {
+		const file = e.target.files[0];
+		const reader = new FileReader();
+
+		reader.readAsDataURL(file);
+		reader.onloadend = () => {
+			setPostImg(reader.result);
+		};
+	};
 
 	const submitHandler = (e) => {
 		e.preventDefault();
@@ -73,15 +89,79 @@ const PostForm = () => {
 					/>
 				</RouterLink>
 			</Toolbar>
-			<TextField
-				sx={{ margin: "0.5rem 0 1rem 0" }}
-				type="text"
-				label="Add Post"
-				size="small"
-				fullWidth
-				value={postBody}
-				onChange={(e) => setPostBody(e.target.value)}
-			/>
+			<Box
+				sx={{
+					border: "1px solid #767676",
+					margin: "0.5rem 0 1rem 0",
+				}}
+			>
+				<TextField
+					sx={{ padding: "1rem 0.5rem" }}
+					type="text"
+					multiline
+					maxRows={4}
+					size="small"
+					variant="standard"
+					placeholder="Add Post"
+					fullWidth
+					value={postBody}
+					onChange={(e) => setPostBody(e.target.value)}
+					InputProps={{
+						disableUnderline: true,
+					}}
+				/>
+
+				{postImg && (
+					<Box sx={{ position: "relative", padding: "0 0.5rem" }}>
+						<IconButton
+							sx={{ position: "absolute" }}
+							color="danger"
+							onClick={() => setPostImg("")}
+						>
+							<Close />
+						</IconButton>
+						<img
+							src={postImg}
+							alt="Post Img"
+							style={{
+								width: "100%",
+								maxHeight: "300px",
+								borderRadius: "20px",
+							}}
+						/>
+					</Box>
+				)}
+
+				<Box
+					sx={{
+						height: "1px",
+						width: "calc(100% - 1rem)",
+						margin: "1rem auto 0 auto",
+						backgroundColor: "#767676",
+					}}
+				/>
+
+				<Box sx={{ padding: "0 0.25rem" }}>
+					<label
+						htmlFor="user-info-banner-upload"
+						style={{
+							display: "flex",
+							width: "fit-content",
+							margin: "1rem 0",
+							color: blue[600],
+							cursor: "pointer",
+						}}
+					>
+						<UploadFile />
+					</label>
+					<input
+						type="file"
+						id="user-info-banner-upload"
+						style={{ display: "none" }}
+						onChange={(e) => uploadPostImage(e)}
+					/>
+				</Box>
+			</Box>
 			<Box
 				sx={{
 					display: "flex",
@@ -91,7 +171,7 @@ const PostForm = () => {
 			>
 				<Button
 					sx={{ display: "block" }}
-					disabled={postBody.length === 0}
+					disabled={postBody.length === 0 && !postImg}
 					variant="outlined"
 					type="submit"
 				>
@@ -104,8 +184,8 @@ const PostForm = () => {
 };
 
 const CREATE_POST = gql`
-	mutation createPost($body: String!) {
-		createPost(body: $body) {
+	mutation createPost($body: String!, $base64File: String) {
+		createPost(body: $body, base64File: $base64File) {
 			id
 			username
 			body

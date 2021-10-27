@@ -1,24 +1,32 @@
 const { UserInputError, ApolloError } = require("apollo-server");
-const fs = require("fs");
-const path = require("path");
 
 const Post = require("../../models/Post");
 const checkAuth = require("../../utils/checkAuth");
+const { cloudinary } = require("../../utils/cloudinary");
 
 const postMutationResolvers = {
 	Mutation: {
-		async createPost(_, { body }, context) {
+		async createPost(_, { body, base64File }, context) {
 			const user = checkAuth(context);
+			let uploadedRes = null;
 
 			if (body.trim() === "")
 				throw new UserInputError("InputError", {
 					errMsg: "Post body mustn't be empty",
 				});
 
+			// Upload Image if there is one
+			if (base64File) {
+				uploadedRes = await cloudinary.uploader.upload(base64File, {
+					folder: "social-app/post-images",
+					upload_preset: "social-app",
+				});
+			}
+
 			const post = new Post({
 				username: user.username,
 				body,
-				img: null,
+				img: uploadedRes.secure_url || uploadedRes,
 				commentCount: 0,
 				likeCount: 0,
 				comments: [],
