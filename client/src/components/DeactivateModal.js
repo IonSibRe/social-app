@@ -1,34 +1,59 @@
 import React from "react";
+import { Modal, Box, Typography, Button, IconButton } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 const DeactivateModal = ({ modalOpen, setModalOpen, deactivateAccount }) => {
 	return (
-		<div
-			className={`deactivate-modal ${
-				modalOpen && "deactivate-modal-open"
-			}`}
+		<Modal
+			sx={{
+				display: "flex",
+				justifyContent: "center",
+			}}
+			open={modalOpen}
+			onClose={() => setModalOpen(false)}
 		>
-			<div className="deactivate-modal-content">
-				<div className="deactivate-modal-close-btn-wrap">
-					<button
-						className="deactivate-modal-btn deactivate-modal-close-btn"
+			<Box
+				sx={{
+					height: "fit-content",
+					width: "250px",
+					marginTop: "25vh",
+					padding: "1rem",
+					borderRadius: "5px",
+					backgroundColor: "#fff",
+				}}
+			>
+				<Box
+					sx={{
+						display: "flex",
+						justifyContent: "space-between",
+						marginBottom: "10px",
+					}}
+				>
+					<Typography variant="h5" component="h3">
+						Deactivate
+					</Typography>
+					<IconButton
+						size="small"
+						color="danger"
 						onClick={() => setModalOpen(false)}
 					>
-						&times;
-					</button>
-				</div>
-				<div className="deactivate-modal-content-inner-wrap">
-					<p className="deactivate-modal-text">
+						<CloseIcon />
+					</IconButton>
+				</Box>
+				<Box sx={{ textAlign: "center" }}>
+					<Typography mb="10px">
 						Are you sure you want to deactivate your account?
-					</p>
-					<button
-						className="deactivate-modal-btn deactivate-modal-accept-btn"
+					</Typography>
+					<Button
 						onClick={deactivateAccount}
+						variant="outlined"
+						color="danger"
 					>
 						Deactivate
-					</button>
-				</div>
-			</div>
-		</div>
+					</Button>
+				</Box>
+			</Box>
+		</Modal>
 	);
 };
 

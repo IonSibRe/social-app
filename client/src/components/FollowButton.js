@@ -4,6 +4,7 @@ import { gql, useMutation, useQuery } from "@apollo/client";
 import { UserContext } from "../context/UserContext";
 import { GET_USER_INFO_BY_USERNAME } from "../utils/graphql";
 import { useParams } from "react-router";
+import { Button } from "@mui/material";
 
 const FollowButton = ({ userToFollow }) => {
 	const { username } = useParams();
@@ -40,17 +41,13 @@ const FollowButton = ({ userToFollow }) => {
 	};
 
 	return (
-		<button
-			type="button"
-			className={
-				following
-					? "user-info-data-following-btn"
-					: "user-info-data-follow-btn"
-			}
+		<Button
 			onClick={handleSubmit}
+			variant="contained"
+			color={following ? "danger" : "primary"}
 		>
 			{following ? "Unfollow" : "Follow"}
-		</button>
+		</Button>
 	);
 };
 

@@ -8,6 +8,7 @@ import ProfileBannerUpload from "./ProfileBannerUpload";
 import { UPLOAD_IMAGE } from "../utils/graphql";
 import { getPublicId } from "../utils/utilities";
 import FollowButton from "./FollowButton";
+import { Box, Typography } from "@mui/material";
 
 const UserInfoCard = ({
 	cardData: {
@@ -53,8 +54,20 @@ const UserInfoCard = ({
 		};
 	};
 
+	const styles = {
+		followCount: {
+			marginRight: "0.25rem",
+		},
+	};
+
 	return (
-		<div className="user-info-card">
+		<Box
+			sx={{
+				position: "relative",
+				marginBottom: "2rem",
+				border: "1px solid #767676",
+			}}
+		>
 			<ProfileBannerUpload
 				username={username}
 				banner={banner}
@@ -65,41 +78,51 @@ const UserInfoCard = ({
 				profileImg={profileImg}
 				handleFileChange={handleFileChange}
 			/>
-			<div className="user-info-data-wrap">
-				<div className="user-info-data-text-wrap">
-					<div className="user-info-data-inner-text-wrap">
-						<h2 className="user-info-data-username">{username}</h2>
-						<h3 className="user-info-data-joined">
-							{`Joined ${moment(
-								new Date(parseInt(createdAt))
-							).format("MMMM Do, YYYY")}`}
-						</h3>
-						<div className="user-info-data-follow-wrap">
-							<h3 className="user-info-data-follow-text">
-								<strong className="user-info-data-follow-count">
-									{followingCount}
-								</strong>
-								Following
-							</h3>
-							<h3 className="user-info-data-follow-text">
-								<strong className="user-info-data-follow-count">
-									{followersCount}
-								</strong>
-								Followers
-							</h3>
-						</div>
-					</div>
-					{user && username !== user.username && (
-						<div className="user-info-data-inner-text-wrap user-info-data-follow-btn-wrap">
-							<FollowButton
-								userToFollow={username}
-								followingArray={following}
-							/>
-						</div>
-					)}
-				</div>
-			</div>
-		</div>
+			<Box
+				sx={{
+					display: "flex",
+					justifyContent: "space-between",
+					alignItems: "flex-end",
+					marginTop: "5rem",
+					padding: "0 10px 10px 10px",
+				}}
+			>
+				<Box>
+					<Typography variant="h4" component="h2" color="primary">
+						{username}
+					</Typography>
+					<Typography variant="h5" component="h3" color="secondary">
+						{`Joined ${moment(new Date(parseInt(createdAt))).format(
+							"MMMM Do, YYYY"
+						)}`}
+					</Typography>
+					<Box sx={{ display: "flex" }}>
+						<Typography
+							variant="h6"
+							component="h3"
+							sx={{ marginRight: "0.5rem" }}
+						>
+							<strong style={styles.followCount}>
+								{followingCount}
+							</strong>
+							Following
+						</Typography>
+						<Typography variant="h6" component="h3">
+							<strong style={styles.followCount}>
+								{followersCount}
+							</strong>
+							Followers
+						</Typography>
+					</Box>
+				</Box>
+				{user && username !== user.username && (
+					<FollowButton
+						userToFollow={username}
+						followingArray={following}
+					/>
+				)}
+			</Box>
+		</Box>
 	);
 };
 

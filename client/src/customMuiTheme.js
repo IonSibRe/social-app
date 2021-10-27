@@ -1,7 +1,7 @@
 import { blue, grey, indigo, pink, red } from "@mui/material/colors";
 import { createTheme } from "@mui/material/styles";
 
-const mode = "dark";
+const mode = "light";
 
 const getPalette = (mode) => {
 	return mode === "light"

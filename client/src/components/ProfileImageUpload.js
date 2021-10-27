@@ -2,40 +2,45 @@ import React, { useContext } from "react";
 
 import { UserContext } from "../context/UserContext";
 import personImg from "../assets/person-img.jpg";
+import { Avatar } from "@mui/material";
+import { Box } from "@mui/system";
+import { UploadFile } from "@mui/icons-material";
+import { pink } from "@mui/material/colors";
 
 const ProfileImageUpload = ({ username, profileImg, handleFileChange }) => {
 	const { user } = useContext(UserContext);
 
 	return (
-		<div className="user-info-data-img-wrap">
-			<div
-				className={`user-info-data-img-inner-wrap ${
-					!profileImg && "rm-border"
-				}`}
-			>
-				<img
-					src={profileImg ? profileImg : personImg}
-					alt="Profile Img"
-					className="user-info-data-img"
-				/>
-			</div>
+		<Box
+			sx={{
+				position: "absolute",
+				top: "175px",
+				left: "10px",
+				display: "flex",
+				alignItems: "flex-end",
+			}}
+		>
+			<Avatar
+				src={profileImg ? profileImg : personImg}
+				sx={{ height: 150, width: 150 }}
+			/>
 			{user && user.username === username && (
-				<div className="user-info-data-img-submit-wrap">
+				<Box>
 					<label
 						htmlFor="user-info-data-file-upload"
-						className="user-info-data-upload-label"
+						style={{ color: pink["A400"], cursor: "pointer" }}
 					>
-						<i className="fas fa-pencil-alt"></i>
+						<UploadFile />
 					</label>
 					<input
 						type="file"
 						id="user-info-data-file-upload"
-						className="user-info-data-upload-input"
+						style={{ display: "none" }}
 						onChange={(e) => handleFileChange(e, "profile-image")}
 					/>
-				</div>
+				</Box>
 			)}
-		</div>
+		</Box>
 	);
 };
 

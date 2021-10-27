@@ -7,6 +7,8 @@ import Post from "../components/Post";
 import LoaderSpinner from "../components/utils/LoaderSpinner";
 import ResourceError from "../components/ResourceError";
 import { GET_USERS_POSTS, GET_USER_INFO_BY_USERNAME } from "../utils/graphql";
+import { Container } from "@mui/material";
+import { Box } from "@mui/system";
 
 const UserPage = () => {
 	const { username } = useParams();
@@ -32,8 +34,8 @@ const UserPage = () => {
 	if (err || cardErr) return <ResourceError />;
 
 	return (
-		<section className="user-section section-center">
-			<div className="user-inner-wrap">
+		<Container maxWidth="sm" sx={{ marginTop: "1rem" }}>
+			<Box>
 				<UserInfoCard cardData={cardData} />
 				<div className="user-posts">
 					{data.getUsersPosts
@@ -42,8 +44,8 @@ const UserPage = () => {
 							return <Post post={post} key={post.id} />;
 						})}
 				</div>
-			</div>
-		</section>
+			</Box>
+		</Container>
 	);
 };
 
