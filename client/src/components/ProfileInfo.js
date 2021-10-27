@@ -6,8 +6,7 @@ import ProfileAdditionalInfo from "./ProfileAdditionalInfo";
 import ProfileUserInfo from "./ProfileUserInfo";
 import { GET_USER_INFO_BY_USERNAME } from "../utils/graphql";
 import { updateUserDataAfterFetch } from "../utils/utilities";
-import LoaderSpinner from "./utils/LoaderSpinner";
-import { Box, Typography } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 
 const ProfileInfo = () => {
 	const { user, setUserPublicData } = useContext(UserContext);
@@ -43,11 +42,19 @@ const ProfileInfo = () => {
 
 	if (loading) {
 		return (
-			<div className="profile-info">
-				<div className="loader-wrap">
-					<LoaderSpinner width={150} />
-				</div>
-			</div>
+			<Box sx={{ flex: "3" }}>
+				<Box
+					sx={{
+						width: "100%",
+						height: "100%",
+						display: "flex",
+						justifyContent: "center",
+						alignItems: "center",
+					}}
+				>
+					<CircularProgress size={150} />
+				</Box>
+			</Box>
 		);
 	}
 

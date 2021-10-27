@@ -7,7 +7,6 @@ import { UserContext } from "../context/UserContext";
 import LikeButton from "../components/utils/LikeButton";
 import CommentButton from "../components/utils/CommentButton";
 import DeleteButton from "../components/utils/DeleteButton";
-import LoaderSpinner from "../components/utils/LoaderSpinner";
 import ResourceError from "../components/ResourceError";
 import { formatMsFromEpochToFromNow } from "../utils/utilities";
 import { GET_USER_INFO_BY_USERNAME } from "../utils/graphql";
@@ -70,9 +69,15 @@ const SinglePost = () => {
 
 	if (loading)
 		return (
-			<div className="loader-wrap">
-				<LoaderSpinner width={150} />
-			</div>
+			<Box
+				sx={{
+					width: "100%",
+					marginTop: "25vh",
+					textAlign: "center",
+				}}
+			>
+				<CircularProgress size={150} />
+			</Box>
 		);
 
 	if (err) return <ResourceError />;

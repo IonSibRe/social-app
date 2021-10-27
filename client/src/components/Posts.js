@@ -5,10 +5,14 @@ import Post from "./Post";
 import PostForm from "./PostForm";
 import ResourceError from "./ResourceError";
 import { GET_USERS_POSTS } from "../utils/graphql";
-import LoaderSpinner from "./utils/LoaderSpinner";
 import { UserContext } from "../context/UserContext";
-import { Container, Typography, useMediaQuery } from "@mui/material";
-import { Box } from "@mui/system";
+import {
+	CircularProgress,
+	Container,
+	Box,
+	Typography,
+	useMediaQuery,
+} from "@mui/material";
 
 const Posts = () => {
 	const { user } = useContext(UserContext);
@@ -19,9 +23,15 @@ const Posts = () => {
 
 	if (loading)
 		return (
-			<div className="loader-wrap">
-				<LoaderSpinner width={150} />
-			</div>
+			<Box
+				sx={{
+					width: "100%",
+					marginTop: "25vh",
+					textAlign: "center",
+				}}
+			>
+				<CircularProgress size={150} />
+			</Box>
 		);
 
 	if (err) return <ResourceError />;

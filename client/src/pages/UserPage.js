@@ -4,10 +4,9 @@ import { useParams } from "react-router";
 
 import UserInfoCard from "../components/UserInfoCard";
 import Post from "../components/Post";
-import LoaderSpinner from "../components/utils/LoaderSpinner";
 import ResourceError from "../components/ResourceError";
 import { GET_USERS_POSTS, GET_USER_INFO_BY_USERNAME } from "../utils/graphql";
-import { Container } from "@mui/material";
+import { CircularProgress, Container } from "@mui/material";
 import { Box } from "@mui/system";
 
 const UserPage = () => {
@@ -26,9 +25,15 @@ const UserPage = () => {
 
 	if (loading || cardLoading)
 		return (
-			<div className="loader-wrap">
-				<LoaderSpinner width={150} />
-			</div>
+			<Box
+				sx={{
+					width: "100%",
+					marginTop: "25vh",
+					textAlign: "center",
+				}}
+			>
+				<CircularProgress size={150} />
+			</Box>
 		);
 
 	if (err || cardErr) return <ResourceError />;

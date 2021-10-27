@@ -14,13 +14,13 @@ import {
 	useTheme,
 	Container,
 	Box,
+	Skeleton,
 } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LoginIcon from "@mui/icons-material/Login";
 
 import { UserContext } from "../context/UserContext";
 import { GET_USER_INFO_BY_USERNAME } from "../utils/graphql";
-import LoaderSpinner from "./utils/LoaderSpinner";
 
 const Navbar = () => {
 	const { user, loggedIn, logout } = useContext(UserContext);
@@ -237,7 +237,10 @@ const Navbar = () => {
 								}}
 							>
 								{loading ? (
-									<LoaderSpinner />
+									<Skeleton
+										variant="circular"
+										sx={styles.avatar}
+									/>
 								) : (
 									<RouterLink to="/profile/info">
 										<Avatar
