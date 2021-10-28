@@ -16,6 +16,7 @@ import {
 	CircularProgress,
 	Container,
 	Link,
+	Skeleton,
 	TextField,
 	Toolbar,
 	Typography,
@@ -37,11 +38,14 @@ const SinglePost = () => {
 		variables: {
 			postId: id,
 		},
+		fetchPolicy: "cache-and-network",
 	});
 
 	const [getUserInfoByUsername] = useLazyQuery(GET_USER_INFO_BY_USERNAME, {
-		onCompleted: (data) =>
-			setProfileImg(data.getUserInfoByUsername.profileImg),
+		onCompleted: (data) => {
+			console.log(data);
+			setProfileImg(data.getUserInfoByUsername.profileImg);
+		},
 	});
 
 	const [createComment] = useMutation(CREATE_COMMENT, {
@@ -114,7 +118,13 @@ const SinglePost = () => {
 					</Box>
 					<RouterLink to={`/users/${data.getPost.username}`}>
 						{loading ? (
-							<CircularProgress />
+							<Skeleton
+								variant="circular"
+								sx={{
+									height: 60,
+									width: 60,
+								}}
+							/>
 						) : (
 							<Avatar
 								src={profileImg}
@@ -133,7 +143,20 @@ const SinglePost = () => {
 						borderBottom: "1px solid #767676",
 					}}
 				>
-					<Typography variant="body1">{data.getPost.body}</Typography>
+					<Typography variant="body1" mb="0.5rem">
+						{data.getPost.body}
+					</Typography>
+					{data.getPost.img && (
+						<img
+							src={data.getPost.img}
+							alt="Post Img"
+							style={{
+								width: "100%",
+								maxHeight: "300px",
+								borderRadius: "5px",
+							}}
+						/>
+					)}
 				</Box>
 
 				<Box
@@ -298,6 +321,7 @@ export const GET_POST = gql`
 			id
 			username
 			body
+			img
 			commentCount
 			likeCount
 			comments {

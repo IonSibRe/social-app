@@ -189,6 +189,7 @@ const CREATE_POST = gql`
 			id
 			username
 			body
+			img
 			commentCount
 			likeCount
 			comments {

@@ -18,7 +18,16 @@ import {
 } from "@mui/material";
 
 const Post = ({
-	post: { id, username, body, commentCount, likes, likeCount, createdAt },
+	post: {
+		id,
+		username,
+		body,
+		img,
+		commentCount,
+		likes,
+		likeCount,
+		createdAt,
+	},
 }) => {
 	const { user } = useContext(UserContext);
 	const [profileImg, setProfileImg] = useState("");
@@ -77,7 +86,20 @@ const Post = ({
 					borderBottom: "1px solid #767676",
 				}}
 			>
-				<Typography variant="body1">{body}</Typography>
+				<Typography variant="body1" mb="0.5rem">
+					{body}
+				</Typography>
+				{img && (
+					<img
+						src={img}
+						alt="Post Img"
+						style={{
+							width: "100%",
+							maxHeight: "300px",
+							borderRadius: "5px",
+						}}
+					/>
+				)}
 			</Box>
 
 			<Box

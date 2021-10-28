@@ -351,6 +351,42 @@ const usersMutationResolvers = {
 				async (user) => await user.save()
 			);
 
+			// Remove Profile Img from cloudinary
+			if (user.profileImg) {
+				const publicId = user.profileImg
+					.split("/")
+					[user.profileImg.split("/").length - 1].split(".")[0];
+
+				await cloudinary.uploader.destroy(
+					`social-app/profile-images/${publicId}`
+				);
+			}
+
+			// Remove Banner from cloudinary
+			if (user.banner) {
+				const publicId = user.banner
+					.split("/")
+					[user.banner.split("/").length - 1].split(".")[0];
+
+				await cloudinary.uploader.destroy(
+					`social-app/banners/${publicId}`
+				);
+			}
+
+			// Delete all post imgs from cloudinary
+			const usersPosts = await Post.find({ username: user.username });
+			usersPosts.forEach(async (post) => {
+				if (post.img) {
+					const publicId = post.img
+						.split("/")
+						[post.img.split("/").length - 1].split(".")[0];
+
+					await cloudinary.uploader.destroy(
+						`social-app/post-images/${publicId}`
+					);
+				}
+			});
+
 			// Delete all users posts
 			await Post.deleteMany({ username: user.username });
 

@@ -46,7 +46,20 @@ const postMutationResolvers = {
 				if (!post) throw new ApolloError("Post Not Found");
 
 				if (user.username === post.username) {
+					// Remove Img from cloudinary
+					if (post.img) {
+						const publicId = post.img
+							.split("/")
+							[post.img.split("/").length - 1].split(".")[0];
+
+						await cloudinary.uploader.destroy(
+							`social-app/post-images/${publicId}`
+						);
+					}
+
+					// Remove post from DB
 					await post.remove();
+
 					return post;
 				}
 			} catch (err) {

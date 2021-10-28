@@ -6,6 +6,7 @@ export const GET_ALL_POSTS = gql`
 			id
 			username
 			body
+			img
 			commentCount
 			likeCount
 			comments {
@@ -29,6 +30,7 @@ export const GET_USERS_POSTS = gql`
 			id
 			username
 			body
+			img
 			commentCount
 			likeCount
 			comments {
