@@ -16,12 +16,14 @@ const ProfileUserInfo = () => {
 
 	const [updateUserAuthData] = useMutation(UPDATE_USER_AUTH_DATA, {
 		onCompleted: (data) => {
-			if (Object.keys(data.updateUserAuthData).length !== 0)
-				setSuccess("Updated Successfully");
+			if (Object.keys(data.updateUserAuthData).length !== 0);
+			setSuccess("Updated Successfully");
 
 			setUserAuthLocalData({ username: "", email: "" });
 			const updatedUser = removeTypename(data.updateUserAuthData);
 			setUser(updatedUser);
+
+			window.location.reload();
 		},
 		onError: (err) => {
 			setError(err.graphQLErrors[0].message);

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { gql, useMutation } from "@apollo/client";
 
 import { UserContext } from "../context/UserContext";
@@ -11,6 +11,7 @@ const ProfileAdditionalInfo = ({
 	setUserLocalAdditionalData,
 }) => {
 	const { user, setUserPublicData } = useContext(UserContext);
+	const [updatedSuccessfully, setUpdatedSuccessfully] = useState(false);
 
 	const [updateUserAdditionalInfo] = useMutation(
 		UPDATE_USER_ADDITIONAL_INFO,
@@ -21,6 +22,7 @@ const ProfileAdditionalInfo = ({
 					setUserPublicData,
 					setUserLocalAdditionalData
 				);
+				setUpdatedSuccessfully(true);
 			},
 			variables: {
 				userId: user.id,
@@ -34,6 +36,24 @@ const ProfileAdditionalInfo = ({
 		updateUserAdditionalInfo();
 	};
 
+	useEffect(() => {
+		let timeout = setTimeout(() => {
+			setUpdatedSuccessfully(false);
+		}, 3000);
+		return () => clearTimeout(timeout);
+	}, [updatedSuccessfully]);
+
+	const styles = {
+		input: {
+			marginBottom: "0.5rem",
+			"& .MuiOutlinedInput-root": {
+				"& fieldset": {
+					borderColor: updatedSuccessfully ? "#4caf50" : "",
+				},
+			},
+		},
+	};
+
 	return (
 		<Box>
 			<Typography variant="h5" component="h4" my="1rem">
@@ -41,10 +61,11 @@ const ProfileAdditionalInfo = ({
 			</Typography>
 			<form onSubmit={handleSubmit}>
 				<TextField
-					sx={{ marginBottom: "0.5rem" }}
+					sx={styles.input}
 					label="First Name"
 					type="text"
 					size="small"
+					color="primary"
 					fullWidth
 					value={userLocalAdditionalData.firstName ?? ""}
 					onChange={(e) => {
@@ -55,7 +76,7 @@ const ProfileAdditionalInfo = ({
 					}}
 				/>
 				<TextField
-					sx={{ marginBottom: "0.5rem" }}
+					sx={styles.input}
 					label="Last Name"
 					type="text"
 					size="small"
@@ -69,7 +90,7 @@ const ProfileAdditionalInfo = ({
 					}}
 				/>
 				<TextField
-					sx={{ marginBottom: "0.5rem" }}
+					sx={styles.input}
 					label="Phone"
 					type="text"
 					size="small"
@@ -83,7 +104,7 @@ const ProfileAdditionalInfo = ({
 					}}
 				/>
 				<TextField
-					sx={{ marginBottom: "0.5rem" }}
+					sx={styles.input}
 					label="Country"
 					type="text"
 					size="small"
@@ -97,7 +118,7 @@ const ProfileAdditionalInfo = ({
 					}}
 				/>
 				<TextField
-					sx={{ marginBottom: "0.5rem" }}
+					sx={styles.input}
 					label="Birth Date"
 					type="text"
 					size="small"
@@ -111,7 +132,7 @@ const ProfileAdditionalInfo = ({
 					}}
 				/>
 				<TextField
-					sx={{ marginBottom: "0.5rem" }}
+					sx={styles.input}
 					label="Profession"
 					type="text"
 					size="small"
@@ -125,7 +146,7 @@ const ProfileAdditionalInfo = ({
 					}}
 				/>
 				<TextField
-					sx={{ marginBottom: "1rem" }}
+					sx={{ ...styles.input, marginBottom: "1rem" }}
 					label="Company"
 					type="text"
 					size="small"
@@ -138,7 +159,9 @@ const ProfileAdditionalInfo = ({
 						});
 					}}
 				/>
-				<Button variant="outlined">Submit</Button>
+				<Button type="submit" variant="outlined">
+					Submit
+				</Button>
 			</form>
 		</Box>
 	);

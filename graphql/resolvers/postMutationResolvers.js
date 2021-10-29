@@ -15,6 +15,12 @@ const postMutationResolvers = {
 					errMsg: "Post body mustn't be empty",
 				});
 
+			if (body.length > 300) {
+				throw new UserInputError("InputError", {
+					errMsg: "Post body must have less than 300 characters",
+				});
+			}
+
 			// Upload Image if there is one
 			if (base64File) {
 				uploadedRes = await cloudinary.uploader.upload(base64File, {

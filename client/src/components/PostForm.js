@@ -14,12 +14,13 @@ import {
 	Typography,
 	IconButton,
 } from "@mui/material";
-import { blue } from "@mui/material/colors";
+import { blue, red } from "@mui/material/colors";
 import { UploadFile, Close } from "@mui/icons-material";
 
 const PostForm = () => {
 	const { user } = useContext(UserContext);
 
+	const [charCounter, setCharCounter] = useState(0);
 	const [postBody, setPostBody] = useState("");
 	const [profileImg, setProfileImg] = useState("");
 	const [postImg, setPostImg] = useState("");
@@ -75,6 +76,8 @@ const PostForm = () => {
 		return () => clearTimeout(errorTimeout);
 	}, [error]);
 
+	useEffect(() => setCharCounter(postBody.length), [postBody]);
+
 	return (
 		<form onSubmit={submitHandler} style={{ marginBottom: "1rem" }}>
 			<Toolbar disableGutters sx={{ justifyContent: "space-between" }}>
@@ -101,7 +104,7 @@ const PostForm = () => {
 					sx={{ padding: "1rem 0.5rem" }}
 					type="text"
 					multiline
-					maxRows={4}
+					maxRows={10}
 					size="small"
 					variant="standard"
 					placeholder="Add Post"
@@ -143,7 +146,14 @@ const PostForm = () => {
 					}}
 				/>
 
-				<Box sx={{ padding: "0 0.25rem" }}>
+				<Box
+					sx={{
+						display: "flex",
+						justifyContent: "space-between",
+						alignItems: "center",
+						padding: "0 0.5rem 0 0.25rem",
+					}}
+				>
 					<label
 						htmlFor="user-info-banner-upload"
 						style={{
@@ -162,6 +172,12 @@ const PostForm = () => {
 						style={{ display: "none" }}
 						onChange={(e) => uploadPostImage(e)}
 					/>
+					<Typography
+						variant="body1"
+						color={charCounter > 300 && red["A700"]}
+					>
+						{charCounter} / 300
+					</Typography>
 				</Box>
 			</Box>
 			<Box
@@ -173,7 +189,9 @@ const PostForm = () => {
 			>
 				<Button
 					sx={{ display: "block" }}
-					disabled={postBody.length === 0 && !postImg}
+					disabled={
+						(postBody.length === 0 && !postImg) || charCounter > 300
+					}
 					variant="outlined"
 					type="submit"
 				>
