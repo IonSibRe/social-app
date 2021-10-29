@@ -61,7 +61,6 @@ const PostForm = () => {
 			setPostImg(reader.result);
 		};
 
-		// Reset Input Value
 		e.target.value = "";
 	};
 
