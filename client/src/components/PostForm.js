@@ -60,6 +60,9 @@ const PostForm = () => {
 		reader.onloadend = () => {
 			setPostImg(reader.result);
 		};
+
+		// Reset Input Value
+		e.target.value = "";
 	};
 
 	const submitHandler = (e) => {

@@ -1,10 +1,14 @@
 import { blue, grey, indigo, pink, red } from "@mui/material/colors";
 import { createTheme } from "@mui/material/styles";
 
-const mode = "light";
+const localStorageThemeMode = JSON.parse(localStorage.getItem("themeMode"));
 
-const getPalette = (mode) => {
-	return mode === "light"
+let themeMode = localStorageThemeMode
+	? localStorageThemeMode
+	: localStorage.setItem("themeMode", JSON.stringify("light"));
+
+const getPalette = (themeMode = "light") => {
+	return themeMode === "light"
 		? {
 				mode: "light",
 				primary: {
@@ -37,7 +41,7 @@ const getPalette = (mode) => {
 
 const theme = createTheme({
 	palette: {
-		...getPalette(mode),
+		...getPalette(themeMode),
 		breakpoints: {
 			values: {
 				xs: 0,

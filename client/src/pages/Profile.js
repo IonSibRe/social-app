@@ -10,6 +10,7 @@ import ProfileInfo from "../components/ProfileInfo";
 
 import { Container, useMediaQuery } from "@mui/material";
 import { useTheme } from "@emotion/react";
+import Customize from "../components/Customize";
 
 const Profile = () => {
 	const { user, logout } = useContext(UserContext);
@@ -53,6 +54,7 @@ const Profile = () => {
 				path="/profile/password-change"
 				component={ProfileChangePw}
 			/>
+			<Route path="/profile/customize" component={Customize} />
 		</Container>
 	);
 };

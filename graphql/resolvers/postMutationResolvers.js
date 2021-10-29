@@ -8,7 +8,7 @@ const postMutationResolvers = {
 	Mutation: {
 		async createPost(_, { body, base64File }, context) {
 			const user = checkAuth(context);
-			let uploadedRes = null;
+			let uploadedRes;
 
 			if (body.trim() === "")
 				throw new UserInputError("InputError", {
@@ -26,7 +26,7 @@ const postMutationResolvers = {
 			const post = new Post({
 				username: user.username,
 				body,
-				img: uploadedRes.secure_url || uploadedRes,
+				img: uploadedRes ? uploadedRes.secure_url : "",
 				commentCount: 0,
 				likeCount: 0,
 				comments: [],

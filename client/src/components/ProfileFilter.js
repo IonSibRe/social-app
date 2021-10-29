@@ -56,6 +56,16 @@ const ProfileFilter = ({ setModalOpen }) => {
 					Change Password
 				</Link>
 				<Link
+					sx={{
+						...styles.link,
+					}}
+					component={RouterLink}
+					to="/profile/customize"
+					underline="none"
+				>
+					Customize
+				</Link>
+				<Link
 					sx={{ ...styles.link, cursor: "pointer" }}
 					color="secondary"
 					underline="none"

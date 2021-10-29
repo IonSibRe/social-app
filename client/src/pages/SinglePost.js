@@ -143,7 +143,10 @@ const SinglePost = () => {
 						borderBottom: "1px solid #767676",
 					}}
 				>
-					<Typography variant="body1" mb="0.5rem">
+					<Typography
+						variant="body1"
+						mb={data.getPost.img && "0.5rem"}
+					>
 						{data.getPost.body}
 					</Typography>
 					{data.getPost.img && (
