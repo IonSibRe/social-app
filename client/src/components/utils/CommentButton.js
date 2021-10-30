@@ -3,10 +3,9 @@ import React, { useContext } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
 import AddCommentIcon from "@mui/icons-material/AddComment";
-import LoginIcon from "@mui/icons-material/Login";
 
 const CommentButton = ({ id, commentCount }) => {
-	const { user } = useContext(UserContext);
+	const { loggedIn } = useContext(UserContext);
 
 	return (
 		<Box
@@ -16,27 +15,20 @@ const CommentButton = ({ id, commentCount }) => {
 				alignItems: "center",
 			}}
 		>
-			{user && user.username ? (
-				<IconButton>
-					<Link
-						sx={{
-							display: "flex",
-							alignItems: "flex-end",
-						}}
-						component={RouterLink}
-						to={`/posts/${id}`}
-						underline="none"
-					>
-						<AddCommentIcon />
-					</Link>
-				</IconButton>
-			) : (
-				<IconButton>
-					<Link component={RouterLink} to={`/login`} underline="none">
-						<LoginIcon />
-					</Link>
-				</IconButton>
-			)}
+			<IconButton>
+				<Link
+					sx={{
+						display: "flex",
+						alignItems: "flex-end",
+					}}
+					component={RouterLink}
+					to={loggedIn ? `/posts/${id}` : "/login"}
+					underline="none"
+				>
+					<AddCommentIcon />
+				</Link>
+			</IconButton>
+
 			<Typography variant="body1">{commentCount}</Typography>
 		</Box>
 	);

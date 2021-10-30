@@ -1,9 +1,9 @@
 import React, { useState, useContext } from "react";
+import { useParams } from "react-router";
 import { gql, useMutation, useQuery } from "@apollo/client";
 
-import { UserContext } from "../context/UserContext";
-import { GET_USER_INFO_BY_USERNAME } from "../utils/graphql";
-import { useParams } from "react-router";
+import { UserContext } from "../../context/UserContext";
+import { GET_USER_INFO_BY_USERNAME } from "../../utils/graphql";
 import { Button } from "@mui/material";
 
 const FollowButton = ({ userToFollow }) => {

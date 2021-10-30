@@ -11,7 +11,6 @@ import {
 } from "./pages";
 import PrivateRoute from "./PrivateRoute";
 import Navbar from "./components/Navbar";
-// import "./scss/main.scss";
 
 const App = () => {
 	return (

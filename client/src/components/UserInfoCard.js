@@ -7,7 +7,7 @@ import ProfileImageUpload from "./ProfileImageUpload";
 import ProfileBannerUpload from "./ProfileBannerUpload";
 import { UPLOAD_IMAGE } from "../utils/graphql";
 import { getPublicId } from "../utils/utilities";
-import FollowButton from "./FollowButton";
+import FollowButton from "./utils/FollowButton";
 import { Box, Typography } from "@mui/material";
 
 const UserInfoCard = ({

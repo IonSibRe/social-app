@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 
 const Posts = () => {
-	const { user } = useContext(UserContext);
+	const { loggedIn } = useContext(UserContext);
 
 	const { loading, err, data } = useQuery(GET_USERS_POSTS);
 
@@ -53,7 +53,7 @@ const Posts = () => {
 					Home
 				</Typography>
 
-				{user && user.username && <PostForm />}
+				{loggedIn && <PostForm />}
 
 				<Box>
 					{data.getUsersPosts.map((post) => {

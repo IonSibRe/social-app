@@ -2,24 +2,23 @@ import { gql, useMutation } from "@apollo/client";
 import { Box, IconButton, Link, Typography } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import LoginIcon from "@mui/icons-material/Login";
 import React, { useContext, useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
 
 const LikeButton = ({ id, likes, likeCount }) => {
-	const { user } = useContext(UserContext);
+	const { user, loggedIn } = useContext(UserContext);
 	const [liked, setLiked] = useState(false);
 
 	useEffect(() => {
-		if (user && user.username) {
+		if (loggedIn) {
 			setLiked(
 				likes.find((like) => like.username === user.username)
 					? true
 					: false
 			);
 		}
-	}, [likes, user]);
+	}, [likes, user, loggedIn]);
 
 	const [likePost] = useMutation(LIKE_POST, {
 		variables: {
@@ -36,12 +35,8 @@ const LikeButton = ({ id, likes, likeCount }) => {
 				marginRight: "1rem",
 			}}
 		>
-			{user && user.username ? (
-				<IconButton
-					color="primary"
-					size="medium"
-					onClick={() => likePost()}
-				>
+			{loggedIn ? (
+				<IconButton color="primary" onClick={() => likePost()}>
 					{liked ? (
 						<FavoriteIcon fontSize="inherit" color="secondary" />
 					) : (
@@ -52,9 +47,20 @@ const LikeButton = ({ id, likes, likeCount }) => {
 					)}
 				</IconButton>
 			) : (
-				<IconButton>
-					<Link component={RouterLink} to="/login" underline="none">
-						<LoginIcon />
+				<IconButton color="primary" size="medium">
+					<Link
+						component={RouterLink}
+						sx={{
+							display: "flex",
+							alignItems: "flex-end",
+						}}
+						to="/login"
+						underline="none"
+					>
+						<FavoriteBorderIcon
+							fontSize="inherit"
+							color="secondary"
+						/>
 					</Link>
 				</IconButton>
 			)}

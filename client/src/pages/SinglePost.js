@@ -25,7 +25,7 @@ import { Box } from "@mui/system";
 
 const SinglePost = () => {
 	const { id } = useParams();
-	const { user } = useContext(UserContext);
+	const { user, loggedIn } = useContext(UserContext);
 	const [profileImg, setProfileImg] = useState("");
 	const [comment, setComment] = useState("");
 	const [error, setError] = useState(false);
@@ -194,8 +194,13 @@ const SinglePost = () => {
 					)}
 				</Box>
 
-				{user && user.username && (
-					<Box sx={{ margin: "1rem 0", padding: "0 1rem" }}>
+				{loggedIn && (
+					<Box
+						sx={{
+							margin: "1rem 0",
+							padding: "0 1rem",
+						}}
+					>
 						<Typography variant="h5" component="h4" mb="0.5rem">
 							Post a comment
 						</Typography>
@@ -235,68 +240,70 @@ const SinglePost = () => {
 					</Box>
 				)}
 
-				<Box
-					sx={{
-						padding: "1rem",
-						borderTop:
-							data.getPost.comments.length > 0
-								? "1px solid #767676"
-								: "0",
-					}}
-				>
-					{data.getPost.comments.map((comment) => {
-						const {
-							id: commentId,
-							username,
-							body,
-							createdAt,
-						} = comment;
-						return (
-							<Box
-								key={commentId}
-								sx={{
-									marginBottom: "1rem",
-									padding: "0.5rem",
-									border: "1px solid #767676",
-									"&:last-child": {
-										marginBottom: "0",
-									},
-								}}
-							>
-								<Toolbar
-									disableGutters
-									sx={{ justifyContent: "space-between" }}
+				{data.getPost.comments.length > 0 && (
+					<Box
+						sx={{
+							padding: "1rem",
+							borderTop: loggedIn ? "1px solid #767676" : "0",
+						}}
+					>
+						{data.getPost.comments.map((comment) => {
+							const {
+								id: commentId,
+								username,
+								body,
+								createdAt,
+							} = comment;
+							return (
+								<Box
+									key={commentId}
+									sx={{
+										marginBottom: "1rem",
+										padding: "0.5rem",
+										border: "1px solid #767676",
+										"&:last-child": {
+											marginBottom: "0",
+										},
+									}}
 								>
-									<Box>
-										<Typography component="h4" variant="h5">
-											{username}
-										</Typography>
-										<Typography
-											component="h4"
-											variant="h6"
-											color="primary"
-										>
-											{moment(createdAt).fromNow()}
-										</Typography>
-									</Box>
-									{user && user.username === username && (
-										<DeleteButton
-											postId={data.getPost.id}
-											commentId={commentId}
-										/>
-									)}
-								</Toolbar>
-								<Typography
-									variant="body1"
-									my="0.5rem"
-									sx={{ wordWrap: "break-word" }}
-								>
-									{body}
-								</Typography>
-							</Box>
-						);
-					})}
-				</Box>
+									<Toolbar
+										disableGutters
+										sx={{ justifyContent: "space-between" }}
+									>
+										<Box>
+											<Typography
+												component="h4"
+												variant="h5"
+											>
+												{username}
+											</Typography>
+											<Typography
+												component="h4"
+												variant="h6"
+												color="primary"
+											>
+												{moment(createdAt).fromNow()}
+											</Typography>
+										</Box>
+										{user && user.username === username && (
+											<DeleteButton
+												postId={data.getPost.id}
+												commentId={commentId}
+											/>
+										)}
+									</Toolbar>
+									<Typography
+										variant="body1"
+										my="0.5rem"
+										sx={{ wordWrap: "break-word" }}
+									>
+										{body}
+									</Typography>
+								</Box>
+							);
+						})}
+					</Box>
+				)}
 			</Box>
 		</Container>
 	);

@@ -22,6 +22,8 @@ import LoginIcon from "@mui/icons-material/Login";
 import { UserContext } from "../context/UserContext";
 import { GET_USER_INFO_BY_USERNAME } from "../utils/graphql";
 
+const themeMode = JSON.parse(localStorage.getItem("themeMode"));
+
 const Navbar = () => {
 	const { user, loggedIn, logout } = useContext(UserContext);
 	const [searchedUsers, setSearchedUsers] = useState([]);
@@ -113,15 +115,18 @@ const Navbar = () => {
 		searchBox: {
 			position: "absolute",
 			width: "100%",
-			backgroundColor: "#192734",
-			Zindex: "999",
+			border: themeMode === "dark" ? "" : "1px solid #767676",
+			backgroundColor: `${themeMode === "dark" ? "#192734" : "#fff"}`,
+			zIndex: "999",
 		},
 		searchBoxItem: {
 			display: "flex",
 			justifyContent: "space-between",
 			alignItems: "center",
 			padding: "0.5rem",
-			borderBottom: "1px solid #0A1929",
+			borderBottom: `1px solid ${
+				themeMode === "dark" ? "#0A1929" : "#767676"
+			}`,
 			"&:hover": {
 				opacity: "0.9",
 			},
