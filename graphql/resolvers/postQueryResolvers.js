@@ -39,6 +39,17 @@ const postQueryResolvers = {
 
 			return posts;
 		},
+		async getUsersPostsPublic(_, { username }) {
+			const user = await User.find({ username });
+			if (!user) throw new ApolloError("User Not Found");
+
+			let posts = await Post.find().where("username").in(user.following);
+			const usersPosts = await Post.find({ username });
+
+			posts = [...posts, ...usersPosts];
+
+			return posts;
+		},
 	},
 };
 

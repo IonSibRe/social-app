@@ -92,6 +92,7 @@ const typeDefs = gql`
 	type Query {
 		getAllPosts: [Post]!
 		getUsersPosts: [Post]!
+		getUsersPostsPublic(username: String!): [Post]!
 		getPost(postId: ID!): Post!
 		getUserInfoById(userId: ID!): User!
 		getUserInfoByUsername(username: String!): User!
