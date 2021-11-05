@@ -24,10 +24,11 @@ const PostForm = () => {
 	const [postBody, setPostBody] = useState("");
 	const [profileImg, setProfileImg] = useState("");
 	const [postImg, setPostImg] = useState("");
-	const [error, setError] = useState(false);
+	const [postImgExt, setPostImgExt] = useState("");
+	const [error, setError] = useState("");
 
 	const [submitPost, { loading }] = useMutation(CREATE_POST, {
-		onError: () => setError(true),
+		onError: (err) => console.log(err),
 		update(cache, { data }) {
 			setPostImg("");
 			const posts = cache.readQuery({ query: GET_USERS_POSTS });
@@ -42,6 +43,7 @@ const PostForm = () => {
 		variables: {
 			body: postBody,
 			base64File: postImg,
+			imgExt: postImgExt,
 		},
 	});
 
@@ -56,10 +58,16 @@ const PostForm = () => {
 	const uploadPostImage = (e) => {
 		const file = e.target.files[0];
 		const reader = new FileReader();
+		const imgExt = `.${file.name.split(".")[1]}`;
 
 		reader.readAsDataURL(file);
 		reader.onloadend = () => {
-			setPostImg(reader.result);
+			if (imgExt !== ".png" && imgExt !== ".jpg" && imgExt !== ".jpeg") {
+				setError("Image must have .jpeg or .png format");
+			} else {
+				setPostImg(reader.result);
+				setPostImgExt(imgExt);
+			}
 		};
 
 		e.target.value = "";
@@ -72,7 +80,7 @@ const PostForm = () => {
 	};
 
 	useEffect(() => {
-		const errorTimeout = setTimeout(() => setError(false), 1000);
+		const errorTimeout = setTimeout(() => setError(""), 5000);
 		return () => clearTimeout(errorTimeout);
 	}, [error]);
 
@@ -84,13 +92,17 @@ const PostForm = () => {
 				<Typography variant="h4" component="h3">
 					Create a Post
 				</Typography>
-				<RouterLink to={`/users/${user.username}`}>
+				<RouterLink
+					to={`/users/${user.username}`}
+					style={{ textDecoration: "none" }}
+				>
 					<Avatar
 						src={profileImg}
 						sx={{
 							height: 45,
 							width: 45,
 						}}
+						children={user.username[0].toUpperCase()}
 					/>
 				</RouterLink>
 			</Toolbar>
@@ -197,15 +209,29 @@ const PostForm = () => {
 				>
 					Submit
 				</Button>
-				{(loading || userInfoLoading) && <CircularProgress size={30} />}
+				{error && (
+					<Typography
+						variant="body1"
+						sx={{
+							padding: "0.5rem",
+							color: "#fff",
+							backgroundColor: red["A700"],
+						}}
+					>
+						{error}
+					</Typography>
+				)}
+				{(loading || userInfoLoading) && !error && (
+					<CircularProgress size={30} />
+				)}
 			</Box>
 		</form>
 	);
 };
 
 const CREATE_POST = gql`
-	mutation createPost($body: String!, $base64File: String) {
-		createPost(body: $body, base64File: $base64File) {
+	mutation createPost($body: String!, $base64File: String, $imgExt: String) {
+		createPost(body: $body, base64File: $base64File, imgExt: $imgExt) {
 			id
 			username
 			body

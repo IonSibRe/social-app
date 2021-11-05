@@ -116,7 +116,10 @@ const SinglePost = () => {
 							{formatMsFromEpochToFromNow(data.getPost.createdAt)}
 						</Link>
 					</Box>
-					<RouterLink to={`/users/${data.getPost.username}`}>
+					<RouterLink
+						to={`/users/${data.getPost.username}`}
+						style={{ textDecoration: "none" }}
+					>
 						{loading ? (
 							<Skeleton
 								variant="circular"
@@ -131,7 +134,9 @@ const SinglePost = () => {
 								sx={{
 									height: 60,
 									width: 60,
+									fontSize: "2rem",
 								}}
+								children={data.getPost.username[0].toUpperCase()}
 							/>
 						)}
 					</RouterLink>

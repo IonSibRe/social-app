@@ -77,11 +77,13 @@ export const UPLOAD_IMAGE = gql`
 	mutation uploadImage(
 		$base64File: String!
 		$imgType: String!
+		$imgExt: String!
 		$deletePublicId: ID
 	) {
 		uploadImage(
 			base64File: $base64File
 			imgType: $imgType
+			imgExt: $imgExt
 			deletePublicId: $deletePublicId
 		) {
 			username

@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 
 import { UserContext } from "../context/UserContext";
-import personImg from "../assets/person-img.jpg";
 import { Avatar } from "@mui/material";
 import { Box } from "@mui/system";
 import { UploadFile } from "@mui/icons-material";
@@ -21,8 +20,9 @@ const ProfileImageUpload = ({ username, profileImg, handleFileChange }) => {
 			}}
 		>
 			<Avatar
-				src={profileImg ? profileImg : personImg}
-				sx={{ height: 150, width: 150 }}
+				src={profileImg}
+				sx={{ height: 150, width: 150, fontSize: "4rem" }}
+				children={user.username[0].toUpperCase()}
 			/>
 			{user && user.username === username && (
 				<Box>

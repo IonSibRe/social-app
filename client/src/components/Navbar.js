@@ -221,6 +221,7 @@ const Navbar = () => {
 														height: 45,
 														width: 45,
 													}}
+													children={item.username[0].toUpperCase()}
 												/>
 												<Typography
 													variant="h5"
@@ -247,10 +248,15 @@ const Navbar = () => {
 										sx={styles.avatar}
 									/>
 								) : (
-									<RouterLink to="/profile/info">
+									<RouterLink
+										to="/profile/info"
+										style={{ textDecoration: "none" }}
+									>
 										<Avatar
 											src={profileImg}
+											alt={user.username}
 											sx={styles.avatar}
+											children={user.username[0].toUpperCase()}
 										/>
 									</RouterLink>
 								)}

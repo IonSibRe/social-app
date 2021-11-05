@@ -108,6 +108,7 @@ const typeDefs = gql`
 		uploadImage(
 			base64File: String!
 			imgType: String!
+			imgExt: String!
 			deletePublicId: ID
 		): User!
 		updateUserAuthData(userId: ID!, body: UserAuthDataInput!): User!
@@ -116,7 +117,7 @@ const typeDefs = gql`
 			body: UserAdditionalInfoInput
 		): User!
 		deactivateAccount(userId: ID!): User!
-		createPost(body: String!, base64File: String): Post!
+		createPost(body: String!, base64File: String, imgExt: String): Post!
 		deletePost(postId: ID!): Post!
 		likePost(postId: ID!): Post!
 		createComment(postId: ID!, body: String!): Post!

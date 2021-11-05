@@ -6,7 +6,7 @@ const { cloudinary } = require("../../utils/cloudinary");
 
 const postMutationResolvers = {
 	Mutation: {
-		async createPost(_, { body, base64File }, context) {
+		async createPost(_, { body, base64File, imgExt }, context) {
 			const user = checkAuth(context);
 			let uploadedRes;
 
@@ -19,6 +19,17 @@ const postMutationResolvers = {
 				throw new UserInputError("InputError", {
 					errMsg: "Post body must have less than 300 characters",
 				});
+			}
+
+			if (
+				imgExt &&
+				imgExt !== ".png" &&
+				imgExt !== ".jpg" &&
+				imgExt !== ".jpeg"
+			) {
+				throw new ApolloError(
+					"imgExt must be: '.png', '.jpg' or '.jpeg'"
+				);
 			}
 
 			// Upload Image if there is one

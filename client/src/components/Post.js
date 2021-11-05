@@ -65,7 +65,10 @@ const Post = ({
 						{formatMsFromEpochToFromNow(createdAt)}
 					</Link>
 				</Box>
-				<RouterLink to={`/users/${username}`}>
+				<RouterLink
+					to={`/users/${username}`}
+					style={{ textDecoration: "none" }}
+				>
 					{loading ? (
 						<CircularProgress />
 					) : (
@@ -75,6 +78,7 @@ const Post = ({
 								height: 45,
 								width: 45,
 							}}
+							children={username[0].toUpperCase()}
 						/>
 					)}
 				</RouterLink>
@@ -86,7 +90,7 @@ const Post = ({
 					borderBottom: "1px solid #767676",
 				}}
 			>
-				<Typography variant="body1" mb={img && "0.5rem"}>
+				<Typography variant="body1" mb={img && "1rem"}>
 					{body}
 				</Typography>
 				{img && (
@@ -96,6 +100,7 @@ const Post = ({
 						style={{
 							width: "100%",
 							maxHeight: "300px",
+							border: "1px solid #767676",
 							borderRadius: "5px",
 						}}
 					/>

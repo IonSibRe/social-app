@@ -13,7 +13,11 @@ const ProfileBannerUpload = ({ username, banner, handleFileChange }) => {
 			<img
 				src={banner || defaultBanner}
 				alt="User Banner"
-				style={{ height: "250px", width: "100%" }}
+				style={{
+					height: "250px",
+					width: "100%",
+					borderBottom: "1px solid #767676",
+				}}
 			/>
 			{user && user.username === username && (
 				<Box

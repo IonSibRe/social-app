@@ -34,6 +34,7 @@ const UserInfoCard = ({
 	const handleFileChange = (e, imgType) => {
 		const file = e.target.files[0];
 		const reader = new FileReader();
+		const imgExt = `.${file.name.split(".")[1]}`;
 		let publicId;
 
 		if (imgType === "profile-image") {
@@ -48,6 +49,7 @@ const UserInfoCard = ({
 				variables: {
 					base64File: reader.result,
 					imgType,
+					imgExt,
 					deletePublicId: publicId,
 				},
 			});
