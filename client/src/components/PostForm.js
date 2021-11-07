@@ -18,7 +18,7 @@ import { blue, red } from "@mui/material/colors";
 import { UploadFile, Close } from "@mui/icons-material";
 
 const PostForm = () => {
-	const { user } = useContext(UserContext);
+	const { user, loggedIn } = useContext(UserContext);
 
 	const [charCounter, setCharCounter] = useState(0);
 	const [postBody, setPostBody] = useState("");
@@ -102,7 +102,9 @@ const PostForm = () => {
 							height: 45,
 							width: 45,
 						}}
-						children={user.username[0].toUpperCase()}
+						children={
+							loggedIn ? user.username[0].toUpperCase() : null
+						}
 					/>
 				</RouterLink>
 			</Toolbar>

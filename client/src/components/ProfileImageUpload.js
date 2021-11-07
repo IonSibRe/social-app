@@ -7,7 +7,7 @@ import { UploadFile } from "@mui/icons-material";
 import { pink } from "@mui/material/colors";
 
 const ProfileImageUpload = ({ username, profileImg, handleFileChange }) => {
-	const { user } = useContext(UserContext);
+	const { user, loggedIn } = useContext(UserContext);
 
 	return (
 		<Box
@@ -22,7 +22,7 @@ const ProfileImageUpload = ({ username, profileImg, handleFileChange }) => {
 			<Avatar
 				src={profileImg}
 				sx={{ height: 150, width: 150, fontSize: "4rem" }}
-				children={user.username[0].toUpperCase()}
+				children={loggedIn ? user.username[0].toUpperCase() : null}
 			/>
 			{user && user.username === username && (
 				<Box>

@@ -254,9 +254,13 @@ const Navbar = () => {
 									>
 										<Avatar
 											src={profileImg}
-											alt={user.username}
+											alt={loggedIn ? user.username : ""}
 											sx={styles.avatar}
-											children={user.username[0].toUpperCase()}
+											children={
+												loggedIn
+													? user.username[0].toUpperCase()
+													: null
+											}
 										/>
 									</RouterLink>
 								)}

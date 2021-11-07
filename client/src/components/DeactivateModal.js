@@ -29,7 +29,7 @@ const DeactivateModal = ({ modalOpen, setModalOpen, deactivateAccount }) => {
 						marginBottom: "10px",
 					}}
 				>
-					<Typography variant="h5" component="h3">
+					<Typography variant="h5" component="h3" color="#000">
 						Deactivate
 					</Typography>
 					<IconButton
@@ -41,7 +41,7 @@ const DeactivateModal = ({ modalOpen, setModalOpen, deactivateAccount }) => {
 					</IconButton>
 				</Box>
 				<Box sx={{ textAlign: "center" }}>
-					<Typography mb="10px">
+					<Typography mb="10px" color="#000">
 						Are you sure you want to deactivate your account?
 					</Typography>
 					<Button

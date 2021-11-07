@@ -42,6 +42,7 @@ const Register = () => {
 			login(user);
 		},
 		onError(err) {
+			console.log(err.graphQLErrors[0].extensions.errMsg);
 			setError(err.graphQLErrors[0].extensions.errMsg);
 		},
 
