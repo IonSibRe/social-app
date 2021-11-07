@@ -34,7 +34,12 @@ const UserInfoCard = ({
 	const handleFileChange = (e, imgType) => {
 		const file = e.target.files[0];
 		const reader = new FileReader();
-		const imgExt = `.${file.name.split(".")[1]}`;
+
+		if (!file) return;
+
+		const imgExt = `.${
+			file.name.split(".")[file.name.split(".").length - 1]
+		}`;
 		let publicId;
 
 		if (imgType === "profile-image") {

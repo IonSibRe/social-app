@@ -10,20 +10,18 @@ import { Box, CircularProgress, Container } from "@mui/material";
 
 const UserPage = () => {
 	const { username } = useParams();
+	const [error, setError] = useState(false);
 	const [cardData, setCardData] = useState({});
 
-	const { loading, err, data } = useQuery(GET_USERS_POSTS_PUBLIC, {
-		onError: (err) => console.log(err),
+	const { loading, data } = useQuery(GET_USERS_POSTS_PUBLIC, {
+		onError: () => setError(true),
 		variables: { username },
 	});
-	const { loading: cardLoading, err: cardErr } = useQuery(
-		GET_USER_INFO_BY_USERNAME,
-		{
-			onCompleted: (data) => setCardData(data.getUserInfoByUsername),
-			onError: (err) => console.log(err),
-			variables: { username },
-		}
-	);
+	const { loading: cardLoading } = useQuery(GET_USER_INFO_BY_USERNAME, {
+		onCompleted: (data) => setCardData(data.getUserInfoByUsername),
+		onError: () => setError(true),
+		variables: { username },
+	});
 
 	if (loading || cardLoading)
 		return (
@@ -38,7 +36,7 @@ const UserPage = () => {
 			</Box>
 		);
 
-	if (err || cardErr) return <ResourceError />;
+	if (error) return <ResourceError />;
 
 	return (
 		<Container maxWidth="sm" sx={{ marginTop: "1rem" }}>

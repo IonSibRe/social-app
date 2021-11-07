@@ -35,6 +35,7 @@ const SinglePost = () => {
 			getUserInfoByUsername({
 				variables: { username: data.getPost.username },
 			}),
+		onError: () => setError(true),
 		variables: {
 			postId: id,
 		},
@@ -84,7 +85,7 @@ const SinglePost = () => {
 			</Box>
 		);
 
-	if (err) return <ResourceError />;
+	if (err || !data) return <ResourceError />;
 
 	return (
 		<Container maxWidth="lg">
@@ -236,7 +237,7 @@ const SinglePost = () => {
 										borderBottomLeftRadius: 0,
 									}}
 									variant="outlined"
-									type="button"
+									type="submit"
 								>
 									Submit
 								</Button>

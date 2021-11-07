@@ -58,7 +58,12 @@ const PostForm = () => {
 	const uploadPostImage = (e) => {
 		const file = e.target.files[0];
 		const reader = new FileReader();
-		const imgExt = `.${file.name.split(".")[1]}`;
+
+		if (!file) return;
+
+		const imgExt = `.${
+			file.name.split(".")[file.name.split(".").length - 1]
+		}`;
 
 		reader.readAsDataURL(file);
 		reader.onloadend = () => {
