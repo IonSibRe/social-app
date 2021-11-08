@@ -225,26 +225,13 @@ const usersMutationResolvers = {
 				throw new ApolloError(err);
 			}
 		},
-		async uploadImage(
-			_,
-			{ base64File, imgType, imgExt, deletePublicId },
-			context
-		) {
+		async uploadImage(_, { base64File, imgType, deletePublicId }, context) {
 			const { id } = checkAuth(context);
 
 			// Check for imgType
 			if (imgType !== "profile-image" && imgType !== "banner") {
 				throw new ApolloError(
 					"imgType must be: 'profile-image' or 'banner'"
-				);
-			}
-
-			// Check for imgExt
-			console.log(imgExt);
-
-			if (imgExt !== ".png" && imgExt !== ".jpg" && imgExt !== ".jpeg") {
-				throw new ApolloError(
-					"imgExt must be: '.png', '.jpg' or '.jpeg'"
 				);
 			}
 

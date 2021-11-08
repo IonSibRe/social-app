@@ -17,7 +17,7 @@ import { useTheme } from "@emotion/react";
 
 const Login = () => {
 	const { login, loggedIn } = useContext(UserContext);
-	const [error, setError] = useState("");
+	const [error, setError] = useState(false);
 	const [userCredentials, setUserCredentials] = useState({
 		email: "",
 		password: "",
@@ -35,13 +35,8 @@ const Login = () => {
 			: "0 0 0 100px white inset !important";
 
 	const [loginUser, { loading }] = useMutation(LOGIN_USER, {
-		update(_, { data: { login: user } }) {
-			login(user);
-		},
-		onError(err) {
-			setError(err.graphQLErrors[0].extensions.errMsg);
-		},
-
+		update: (_, { data: { login: user } }) => login(user),
+		onError: () => setError(true),
 		variables: { loginInput: userCredentials },
 	});
 
@@ -52,7 +47,7 @@ const Login = () => {
 
 	useEffect(() => {
 		let timeout = setTimeout(() => {
-			setError("");
+			setError(false);
 		}, 3000);
 		return () => clearTimeout(timeout);
 	}, [error]);
@@ -89,7 +84,7 @@ const Login = () => {
 							type="email"
 							label="Email"
 							size="small"
-							error={error !== ""}
+							error={error}
 							onChange={(e) =>
 								setUserCredentials({
 									...userCredentials,
@@ -107,7 +102,7 @@ const Login = () => {
 							type="password"
 							label="Password"
 							size="small"
-							error={error !== ""}
+							error={error}
 							onChange={(e) =>
 								setUserCredentials({
 									...userCredentials,

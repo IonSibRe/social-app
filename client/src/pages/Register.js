@@ -17,7 +17,7 @@ import { grey } from "@mui/material/colors";
 
 const Register = () => {
 	const { login, loggedIn } = useContext(UserContext);
-	const [error, setError] = useState("");
+	const [error, setError] = useState(false);
 	const [userCredentials, setUserCredentials] = useState({
 		username: "",
 		email: "",
@@ -38,14 +38,8 @@ const Register = () => {
 			: "0 0 0 100px white inset !important";
 
 	const [registerUser, { loading }] = useMutation(REGISTER_USER, {
-		update(_, { data: { register: user } }) {
-			login(user);
-		},
-		onError(err) {
-			console.log(err.graphQLErrors[0].extensions.errMsg);
-			setError(err.graphQLErrors[0].extensions.errMsg);
-		},
-
+		update: (_, { data: { register: user } }) => login(user),
+		onError: (err) => setError(true),
 		variables: { registerInput: userCredentials },
 	});
 
@@ -56,7 +50,7 @@ const Register = () => {
 
 	useEffect(() => {
 		let timeout = setTimeout(() => {
-			setError("");
+			setError(false);
 		}, 3000);
 		return () => clearTimeout(timeout);
 	}, [error]);

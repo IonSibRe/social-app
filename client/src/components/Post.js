@@ -90,7 +90,10 @@ const Post = ({
 					borderBottom: "1px solid #767676",
 				}}
 			>
-				<Typography variant="body1" mb={img && "1rem"}>
+				<Typography
+					variant="body1"
+					sx={{ marginBottom: img && "1rem", wordBreak: "break-all" }}
+				>
 					{body}
 				</Typography>
 				{img && (

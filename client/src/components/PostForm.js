@@ -35,7 +35,7 @@ const PostForm = () => {
 			cache.writeQuery({
 				query: GET_USERS_POSTS,
 				data: {
-					getUsersPosts: [...posts.getUsersPosts, data.createPost],
+					getUsersPosts: [data.createPost, ...posts.getUsersPosts],
 				},
 			});
 		},

@@ -108,7 +108,6 @@ const typeDefs = gql`
 		uploadImage(
 			base64File: String!
 			imgType: String!
-			imgExt: String!
 			deletePublicId: ID
 		): User!
 		updateUserAuthData(userId: ID!, body: UserAuthDataInput!): User!
