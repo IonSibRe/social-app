@@ -27,4 +27,13 @@ const streamToBase64 = async (stream) => {
 	});
 };
 
-module.exports = { genToken, streamToBase64 };
+// JPEG, JPG and PNG file signatures
+const supportedSignatures = [
+	"89504e470d0a1a0a",
+	"ffd8ffdB",
+	"ffd8ffe0",
+	"ffd8ffee",
+	"ffd8ffe1",
+];
+
+module.exports = { genToken, streamToBase64, supportedSignatures };

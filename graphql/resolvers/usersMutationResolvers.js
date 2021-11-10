@@ -8,7 +8,7 @@ const {
 	loginValidate,
 	changePasswordValidate,
 } = require("../../utils/validation");
-const { genToken } = require("../../utils/utils");
+const { genToken, supportedSignatures } = require("../../utils/utils");
 const checkAuth = require("../../utils/checkAuth");
 const { cloudinary } = require("../../utils/cloudinary");
 
@@ -227,6 +227,10 @@ const usersMutationResolvers = {
 		},
 		async uploadImage(_, { base64File, imgType, deletePublicId }, context) {
 			const { id } = checkAuth(context);
+			const fileBuffer = Buffer.from(
+				base64File.replace(/^data:image\/\w+;base64,/, ""),
+				"base64"
+			);
 
 			// Check for imgType
 			if (imgType !== "profile-image" && imgType !== "banner") {
@@ -234,6 +238,20 @@ const usersMutationResolvers = {
 					"imgType must be: 'profile-image' or 'banner'"
 				);
 			}
+
+			// Check File formats
+			const supportedFormat = supportedSignatures.some((signature) => {
+				const fileHexString = fileBuffer
+					.toString("hex")
+					.substr(0, signature.length);
+
+				return fileHexString === signature;
+			});
+
+			if (!supportedFormat)
+				throw new ApolloError(
+					"Unsupported image format. Only supports '.jpg', '.jpeg', '.png' "
+				);
 
 			// Get User
 			const user = await User.findById(id);
