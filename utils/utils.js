@@ -36,4 +36,25 @@ const supportedSignatures = [
 	"ffd8ffe1",
 ];
 
-module.exports = { genToken, streamToBase64, supportedSignatures };
+// Check File formats
+const checkFileFormats = (base64File) => {
+	const fileBuffer = Buffer.from(
+		base64File.replace(/^data:image\/\w+;base64,/, ""),
+		"base64"
+	);
+
+	return supportedSignatures.some((signature) => {
+		const fileHexString = fileBuffer
+			.toString("hex")
+			.substr(0, signature.length);
+
+		return fileHexString === signature;
+	});
+};
+
+module.exports = {
+	genToken,
+	streamToBase64,
+	checkFileFormats,
+	supportedSignatures,
+};

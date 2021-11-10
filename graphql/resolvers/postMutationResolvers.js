@@ -3,10 +3,11 @@ const { UserInputError, ApolloError } = require("apollo-server");
 const Post = require("../../models/Post");
 const checkAuth = require("../../utils/checkAuth");
 const { cloudinary } = require("../../utils/cloudinary");
+const { checkFileFormats } = require("../../utils/utils");
 
 const postMutationResolvers = {
 	Mutation: {
-		async createPost(_, { body, base64File, imgExt }, context) {
+		async createPost(_, { body, base64File }, context) {
 			const user = checkAuth(context);
 			let uploadedRes;
 
@@ -21,16 +22,11 @@ const postMutationResolvers = {
 				});
 			}
 
-			if (
-				imgExt &&
-				imgExt !== ".png" &&
-				imgExt !== ".jpg" &&
-				imgExt !== ".jpeg"
-			) {
+			// Check File formats
+			if (!checkFileFormats(base64File))
 				throw new ApolloError(
-					"imgExt must be: '.png', '.jpg' or '.jpeg'"
+					"Unsupported image format. Only supports '.jpg', '.jpeg', '.png' "
 				);
-			}
 
 			// Upload Image if there is one
 			if (base64File) {

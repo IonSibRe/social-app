@@ -17,6 +17,15 @@ import {
 import { blue, red } from "@mui/material/colors";
 import { UploadFile, Close } from "@mui/icons-material";
 
+// JPEG, JPG and PNG file signatures
+const supportedSignatures = [
+	"89504e470d0a1a0a",
+	"ffd8ffdB",
+	"ffd8ffe0",
+	"ffd8ffee",
+	"ffd8ffe1",
+];
+
 const PostForm = () => {
 	const { user, loggedIn } = useContext(UserContext);
 
@@ -24,7 +33,6 @@ const PostForm = () => {
 	const [postBody, setPostBody] = useState("");
 	const [profileImg, setProfileImg] = useState("");
 	const [postImg, setPostImg] = useState("");
-	const [postImgExt, setPostImgExt] = useState("");
 	const [error, setError] = useState("");
 
 	const [submitPost, { loading }] = useMutation(CREATE_POST, {
@@ -43,7 +51,6 @@ const PostForm = () => {
 		variables: {
 			body: postBody,
 			base64File: postImg,
-			imgExt: postImgExt,
 		},
 	});
 
@@ -61,17 +68,28 @@ const PostForm = () => {
 
 		if (!file) return;
 
-		const imgExt = `.${
-			file.name.split(".")[file.name.split(".").length - 1]
-		}`;
+		// Check File formats
+		const checkFileFormats = (base64File) => {
+			const fileBuffer = Buffer.from(
+				base64File.replace(/^data:image\/\w+;base64,/, ""),
+				"base64"
+			);
+
+			return supportedSignatures.some((signature) => {
+				const fileHexString = fileBuffer
+					.toString("hex")
+					.substr(0, signature.length);
+
+				return fileHexString === signature;
+			});
+		};
 
 		reader.readAsDataURL(file);
 		reader.onloadend = () => {
-			if (imgExt !== ".png" && imgExt !== ".jpg" && imgExt !== ".jpeg") {
-				setError("Image must have .jpeg or .png format");
+			if (!checkFileFormats(reader.result)) {
+				setError("Only '.jpg', '.jpeg', '.png' files are supported.");
 			} else {
 				setPostImg(reader.result);
-				setPostImgExt(imgExt);
 			}
 		};
 
@@ -237,8 +255,8 @@ const PostForm = () => {
 };
 
 const CREATE_POST = gql`
-	mutation createPost($body: String!, $base64File: String, $imgExt: String) {
-		createPost(body: $body, base64File: $base64File, imgExt: $imgExt) {
+	mutation createPost($body: String!, $base64File: String) {
+		createPost(body: $body, base64File: $base64File) {
 			id
 			username
 			body
