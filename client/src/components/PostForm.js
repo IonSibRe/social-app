@@ -39,6 +39,7 @@ const PostForm = () => {
 		onError: (err) => console.log(err),
 		update(cache, { data }) {
 			setPostImg("");
+			setPostBody("");
 			const posts = cache.readQuery({ query: GET_USERS_POSTS });
 			cache.writeQuery({
 				query: GET_USERS_POSTS,
@@ -99,7 +100,6 @@ const PostForm = () => {
 	const submitHandler = (e) => {
 		e.preventDefault();
 		submitPost();
-		setPostBody("");
 	};
 
 	useEffect(() => {

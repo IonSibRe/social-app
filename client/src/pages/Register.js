@@ -39,7 +39,7 @@ const Register = () => {
 
 	const [registerUser, { loading }] = useMutation(REGISTER_USER, {
 		update: (_, { data: { register: user } }) => login(user),
-		onError: (err) => setError(true),
+		onError: () => setError(true),
 		variables: { registerInput: userCredentials },
 	});
 
@@ -87,7 +87,7 @@ const Register = () => {
 							type="text"
 							label="Username"
 							size="small"
-							error={error !== ""}
+							error={error}
 							onChange={(e) =>
 								setUserCredentials({
 									...userCredentials,
@@ -107,7 +107,7 @@ const Register = () => {
 							type="email"
 							label="Email"
 							size="small"
-							error={error !== ""}
+							error={error}
 							onChange={(e) =>
 								setUserCredentials({
 									...userCredentials,
@@ -127,7 +127,7 @@ const Register = () => {
 							type="password"
 							label="Password"
 							size="small"
-							error={error !== ""}
+							error={error}
 							onChange={(e) =>
 								setUserCredentials({
 									...userCredentials,
@@ -147,7 +147,7 @@ const Register = () => {
 							type="password"
 							label="Confirm Password"
 							size="small"
-							error={error !== ""}
+							error={error}
 							onChange={(e) =>
 								setUserCredentials({
 									...userCredentials,

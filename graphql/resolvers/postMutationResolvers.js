@@ -23,7 +23,7 @@ const postMutationResolvers = {
 			}
 
 			// Check File formats
-			if (!checkFileFormats(base64File))
+			if (base64File && !checkFileFormats(base64File))
 				throw new ApolloError(
 					"Unsupported image format. Only supports '.jpg', '.jpeg', '.png' "
 				);

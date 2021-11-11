@@ -17,9 +17,7 @@ import {
 const Posts = () => {
 	const { loggedIn } = useContext(UserContext);
 
-	const { loading, err, data } = useQuery(GET_USERS_POSTS, {
-		onCompleted: () => console.log("Post Fetched"),
-	});
+	const { loading, err, data } = useQuery(GET_USERS_POSTS);
 
 	const mediaQuerySmMatch = useMediaQuery("(max-width: 500px)");
 
